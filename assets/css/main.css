@@ -1,0 +1,27 @@
+.bk-primary {
+    background: #062146 !important;
+}
+
+.bk-secondary {
+    background: #48d77a !important;
+}
+
+.bk-accent {
+    background: #2f80ed !important;
+}
+
+.bk-primary-bold {
+    background: #041327 !important;
+}
+
+.txt-white {
+    color: #fff !important;
+}
+
+.txt-gray {
+    color: #ccc !important;
+}
+
+.txt-gray:hover {
+    color: #fff !important;
+}
