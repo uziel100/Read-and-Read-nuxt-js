@@ -50,27 +50,49 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: false,
-      light: true,
+      dark: false,      
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          primary: '#0078D4',
+          secondary: '#48D77A',
+          accent: '#2F80ED',                       
+                  
+          error: '#FF5252',
+          info: '#2196F3',
+          success: '#FF5252',
+          warning: '#FFC107',
+
+          section: '#121C25',
+          section2: '#151E21',
+          background: '#202124',
+          cards: '#1E1E1E',
+          footer: '#121C25',
+          footer2: '#121212',
+          navbar: '#292A2D',          
+          icons: '#E8EAED',
+          search: '#202123',
+          title: '#ffffff'
         },
         light: {
           primary: '#062146',
           secondary: '#48D77A',
           accent: '#2F80ED',                       
+
           error: '#FF5252',
           info: '#2196F3',
-          success: '#4CAF50',
+          success: '#FF5252',
           warning: '#FFC107',
-          textTitle: '#555',
+          
+          section: '#062146',
+          section2: '#2F80ED',
+          background: '#FFFFFF',
+          cards: '#FFFFFF',
+          footer: '#062146',
+          footer2: '#041327',
+          navbar: '#FFFFFF',
+          icons: '#062146',
+          title: '#555555'
+          
         },
       }
     }

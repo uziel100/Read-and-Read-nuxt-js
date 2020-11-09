@@ -1,9 +1,11 @@
 <template>
   <v-card    
-    class="ma-4"
+    :class="margin"
     height="auto"
     :width="width"    
-    :title="title"    
+    :title="title"   
+    color="cards"    
+    @click="goDetailBook"       
   >
     <v-img
       :src="img"
@@ -40,11 +42,21 @@ export default {
       type: String,
       required: true
     },
+    margin: {
+      type: String,
+      required: false,
+      default: 'ma-0'
+    },
 
     width: {
       type: Number,
       required: false,
       default: 250
+    }
+  },
+  methods:{
+    goDetailBook(){
+      this.$router.push('/libro')
     }
   }
 };

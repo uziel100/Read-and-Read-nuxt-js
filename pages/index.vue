@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- BANNER -->
-    <v-container fluid class="pa-0 primary banner py-md-16">
+    <v-container fluid class="pa-0 section banner py-md-16">
       <v-container>
         <v-row>
           <v-col class="pt-2 pt-md-16" cols="12" sm="5">
@@ -51,21 +51,19 @@
             <v-hover v-slot:default="{ hover }" open-delay="50">
               <v-card
                 :elevation="hover ? 2 : 0"
-                class="mx-auto my-3"
-                :class="hover ? 'card-feature' : ''"
-                max-width="330"
+                class="mx-auto my-sm-3 pa-2"
+                max-width="330"      
+                color="cards"          
               >
-                <figure class="text-center">
-                  <img
-                    class="text-center"
-                    height="250px"
-                    width="250px"
-                    src="../assets/img/caracteristica1.svg"
-                    alt=""
-                  />
-                </figure>
-                <v-card-text>
-                  <div class="text-center text-h6">
+                <v-img
+                  contain
+                  aspect-ratio="1.7"
+                  src="/img/caracteristica1.svg"
+                ></v-img>
+                <v-card-text class="mt-4">
+                  <div
+                    class="text-center text-h6 text-md-h6"
+                  >
                     Disfruta de una gran variedad de libros
                   </div>
                 </v-card-text>
@@ -76,20 +74,16 @@
             <v-hover v-slot:default="{ hover }" open-delay="50">
               <v-card
                 :elevation="hover ? 2 : 0"
-                class="mx-auto my-3"
-                :class="hover ? 'card-feature' : ''"
+                class="mx-auto my-sm-3 pa-2"
                 max-width="330"
+                color="cards"          
               >
-                <figure class="text-center">
-                  <img
-                    class="text-center"
-                    height="250px"
-                    width="250px"
-                    src="../assets/img/caracteristica2.svg"
-                    alt=""
-                  />
-                </figure>
-                <v-card-text>
+                <v-img
+                  contain
+                  aspect-ratio="1.7"
+                  src="/img/caracteristica2.svg"
+                ></v-img>
+                <v-card-text class="mt-4">
                   <div class="text-center text-h6">
                     Accede a la plataforma desde cualquier dispositivo
                   </div>
@@ -101,20 +95,16 @@
             <v-hover v-slot:default="{ hover }" open-delay="50">
               <v-card
                 :elevation="hover ? 2 : 0"
-                :class="hover ? 'card-feature' : ''"
-                class="mx-auto my-3"
+                class="mx-auto my-sm-3 pa-2"
                 max-width="330"
+                color="cards"          
               >
-                <figure class="text-center">
-                  <img
-                    class="text-center"
-                    height="250px"
-                    width="250px"
-                    src="../assets/img/caracteristica3.svg"
-                    alt=""
-                  />
-                </figure>
-                <v-card-text>
+                <v-img
+                  contain
+                  aspect-ratio="1.7"
+                  src="/img/caracteristica3.svg"
+                ></v-img>
+                <v-card-text class="mt-4">
                   <div class="text-center text-h6">
                     Administra tu propio perfil y guarda tus libros favoritos
                   </div>
@@ -136,6 +126,8 @@
               img="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
               :price="450"
               :width="200"
+              margin="mx-1"
+              max-width="350"
             ></item-book>
           </v-slide-item>
         </v-slide-group>
@@ -154,7 +146,7 @@
             sm="4"
             md="3"
           >
-            <v-card outlined class="mx-auto" max-width="300">
+            <v-card outlined class="mx-auto" max-width="300" color="cards">
               <v-img :src="category.img" height="300px"></v-img>
               <v-card-title>{{ category.title }}</v-card-title>
             </v-card>
@@ -178,9 +170,9 @@
     </v-container>
 
     <!-- CONTADOR DE USUARIOS -->
-    <v-container class="section-users bk-accent mt-16" fluid>
+    <v-container class="section-users section2 mt-16" fluid>
       <section class="container text-center text-sm-left d-block d-sm-flex">
-        <nuxt-link class="mt-8 text-decoration-none" to="/join/register">
+        <nuxt-link class="mt-8 text-decoration-none" to="/unirse/registro">
           <v-btn
             class="btn-primary text-none"
             rounded
@@ -204,9 +196,10 @@
 
 <script>
 export default {
+  scrollToTop: true,
   transition: "home",
   head: {
-    title: 'Disfruta de tus lecturas'
+    title: "Disfruta de tus lecturas",
   },
   data() {
     return {
@@ -253,6 +246,16 @@ export default {
 
 
 <style scoped>
+
+.banner {
+  background-image: url(../assets/img/mancha.png);
+  background-repeat: no-repeat;
+  /* background-position-x: 560px; */
+  background-position-x: calc(76% + 100px );
+  background-position-y: -100px;
+}
+
+
 .card-feature {
   border-top: 5px solid #48d77a;
   overflow: hidden;
@@ -261,5 +264,11 @@ export default {
 .section-users {
   width: 100%;
   height: 150px;
+}
+
+@media (max-width: 1024px) {
+  .banner {
+    background-image: none;
+  }
 }
 </style>

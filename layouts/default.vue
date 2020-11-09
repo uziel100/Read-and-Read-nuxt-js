@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <!--  Navitation left movil -->
+    <!--  Navigation left movil -->
     <v-navigation-drawer v-model="drawer" temporary fixed>
       <v-list-item>
         <v-list-item-avatar>
@@ -13,10 +13,10 @@
       </v-list-item>
       <v-divider></v-divider>
     </v-navigation-drawer>
-    <!--  /Navitation left movil -->
+    <!--  /Navigation left movil -->
 
     <!-- Navbar -->
-    <v-app-bar color="#fff" flat height="75px" fixed app>
+    <v-app-bar color="navbar" elevation="3" height="75px" fixed app>
       <v-app-bar-nav-icon
         @click.stop="drawer = !drawer"
         class="ma-0 d-block d-sm-block d-md-none"
@@ -25,12 +25,16 @@
       <v-spacer class="d-block d-sm-none"></v-spacer>
 
       <nuxt-link to="/">
-        <img width="160px" src="../assets/img/logo.svg" alt="logotipo" />
+        <img
+          width="160px"
+          :src="$vuetify.theme.dark ? '/img/logo-ligth.png' : '/img/logo.svg'"
+          alt="logotipo"
+        />
       </nuxt-link>
 
       <v-spacer class="d-none d-sm-block"></v-spacer>
 
-      <div class="input-search ml-5 pl-3 d-none d-sm-none d-md-flex">
+      <div class="input-search ml-5 pl-3 d-none d-sm-none d-md-flex search">
         <input
           type="search"
           name="search"
@@ -39,9 +43,7 @@
           placeholder="Buscar por titulo, autor, ISBN"
         />
         <v-btn text>
-          <!-- <div class="icon-search"> -->
           <img src="@/assets/img/search-24px.svg" alt="" />
-          <!-- </div> -->
         </v-btn>
       </div>
 
@@ -49,27 +51,62 @@
 
       <div class="d-flex align-center">
         <div class="d-none d-sm-none d-md-flex mr-5">
-          <div class="item-menu px-4">
-            <nuxt-link class="text-decoration-none" to="/">
-              <p color="textTitle" class="subtitle-1 mb-0">Inicio</p>
-            </nuxt-link>
-          </div>
-          <div class="item-menu px-4">
-            <nuxt-link class="text-decoration-none" to="/category">
-              <p color="textTitle" class="subtitle-1 mb-0">Categorias</p>
-            </nuxt-link>
-          </div>
+          <nuxt-link class="text-decoration-none" to="/">
+            <v-btn class="text-none item-menu" text> Inicio </v-btn>
+          </nuxt-link>
+
+          <v-menu open-on-hover bottom left offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn class="text-none" text v-bind="attrs" v-on="on">
+                Categorias
+                <v-icon color="icons" class="ma-0 pa-0" right>
+                  mdi-chevron-down
+                </v-icon>
+              </v-btn>
+            </template>
+            <div class="d-flex">
+              <v-list rounded v-for="(item, i) in categories" :key="i">
+                <v-subheader>{{ item.category }}</v-subheader>
+                <v-divider></v-divider>
+                <v-list-item
+                  class="ma-0 pa-0"
+                  v-for="(menu, idx) in item.subcategories"
+                  :key="idx"
+                >
+                  <v-list-item-content class="ma-0 pa-0">
+                    <nuxt-link :to="`/categoria/${menu.urlNice}`">
+                      <v-btn text color="primary" class="text-none">{{
+                        menu.subcategory
+                      }}</v-btn>
+                    </nuxt-link>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                  v-if="item.subcategories.length === 0"
+                  class="ma-0 pa-0"
+                >
+                  <v-list-item-content class="ma-0 pa-0">
+                    <nuxt-link :to="`/categoria/${item.urlNice}`">
+                      <v-btn text color="primary" class="text-none"
+                        >Ver libros</v-btn
+                      >
+                    </nuxt-link>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </div>
+          </v-menu>
         </div>
 
         <v-badge left overlap :value="0">
-          <v-btn class="" text icon color="primary">
-            <v-icon medium>mdi-cart</v-icon>
+          <v-btn class="" text icon>
+            <v-icon color="icons" medium>mdi-cart-outline</v-icon>
           </v-btn>
         </v-badge>
 
         <v-badge v-if="login" left overlap :value="0">
-          <v-btn class="" text icon color="primary">
-            <v-icon medium>mdi-heart</v-icon>
+          <v-btn class="" text icon>
+            <v-icon color="icons" medium>mdi-heart</v-icon>
           </v-btn>
         </v-badge>
 
@@ -106,7 +143,7 @@
     </v-app-bar>
     <!-- /Navbar -->
 
-    <v-main>
+    <v-main class="background">
       <nuxt />
     </v-main>
 
@@ -122,8 +159,59 @@
     </v-snackbar>
     <!-- /Notificacion -->
 
+    <!-- button theme -->
+    <v-fab-transition>
+      <v-tooltip right>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            elevation="5"
+            @click="modeDark"
+            v-show="!hidden"
+            color="primary"
+            dark
+            fixed
+            bottom
+            left
+            fab
+          >
+            <v-icon>{{ modeTheme }}</v-icon>
+          </v-btn>
+        </template>
+        <span>Cambiar tema</span>
+      </v-tooltip>
+    </v-fab-transition>
+    <!-- /button theme -->
+
+    <!-- button scrooll top -->
+    <v-fab-transition>
+      <v-tooltip left>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            v-on="on"
+            v-scroll="onScroll"
+            v-show="fab"
+            elevation="5"
+            @click="toTop"
+            color="primary"
+            dark
+            fixed
+            bottom
+            right
+            fab
+          >
+            <v-icon>mdi-apple-keyboard-control</v-icon>
+          </v-btn>
+        </template>
+        <span>Ir arriba</span>
+      </v-tooltip>
+    </v-fab-transition>
+    <!-- /button scrooll top -->
+
     <!-- footer -->
-    <v-footer color="primary" padless>
+    <v-footer color="footer" padless>
       <v-container>
         <v-row>
           <v-col cols="12" sm="4">
@@ -137,24 +225,33 @@
               </nuxt-link>
             </figure>
           </v-col>
-          <v-col v-for="(item, idx) in linksFooter" :key="idx" class="text-center text-sm-left" cols="12" sm="4">
+          <v-col
+            v-for="(item, idx) in linksFooter"
+            :key="idx"
+            class="text-center text-sm-left"
+            cols="12"
+            sm="4"
+          >
             <h3 class="mb-4 text-h6 txt-white">{{ item.title }}</h3>
             <v-divider class="mb-2"></v-divider>
             <div>
               <p v-for="(link, i) in item.links" :key="i" class="my-2">
-                <nuxt-link class="txt-gray" :to="link.to"
-                  >{{ link.title }}</nuxt-link
-                >
-              </p>             
+                <nuxt-link class="txt-gray" :to="link.to">{{
+                  link.title
+                }}</nuxt-link>
+              </p>
             </div>
-          </v-col>          
+          </v-col>
           <v-spacer></v-spacer>
         </v-row>
       </v-container>
-      <v-col class="text-center subtitle-2 bk-primary-bold txt-white" cols="12">
-        &copy; Read&Read Todos los derechos reservados
+      <v-col class="text-center footer" cols="12">
+        <p class="white--text">
+          &copy; Read&Read Todos los derechos reservados
+        </p>
       </v-col>
     </v-footer>
+    <!-- /footer -->
   </v-app>
 </template>
  
@@ -163,10 +260,86 @@ export default {
   transition: "home",
   data() {
     return {
+      hidden: false,
       drawer: false,
       rightDrawer: true,
       login: false,
       isNotification: true,
+      selectedItem: 0,
+      fab: false,
+      modeTheme: "mdi-white-balance-sunny",
+      items: [
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me" },
+        { title: "Click Me 2" },
+      ],
+      categories: [
+        {
+          category: "Ciencia ficción",
+          urlNice: "ciencia-ficcion",
+          subcategories: [],
+        },
+        {
+          category: "Matematicas",
+          urlNice: "matematicas",
+          subcategories: [
+            {
+              subcategory: "Algebra",
+              urlNice: "algebra",
+            },
+            {
+              subcategory: "Aritmetrica",
+              urlNice: "aritmetrica",
+            },
+            {
+              subcategory: "Cálculo diferencial",
+              urlNice: "calculo-diferencial",
+            },
+          ],
+        },
+        {
+          category: "Romance",
+          urlNice: "romance",
+          subcategories: [],
+        },
+        {
+          category: "Tecnologia",
+          urlNice: "tecnologia",
+          subcategories: [
+            {
+              subcategory: "Programación",
+              urlNice: "programacion",
+            },
+            {
+              subcategory: "Base de datos",
+              urlNice: "BD",
+            },
+            {
+              subcategory: "Sistemas operativos",
+              urlNice: "SO",
+            },
+          ],
+        },
+        {
+          category: "Cuentos",
+          urlNice: "cuentos",
+          subcategories: [
+            {
+              subcategory: "Infantiles",
+              urlNice: "infantiles",
+            },
+            {
+              subcategory: "Amor",
+              urlNice: "amor",
+            },
+            {
+              subcategory: "Terror",
+              urlNice: "terror",
+            },
+          ],
+        },
+      ],
       linksFooter: [
         {
           title: "Nosotros",
@@ -200,6 +373,27 @@ export default {
         },
       ],
     };
+  },
+
+  methods: {
+    modeDark() {
+      if ("mdi-white-balance-sunny" === this.modeTheme) {
+        this.modeTheme = "mdi-brightness-2";
+      } else {
+        this.modeTheme = "mdi-white-balance-sunny";
+      }
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+    },
+
+    onScroll(e) {
+      if (typeof window === "undefined") return;
+      const top = window.pageYOffset || e.target.scrollTop || 0;
+      this.fab = top > 20;
+    },
+
+    toTop() {
+      this.$vuetify.goTo(0);
+    },
   },
 };
 </script>
@@ -236,6 +430,7 @@ a {
   height: 35px;
   outline: none;
   width: calc(100% - 60px);
+  color: #fff;
 }
 
 .icon-search {
@@ -252,14 +447,11 @@ a {
   line-height: 34px;
 }
 
-.item-menu:hover p {
-  border-bottom: 2px solid #062146 !important;
-}
+/* a.nuxt-link-exact-active > .item-menu {
 
-a.nuxt-link-exact-active p {
-  border-bottom: 2px solid #062146 !important;
-  color: #555;
-}
+  color: #2f80ed !important;
+  background: #eee !important;
+} */
 
 .custom-input .v-text-field__details {
   display: none !important;

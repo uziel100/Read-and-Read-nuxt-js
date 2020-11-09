@@ -1,136 +1,156 @@
 <template>
-  <v-container>
+  <section class="mb-16 mt-2 container imagen-registro">
     <v-row>
+      <v-spacer></v-spacer>
       <v-col cols="12" sm="6" md="4" lg="4">
-        <v-card ref="form">
-          <v-card-text>
-            <h2 class="pb-4 text-center">Registro</h2>
-            <v-text-field            
-              label="Nombre"
-              outlined
-              clearable
-              v-model="user.name"
-            ></v-text-field>
-            <v-combobox
-              label="Sexo"
-              v-model="user.sexo"
-              :items="sexos"
-              clearable
-              outlined
-              small-chips
-            ></v-combobox>
-            <v-text-field
-              label="Email"
-              type="email"
-              outlined
-              clearable
-              v-model="user.email"
-            ></v-text-field>
-            <v-text-field
-              v-model="user.password"
-              label="Password"
-              :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="show ? 'text' : 'password'"
-              outlined
-              clearable
-              @click:append="show = !show"
-            ></v-text-field>
-            <v-text-field
-              label="Domicilio"
-              outlined
-              clearable
-              v-model="user.address"
-            ></v-text-field>
-            <v-text-field
-              label="Telefono"
-              outlined
-              clearable
-              type="number"
-              v-model="user.phone"
-            ></v-text-field>
-            <v-dialog
-              ref="dialog"
-              v-model="modal"
-              :return-value.sync="user.date"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="user.date"
-                  label="Fecha de nacimiento"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker v-model="user.date" scrollable>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="modal = false">
-                  Cancel
+        <v-card :loading="form.loading" :disabled="form.disabled" elevation="2">
+          <v-form ref="form" v-model="form.valid">
+            <v-card-text>
+              <h2 class="text-center text-h5  title--text">
+                ¿Eres nuevo en Read&Read?
+              </h2>
+              <h2 class="text-center text-h5 mb-8 accent--text">Únete ahora</h2>
+              <div class="d-flex my-8">
+                <v-btn outlined color="accent"  rounded block >
+                  <v-icon left> mdi-google </v-icon>
+                  Continuar con Google
                 </v-btn>
-                <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.dialog.save(user.date)"
-                >
-                  OK
-                </v-btn>
-              </v-date-picker>
-            </v-dialog>
+              </div>
+              <v-text-field
+                label="Correo electronico *"
+                outlined
+                type="email"
+                dense
+                color="accent"
+                :rules="form.emailRules"
+                required
+                v-model="user.email"
+              ></v-text-field>
 
-            <v-btn color="secondary" class="mr-4" @click="register"
-              >Registrar</v-btn
-            >
-            <nuxt-link to="/users">Ver usuarios</nuxt-link>
-          </v-card-text>
+              <v-text-field
+                label="Contraseña *"
+                outlined
+                dense
+                color="accent"
+                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show ? 'text' : 'password'"
+                @click:append="show = !show"
+                :rules="form.passwordRules"
+                required
+                v-model="user.password"
+              ></v-text-field>
+
+              <v-text-field
+                label="Confirmar contraseña *"
+                outlined
+                dense
+                color="accent"
+                :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show2 ? 'text' : 'password'"
+                @click:append="show2 = !show2"
+                required
+                :rules="form.passwordMatch"
+                v-model="user.confirmPassword"
+              ></v-text-field>
+
+              <v-btn
+                :disabled="!form.valid"
+                @click="handleRegister"
+                color="secondary"
+                class="my-3"
+                block
+                >Crear cuenta</v-btn
+              >
+            </v-card-text>
+          </v-form>
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
+  </section>
 </template>
 
 <script>
 export default {
+  head: {
+    title: "Comienza ahora",
+  },
   data() {
     return {
       show: false,
-      modal: false,
-      sexos: ["Masculino", "Femenino"],
+      show2: false,
       user: {
-        name: undefined,
         email: undefined,
         password: undefined,
-        address: undefined,
-        phone: undefined,
-        date: new Date().toISOString().substr(0, 10),
-        sexo: undefined,
+        confirmPasssword: undefined,
+      },
+      form: {
+        valid: false,
+        loading: false,
+        disabled: false,
+        emailRules: [
+          (v) => !!v || "Correo obligatorio",
+          (v) => /.+@.+\..+/.test(v) || "Correo debe ser valido",
+        ],
+        passwordRules: [(v) => !!v || "Constraseña obligatoria"],
+        passwordMatch: [
+          (v) => !!v || "Constraseña obligatoria",
+          (v) => v === this.user.password || "Contraseñas no coinciden",
+        ],
       },
     };
   },
   methods: {
-    async register() {
+    handleRegister() {
       try {
-        const res = await this.$axios.$post("user", this.user);
-
-        if (res.status) {
-          alert(res.message);
-          this.user.name = "";
-          this.user.email = "";
-          this.user.password = "";
-          this.user.address = "";
-          this.user.date = new Date().toISOString().substr(0, 10);
-          this.user.phone = "";
-          this.user.sexo = "";
-        }
-      } catch (err) {
-        console.log(err.response.data);
+        this.validateForm();  
+        this.activeLoadingForm();            
+        setTimeout(() => {
+          this.desactiveLoadingForm();
+          this.clearInputs()
+          this.register();
+          alert('Registro correcto...')
+        }, 3000);
+      } catch (err) {        
+        console.log(err);
       }
     },
+
+    register(){
+      // logica de registro      
+    },
+
+    activeLoadingForm(){
+      this.form.loading = true;
+      this.form.disabled = true;
+    },
+
+    desactiveLoadingForm(){
+      this.form.loading = false;
+      this.form.disabled = false;
+    },
+
+    validateForm() {
+      this.$refs.form.validate()
+    },
+
+    clearInputs() {            
+      this.$refs.form.reset() 
+    }
   },
 };
 </script>
 
 <style>
+.imagen-registro {
+  background-image: url(../../assets/img/unirse/img-registro.svg) !important;
+  background-size: 90% 90%;
+  background-position-x: -100px;
+  background-position-y: 30px;
+}
+
+@media (max-width: 600px) {
+  .imagen-registro {
+    background: none !important;
+  }
+}
 </style>
