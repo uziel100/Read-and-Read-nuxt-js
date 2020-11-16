@@ -2,16 +2,70 @@
   <v-app>
     <!--  Navigation left movil -->
     <v-navigation-drawer v-model="drawer" temporary fixed>
-      <v-list-item>
+      <v-list-item v-if="login">
         <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
         </v-list-item-avatar>
-
         <v-list-item-content>
           <v-list-item-title>John Leider</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+      <v-list-item v-if="!login">
+        <nuxt-link
+          v-if="!login"
+          class="text-decoration-none"
+          to="/unirse/login"
+        >
+          <v-btn class="text-none" outlined color="secondary">
+            Iniciar sesión
+          </v-btn>
+        </nuxt-link>
+      </v-list-item>
+      <v-list-item v-if="!login">
+        <nuxt-link class="text-decoration-none" to="/unirse/registro">
+          <v-btn class="text-none" depressed color="secondary">
+            Registrate
+          </v-btn>
+        </nuxt-link>
+      </v-list-item>
       <v-divider></v-divider>
+      <v-list>
+        <nuxt-link to="/">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Inicio</v-list-item-title>
+          </v-list-item>
+        </nuxt-link>
+
+        <v-list-group :value="false" prepend-icon="mdi-book-variant">
+          <template v-slot:activator>
+            <v-list-item-title>Categorias</v-list-item-title>
+          </template>
+
+          <nuxt-link
+            class="pa-0 ma-0"
+            v-for="item in categories"
+            :key="item.urlNice"
+            :to="'/categoria/' + item.urlNice"
+          >
+            <v-list-item class="ml-5" link>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.category"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </nuxt-link>
+        </v-list-group>
+        <nuxt-link to="/">
+          <v-list-item link>
+            <v-list-item-icon>
+              <v-icon>mdi-cart-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Cesta</v-list-item-title>
+          </v-list-item>
+        </nuxt-link>
+      </v-list>
     </v-navigation-drawer>
     <!--  /Navigation left movil -->
 
@@ -446,12 +500,6 @@ a {
 .icon-search > img {
   line-height: 34px;
 }
-
-/* a.nuxt-link-exact-active > .item-menu {
-
-  color: #2f80ed !important;
-  background: #eee !important;
-} */
 
 .custom-input .v-text-field__details {
   display: none !important;
