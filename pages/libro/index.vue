@@ -10,23 +10,24 @@
             md="8"
           >
             <h1
-              class="text-lg-h5 text-xs-h7 font-weight-black white--text text-center text-sm-left mb-4 d-none d-md-block"
+              class="text-lg-h4 text-xs-h7 font-weight-black white--text text-center text-sm-left mb-4 d-none d-md-block"
             >
               Citas del Presidente Mao Tse-Tung (de Mao Tse-Tung)
             </h1>
             <div class="text-center text-md-left">
-              <div class="d-sm-flex d-block  justify-sm-center justify-md-start">
+              <div class="d-sm-flex d-block justify-sm-center justify-md-start">
                 <div class="d-flex justify-center">
-                  <p class="white--text d-block mt-2">4.3</p>
+                  <p class="white--text d-block">4.3</p>
                   <v-rating
                     :value="5"
                     color="warning"
                     readonly
-                    size="20px"
-                    class="rating-start pa-0 ma-0 d-block"
+                    size="15px"
+                    class="mx-1"
+                    dense
                   ></v-rating>
                 </div>
-                <p class="white--text d-block mt-0 mt-sm-2">
+                <p class="white--text d-block mt-0">
                   (1,340 calificaciones) 4,342 lectores
                 </p>
               </div>
@@ -44,12 +45,11 @@
                   Español
                 </p>
               </div>
-              <nuxt-link class="text-decoration-none" to="#">
+              
                 <v-btn class="mt-10 text-none" rounded color="error" dark>
                   <v-icon left> mdi-heart </v-icon>
                   Añadir a la lista de deseos
-                </v-btn>
-              </nuxt-link>
+                </v-btn>              
             </div>
           </v-col>
           <v-col
@@ -139,6 +139,111 @@
       </v-row>
 
       <v-row>
+        <v-col class="pt-2" cols="12" sm="12" md="8">
+          <v-card flat>
+            <v-card-text>
+              <h2 class="font-weight-bold title--text mb-4">
+                Comentarios del los lectores
+              </h2>
+              <v-row>
+                <v-col col="12" sm="3" md="4" class="text-center pt-5">                  
+                  <p class="font-weight-bold text-h4">4.5</p>
+                  <v-rating
+                    :value="4.5"
+                    color="warning"
+                    readonly
+                    size="15px"
+                    half-increments
+                    dense
+                  ></v-rating>
+                  <p>Valoración del libro</p>
+                </v-col>
+                <v-col sm="9" md="8" class="d-none d-sm-block" >   
+                  <div class="d-flex align-center">
+                    <v-progress-linear
+                      color="primary"
+                      rounded
+                      value="80"                      
+                      height="6"
+                    ></v-progress-linear>
+                    <v-rating
+                      :value="5"
+                      color="warning"
+                      readonly
+                      size="15px"                       
+                    ></v-rating>                  
+                  </div>                
+                  <div class="d-flex align-center">
+                    <v-progress-linear
+                      color="primary"
+                      rounded
+                      value="50"
+                      height="6"
+                    ></v-progress-linear>
+                    <v-rating
+                      :value="4"
+                      color="warning"
+                      readonly
+                      size="15px"                      
+                    ></v-rating>                  
+                  </div>                
+                  <div class="d-flex align-center">
+                    <v-progress-linear
+                      color="primary"
+                      rounded
+                      value="30"
+                      height="6"
+                    ></v-progress-linear>
+                    <v-rating
+                      :value="3"
+                      color="warning"
+                      readonly
+                      size="15px"                      
+                    ></v-rating>                  
+                  </div>                
+                  <div class="d-flex align-center">
+                    <v-progress-linear
+                      color="primary"
+                      rounded
+                      value="20"
+                      height="6"
+                    ></v-progress-linear>
+                    <v-rating
+                      :value="2"
+                      color="warning"
+                      readonly
+                      size="15px"                      
+                    ></v-rating>                  
+                  </div>                
+                  <div class="d-flex align-center">
+                    <v-progress-linear
+                      color="primary"
+                      rounded
+                      value="10"
+                      height="6"
+                    ></v-progress-linear>
+                    <v-rating
+                      :value="1"
+                      color="warning"
+                      readonly
+                      size="15px"
+                      height="6"
+                    ></v-rating>                  
+                  </div>                
+                </v-col>
+              </v-row>  
+              
+              <div class="text-center text-sm-left">
+                <v-btn class="text-none" rounded  color="accent" >Escribir mi opinión</v-btn>                                                              
+              </div>
+              
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-spacer></v-spacer>
+      </v-row>
+
+      <v-row>
         <v-col class="pt-2 pt-md-10" cols="12" sm="12" md="8">
           <v-card color="cards" v-for="(user, i) in 8" :key="i" flat>
             <v-card-text>
@@ -155,6 +260,7 @@
                     color="warning"
                     readonly
                     size="18px"
+                    dense
                   ></v-rating>
                   <v-card-text class="pa-0">
                     Este libro es exelente, lo recomiendo mucho, a mi hijo le
@@ -179,7 +285,7 @@
           </v-btn>
         </v-col>
       </v-row>
-    </v-container>
+    </v-container> 
   </div>
 </template>
 
