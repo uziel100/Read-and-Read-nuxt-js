@@ -305,7 +305,7 @@ export default {
 
 <style scoped>
 .bannerDetailBook {
-  background-image: url(../assets/img/bannerDetailBook4.png) !important;
+  background-image: url(../../assets/img/bannerDetailBook4.png) !important;
   background-size: cover;
 }
 </style>
