@@ -71,7 +71,9 @@ export default {
           navbar: '#292A2D',          
           icons: '#E8EAED',
           search: '#202123',
-          title: '#ffffff'
+          title: '#ffffff',
+
+          backgrounduser: '#202124'
         },
         light: {
           primary: '#062146',
@@ -91,7 +93,9 @@ export default {
           footer2: '#041327',
           navbar: '#FFFFFF',
           icons: '#062146',
-          title: '#555555'
+          title: '#555555',
+
+          backgrounduser: '#FBFAFF'
           
         },
       }
