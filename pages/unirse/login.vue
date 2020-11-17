@@ -14,7 +14,7 @@
                 Inicia sesión y comienza a leer
               </h2>
               <div class="d-flex my-8">
-                <v-btn class="text-none" dark outlined color="accent"  rounded block>
+                <v-btn  @click="handleLogin" class="text-none" dark outlined color="accent"  rounded block>
                   <v-icon left> mdi-google </v-icon>
                   Continuar con Google
                 </v-btn>
@@ -73,7 +73,7 @@ export default {
   transition: "home",
   head: {
     title: "Comienza a leer ya",
-  },
+  },  
   data() {
     return {
       show: false,
@@ -92,7 +92,8 @@ export default {
 
   methods: {
     handleLogin() {
-      this.validateForm();
+      // this.validateForm();
+      this.$router.push('/user')
     },
 
     validateForm() {
