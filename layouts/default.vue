@@ -265,7 +265,7 @@
     <!-- /button scrooll top -->
 
     <!-- footer -->
-    <v-footer color="footer" padless>
+    <v-footer color="footer" padless >
       <v-container>
         <v-row>
           <v-col cols="12" sm="4">
