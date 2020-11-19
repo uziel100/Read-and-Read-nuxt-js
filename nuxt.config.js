@@ -59,7 +59,7 @@ export default {
                   
           error: '#FF5252',
           info: '#2196F3',
-          success: '#FF5252',
+          success: '#48D77A',
           warning: '#FFC107',
 
           section: '#121C25',
@@ -82,7 +82,7 @@ export default {
 
           error: '#FF5252',
           info: '#2196F3',
-          success: '#FF5252',
+          success: '#48D77A',
           warning: '#FFC107',
           
           section: '#062146',
