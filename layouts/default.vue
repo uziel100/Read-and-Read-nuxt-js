@@ -202,12 +202,11 @@
     </v-main>
 
     <!-- Notificacion -->
-    <v-snackbar v-model="isNotification" color="success" elevation="24">
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem, magnam.
-
+    <v-snackbar :timeout="-1" :value="notification.active" :color="notification.type" elevation="24">
+      {{ notification.msg }}
       <template v-slot:action="{ attrs }">
-        <v-btn dark text v-bind="attrs" @click="isNotification = false">
-          Close
+        <v-btn dark text v-bind="attrs" @click="setNotification({ active: false })">
+          Cerrar
         </v-btn>
       </template>
     </v-snackbar>
@@ -310,6 +309,9 @@
 </template>
  
 <script>
+
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   transition: "home",
   data() {
@@ -318,7 +320,7 @@ export default {
       drawer: false,
       rightDrawer: true,
       login: false,
-      isNotification: true,
+      isNotification: false,
       selectedItem: 0,
       fab: false,
       modeTheme: "mdi-white-balance-sunny",
@@ -427,9 +429,16 @@ export default {
         },
       ],
     };
+  }, 
+
+  
+  computed:{
+    ...mapState(['notification']),
+  
   },
 
   methods: {
+    ...mapMutations(['setNotification']),
     modeDark() {
       if ("mdi-white-balance-sunny" === this.modeTheme) {
         this.modeTheme = "mdi-brightness-2";
