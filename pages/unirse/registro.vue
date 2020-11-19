@@ -6,12 +6,12 @@
         <v-card :loading="form.loading" :disabled="form.disabled" elevation="2">
           <v-form ref="form" v-model="form.valid">
             <v-card-text>
-              <h2 class="text-center text-h5  title--text">
+              <h2 class="text-center text-h5 title--text">
                 ¿Eres nuevo en Read&Read?
               </h2>
               <h2 class="text-center text-h5 mb-8 accent--text">Únete ahora</h2>
               <div class="d-flex my-8">
-                <v-btn outlined color="accent"  rounded block >
+                <v-btn outlined color="accent" rounded block>
                   <v-icon left> mdi-google </v-icon>
                   Continuar con Google
                 </v-btn>
@@ -54,6 +54,7 @@
               ></v-text-field>
 
               <v-btn
+                name="createAccount"
                 :disabled="!form.valid"
                 @click="handleRegister"
                 color="secondary"
@@ -70,6 +71,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   head: {
     title: "Comienza ahora",
@@ -100,42 +103,45 @@ export default {
     };
   },
   methods: {
-    handleRegister() {
+    ...mapActions(["showNotification"]),
+
+    async handleRegister() {
       try {
-        this.validateForm();  
-        this.activeLoadingForm();            
-        setTimeout(() => {
-          this.desactiveLoadingForm();
-          this.clearInputs()
-          this.register();
-          alert('Registro correcto...')
-        }, 3000);
-      } catch (err) {        
-        console.log(err);
+        this.validateForm();
+        this.isLoadingForm(true);
+        const res = await this.register();
+        this.isLoadingForm(false);
+        this.clearInputs();
+        this.showNotification({
+          active: true,
+          msg: res.message,
+          type: "success",
+        });
+      } catch (err) {
+        this.desactiveLoadingForm();
+        const msg = err.response.data.message || 'Ha ocurrido un error';
+        this.showNotification({ active: true, msg, type: "error" });
       }
     },
 
-    register(){
-      // logica de registro      
+    async register() {
+      // logica de registro
+      const resp = await this.$axios.$post("user", this.user);
+      return resp;
     },
 
-    activeLoadingForm(){
-      this.form.loading = true;
-      this.form.disabled = true;
-    },
-
-    desactiveLoadingForm(){
-      this.form.loading = false;
-      this.form.disabled = false;
-    },
+    isLoadingForm(value) {
+      this.form.loading = value;
+      this.form.disabled = value;
+    },    
 
     validateForm() {
-      this.$refs.form.validate()
+      this.$refs.form.validate();
     },
 
-    clearInputs() {            
-      this.$refs.form.reset() 
-    }
+    clearInputs() {
+      this.$refs.form.reset();
+    },
   },
 };
 </script>
