@@ -69,6 +69,9 @@
 </template>
 
 <script>
+
+import { mapActions } from 'vuex'
+
 export default {
   transition: "home",
   head: {
@@ -91,10 +94,42 @@ export default {
   },
 
   methods: {
-    handleLogin() {
-      // this.validateForm();
-      this.$router.push('/user')
+    ...mapActions(["showNotification"]),
+    
+    async handleLogin() {
+      this.validateForm();
+      this.isLoadingForm(true);
+      try {
+        const response = await this.loginNormal();  
+        await this.saveUserDataPersist( response.data.user )        
+        this.isLoadingForm(false)
+        this.$router.push('/user')
+      } catch (err) {  
+        this.isLoadingForm(false)
+        const msg = err.response ? err.response.data.message : 'Ha ocurrido un error';              
+        this.showNotification( { active: true, type: 'error', msg } );   
+      }
     },
+
+    async loginNormal(){            
+      return await this.$auth.loginWith('local', {
+        data: {
+          email: this.form.email,
+          password: this.form.password,
+        },
+      });       
+    },
+
+    async saveUserDataPersist(data){
+      await this.$auth.$storage.setLocalStorage('_user', data, true)          
+      await this.$auth.setUser(data)
+    },
+
+    isLoadingForm(value) {
+      this.form.loading = value;
+      this.form.disabled = value;
+    },    
+
 
     validateForm() {
         this.$refs.form.validate()
