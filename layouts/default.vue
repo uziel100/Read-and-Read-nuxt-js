@@ -2,15 +2,15 @@
   <v-app>
     <!--  Navigation left movil -->
     <v-navigation-drawer v-model="drawer" temporary fixed>
-      <v-list-item v-if="login">
+      <v-list-item v-if="$auth.loggedIn">
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+          <v-img src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title>John Leider</v-list-item-title>
+          <v-list-item-title>{{ $auth.user.email }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item v-if="!login">
+      <v-list-item v-if="!$auth.loggedIn">
         <nuxt-link
           v-if="!login"
           class="text-decoration-none"
@@ -21,7 +21,7 @@
           </v-btn>
         </nuxt-link>
       </v-list-item>
-      <v-list-item v-if="!login">
+      <v-list-item v-if="!$auth.loggedIn">
         <nuxt-link class="text-decoration-none" to="/unirse/registro">
           <v-btn class="text-none" depressed color="secondary">
             Registrate
@@ -70,7 +70,7 @@
     <!--  /Navigation left movil -->
 
     <!-- Navbar -->
-    <v-app-bar color="navbar" elevation="3" height="75px" fixed app>
+    <v-app-bar color="navbar" elevation="3" height="60px" fixed app>
       <v-app-bar-nav-icon
         @click.stop="drawer = !drawer"
         class="ma-0 d-block d-sm-block d-md-none"
@@ -97,7 +97,7 @@
           placeholder="Buscar por titulo, autor, ISBN"
         />
         <v-btn text>
-          <img src="@/assets/img/search-24px.svg" alt="" />
+          <img src="@/assets/img/search-24px.svg" alt="lupa" />
         </v-btn>
       </div>
 
@@ -158,20 +158,20 @@
           </v-btn>
         </v-badge>
 
-        <v-badge v-if="login" left overlap :value="0">
+        <v-badge v-if="$auth.loggedIn" left overlap :value="0">
           <v-btn class="" text icon>
             <v-icon color="icons" medium>mdi-heart</v-icon>
           </v-btn>
         </v-badge>
 
-        <v-btn v-if="login" class="ml-2" text icon>
-          <v-avatar size="40">
+        <v-btn @click="$router.push('/user')"  v-if="$auth.loggedIn" class="ml-2" text icon>
+          <v-avatar size="36">
             <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
           </v-avatar>
         </v-btn>
 
         <nuxt-link
-          v-if="!login"
+          v-if="!$auth.loggedIn"
           class="text-decoration-none d-none d-sm-block"
           to="/unirse/login"
         >
@@ -185,7 +185,7 @@
           </v-btn>
         </nuxt-link>
         <nuxt-link
-          v-if="!login"
+          v-if="!$auth.loggedIn"
           class="text-decoration-none d-none d-sm-block"
           to="/unirse/registro"
         >
@@ -289,9 +289,9 @@
             <v-divider class="mb-2"></v-divider>
             <div>
               <p v-for="(link, i) in item.links" :key="i" class="my-2">
-                <nuxt-link class="txt-gray" :to="link.to">{{
-                  link.title
-                }}</nuxt-link>
+                <nuxt-link class="txt-gray" :to="link.to">
+                  {{ link.title}}
+                </nuxt-link>
               </p>
             </div>
           </v-col>
@@ -310,10 +310,15 @@
  
 <script>
 
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
+  name: 'Default',
   transition: "home",
+  async created(){    
+    await this.getUserIfLogged();
+  },
+  
   data() {
     return {
       hidden: false,
@@ -434,11 +439,13 @@ export default {
   
   computed:{
     ...mapState(['notification']),
-  
   },
 
   methods: {
     ...mapMutations(['setNotification']),
+    ...mapActions(['getUserIfLogged']),
+    
+
     modeDark() {
       if ("mdi-white-balance-sunny" === this.modeTheme) {
         this.modeTheme = "mdi-brightness-2";
