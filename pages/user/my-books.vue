@@ -5,7 +5,8 @@
 
 <script>
 export default {
-    layout: 'user'
+    layout: 'user',
+    transition: "home",
 }
 </script>
 
