@@ -5,14 +5,14 @@
         <v-list-item>
           <v-list-item-avatar>
             <v-img
-              src="https://randomuser.me/api/portraits/women/85.jpg"
+              src="https://cdn.vuetifyjs.com/images/john.jpg"
             ></v-img>
           </v-list-item-avatar>
         </v-list-item>
         <v-list-item link dark>
           <v-list-item-content>
-            <v-list-item-title>Fatima Gonzalez Cruz</v-list-item-title>
-            <v-list-item-subtitle>fatyta@gmail.com</v-list-item-subtitle>
+            <v-list-item-title>Bienvenido</v-list-item-title>
+            <v-list-item-subtitle>{{ this.$auth.user.email  }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -26,7 +26,7 @@
           <v-list-item-title>{{ item.name }}</v-list-item-title>
         </v-list-item>
 
-        <v-list-item link>
+        <v-list-item @click="$auth.logout()" link>
           <v-list-item-icon>
             <v-icon>mdi-logout</v-icon>
           </v-list-item-icon>
@@ -103,8 +103,12 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 let routeUser = "/user";
 export default {
+  middleware: 'auth-user',
+  transition: "home",
+  name: 'User',
   data() {
     return {
       drawer: false,
@@ -155,7 +159,15 @@ export default {
     };
   },
 
+  created(){
+   this.init();
+  },
+
   methods: {
+    ...mapActions(['showNotification','getUserIfLogged']),
+    async init(){
+      await this.getUserIfLogged()     
+    },
     goTo(url) {
       this.$router.push(url);
     },
@@ -164,4 +176,12 @@ export default {
 </script>
 
 <style>
+.home-enter-active,
+.home-leave-active {
+  transition: opacity 0.4s;
+}
+.home-enter,
+.home-leave-active {
+  opacity: 0;
+}
 </style>
