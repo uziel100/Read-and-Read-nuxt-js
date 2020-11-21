@@ -112,14 +112,11 @@ export default {
         const res = await this.register();
         this.isLoadingForm(false);
         this.clearInputs();
-        this.showNotification({
-          active: true,
-          msg: res.message,
-          type: "success",
-        });
+        this.showNotification({ active: true, msg: res.message, type: "success" });
+        this.$router.push('/unirse/login')
       } catch (err) {
-        this.desactiveLoadingForm();
-        const msg = err.response.data.message || 'Ha ocurrido un error';
+        this.isLoadingForm(false);
+        const msg = err.response ? err.response.data.message : 'Ha ocurrido un error';              
         this.showNotification({ active: true, msg, type: "error" });
       }
     },
