@@ -88,6 +88,17 @@
       <nuxt />
     </v-main>
 
+     <!-- Notificacion -->
+    <v-snackbar :timeout="-1" :value="notification.active" :color="notification.type" elevation="24">
+      {{ notification.msg }}
+      <template v-slot:action="{ attrs }">
+        <v-btn dark text v-bind="attrs" @click="setNotification({ active: false })">
+          Cerrar
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <!-- /Notificacion -->
+
     <v-bottom-navigation
       fixed
       class="text-center d-md-none"
@@ -103,7 +114,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 let routeUser = "/user";
 export default {
   middleware: 'auth-user',
@@ -163,7 +174,12 @@ export default {
    this.init();
   },
 
+  computed:{    
+    ...mapState(['notification'])
+  },
+
   methods: {
+    ...mapMutations(['setNotification']),
     ...mapActions(['showNotification','getUserIfLogged']),
     async init(){
       await this.getUserIfLogged()     
@@ -173,7 +189,7 @@ export default {
     },
   },
 };
-</script>
+</script> 
 
 <style>
 .home-enter-active,
