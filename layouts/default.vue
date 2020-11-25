@@ -158,8 +158,8 @@
           </v-btn>
         </v-badge>
 
-        <v-badge v-if="$auth.loggedIn" left overlap :value="0">
-          <v-btn class="" text icon>
+        <v-badge class="d-none d-sm-block" v-if="$auth.loggedIn" left overlap :value="0">
+          <v-btn  text icon>
             <v-icon color="icons" medium>mdi-heart</v-icon>
           </v-btn>
         </v-badge>
