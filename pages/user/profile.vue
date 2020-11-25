@@ -19,7 +19,7 @@
                 </v-avatar>
               </v-row>
               <v-row align-content="center" justify="center">
-                <p class="text-center miFuente3 pa-1 mb-8">Uziel Meliton</p>
+                <p class="text-center  title--text pa-1 mb-8">{{ this.$auth.user.email  }}</p>
               </v-row>
               <v-divider class="d-md-block d-none mb-14"></v-divider>
               <v-btn
@@ -137,11 +137,11 @@
           <v-card class="text-right d-none d-md-flex">
             <v-card-text>
               <div class="contenido mt-3 ml-2">
-                <a href="#"><p class="miFuente2">Comentarios</p></a>
-                <a href="#"><p class="miFuente2">Seguridad de la cuenta</p></a>
-                <a href="#"><p class="miFuente2">Metodo de pago</p></a>
-                <a href="#"><p class="miFuente2">Privacidad</p></a>
-                <a href="#"><p class="miFuente2">Cerrar sesion</p></a>
+                <a href="#"><p class="miFuente2 title--text">Comentarios</p></a>
+                <a href="#"><p class="miFuente2 title--text">Seguridad de la cuenta</p></a>
+                <a href="#"><p class="miFuente2 title--text">Metodo de pago</p></a>
+                <a href="#"><p class="miFuente2 title--text">Privacidad</p></a>
+                <a href="#"><p class="miFuente2 title--text">Cerrar sesion</p></a>
               </div>
             </v-card-text>
           </v-card>

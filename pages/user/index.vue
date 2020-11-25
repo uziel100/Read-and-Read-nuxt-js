@@ -25,10 +25,29 @@
         </v-card>
       </v-col>
 
-      <v-col  cols="12" sm="12" md="9">
-        <v-card min-height="500px"  elevation="1">
-          
-        </v-card>       
+      <v-col cols="12" sm="12" md="9">
+        <v-card elevation="1" class="pl-6 pt-4">
+          <p class="caption">Leidos recientemente</p>
+          <v-divider></v-divider>
+          <v-row>
+            <v-col v-for="(libro, idx) in 2" :key="idx" cols="6" sm="4" md="3">
+              <item-book-2
+                title="Programación"
+                img="https://cdn.vuetifyjs.com/images/cards/road.jpg"
+              ></item-book-2>
+            </v-col>
+          </v-row>
+          <p class="caption">Agredados recientemente</p>
+          <v-divider></v-divider>
+          <v-row>
+            <v-col v-for="(libro, idx) in 4" :key="idx" cols="6" sm="4" md="3">
+              <item-book-2
+                title="Programación"
+                img="https://cdn.vuetifyjs.com/images/cards/road.jpg"
+              ></item-book-2>
+            </v-col>
+          </v-row>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
