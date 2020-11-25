@@ -44,7 +44,7 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: 'http://localhost:8080/api/v1/',  
+    baseURL: process.env.BASE_URL || 'http://localhost:8080/api/v1/',  
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
