@@ -292,7 +292,7 @@
 <script>
 export default {
   head: {
-    title: "Disfruta de tus lecturas",
+    title: "Un libro es el mejor regalo",
   },
   data() {
     return {};

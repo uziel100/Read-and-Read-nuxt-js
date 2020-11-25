@@ -169,5 +169,8 @@
 <script>
 export default {
   scrollToTop: true,
+   head: {
+    title: "Preguntas frecuentes",
+  },
 }
 </script>

@@ -97,7 +97,7 @@ export default {
   scrollToTop: true,
   transition: "home",
   head: {
-    title: "Comienza a leer ya",
+    title: "Contacto",
   },
   data() {
     return {

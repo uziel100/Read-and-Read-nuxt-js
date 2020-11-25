@@ -221,5 +221,8 @@
 <script>
 export default {
   scrollToTop: true,
+  head: {
+    title: "Política de privacidad",
+  },
 }
 </script>

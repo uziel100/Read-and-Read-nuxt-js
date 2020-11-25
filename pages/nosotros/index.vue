@@ -65,6 +65,9 @@
 <script>
 export default {
   scrollToTop: true,
+  head: {
+    title: "Acerca de nosotros",
+  },
 };
 </script>
 

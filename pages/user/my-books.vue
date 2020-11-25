@@ -40,7 +40,10 @@
 <script>
 
   export default {
-      layout: 'user'
+      layout: 'user',
+      head: {
+        title: "Mis libros",
+      },
   }
 </script>
 

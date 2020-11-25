@@ -42,7 +42,7 @@ export default {
   scrollToTop: true,
   transition: "home",
   head: {
-    title: "",
+    title: "Selecciona tu libro favorito",
   },
   data() {
     return {

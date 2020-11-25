@@ -160,6 +160,9 @@ import { mapActions } from 'vuex'
 export default {
   layout: "user",
   transition: "home",
+  head: {
+    title: "Perfil",
+  },
   data() {
     return {
       modal: false,
