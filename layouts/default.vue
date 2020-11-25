@@ -152,8 +152,8 @@
           </v-menu>
         </div>
 
-        <v-badge left overlap :value="0">
-          <v-btn class="" text icon>
+        <v-badge class="d-none d-sm-block" left overlap :value="0">
+          <v-btn  text icon>
             <v-icon color="icons" medium>mdi-cart-outline</v-icon>
           </v-btn>
         </v-badge>
@@ -164,7 +164,7 @@
           </v-btn>
         </v-badge>
 
-        <v-btn @click="$router.push('/user')"  v-if="$auth.loggedIn" class="ml-2" text icon>
+        <v-btn @click="$router.push('/user')"  v-if="$auth.loggedIn" class="ml-0 ml-sm-2 " text icon>
           <v-avatar size="36">
             <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
           </v-avatar>
