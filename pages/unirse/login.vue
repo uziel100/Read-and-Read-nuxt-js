@@ -6,9 +6,9 @@
           :loading="form.loading"
           :disabled="form.disabled"
           elevation="2"
-          class="py-5"       
+          class="pb-4"
         >
-          <v-form v-model="form.valid" ref="form">
+          <v-form class="mt-4" v-model="form.valid" ref="form">
             <v-card-text>
               <h2 class="text-center text-h5 mb-8 title--text">
                 Inicia sesión y comienza a leer
