@@ -33,11 +33,11 @@
               </v-btn>
               <v-row class="d-sm-none">
                 <div class="contenido mt-3 ml-4">
-                  <a href="#"><p class="miFuente">Comentarios</p></a>
-                  <a href="#"><p class="miFuente">Seguridad de la cuenta</p></a>
-                  <a href="#"><p class="miFuente">Metodo de pago</p></a>
-                  <a href="#"><p class="miFuente">Privacidad</p></a>
-                  <a href="#"><p class="miFuente">Cerrar sesion</p></a>
+                  <a href="#"><p class="title--text">Comentarios</p></a>
+                  <a href="#"><p class="title--text">Seguridad de la cuenta</p></a>
+                  <a href="#"><p class="title--text">Metodo de pago</p></a>
+                  <a href="#"><p class="title--text">Privacidad</p></a>
+                  <a href="#"><p class="title--text">Cerrar sesion</p></a>
                 </div>
               </v-row>
             </v-card-text>
@@ -46,7 +46,7 @@
         <v-col cols="12" md="6">
           <v-card class="pt-6" min-height="500px" elevation="1">
             <v-divider></v-divider>
-            <div v-if="showFormEdit" class="py-8 px-16">
+            <div v-if="showFormEdit" class="py-8 px-2 px-md-16">
               <v-text-field
                 label="Nombre"
                 v-model="user.name"
@@ -122,11 +122,11 @@
                   </v-btn>
                 </v-date-picker>
               </v-dialog>              
-              <div class="text-center mt-2">
-                <v-btn color="error" class="mr-4" @click="hiddenFormEditUser"
+              <div class="text-right mt-2">
+                <v-btn small  color="error" class="mr-0 mr-md-4 text-none"  @click="hiddenFormEditUser"
                   >Cancelar</v-btn
                 >
-                <v-btn @click="saveData" color="secondary" class="mr-4"
+                <v-btn small @click="saveData" color="secondary" class="mr-0 mr-md-4 text-none"
                   >Guardar cambios</v-btn
                 >
               </div>
