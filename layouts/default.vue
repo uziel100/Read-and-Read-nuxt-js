@@ -57,7 +57,7 @@
             </v-list-item>
           </nuxt-link>
         </v-list-group>
-        <nuxt-link to="/">
+        <nuxt-link to="/cesta">
           <v-list-item link>
             <v-list-item-icon>
               <v-icon>mdi-cart-outline</v-icon>
@@ -152,8 +152,8 @@
           </v-menu>
         </div>
 
-        <v-badge class="d-none d-sm-block" left overlap :value="0">
-          <v-btn  text icon>
+        <v-badge  :class="$auth.loggedIn? 'd-none': 'd-block'"  left overlap :value="0">
+          <v-btn @click="$router.push('/cesta')" text icon>
             <v-icon color="icons" medium>mdi-cart-outline</v-icon>
           </v-btn>
         </v-badge>

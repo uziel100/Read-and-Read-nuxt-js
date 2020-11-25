@@ -105,7 +105,7 @@
       :value="0"
       color="primary"
     >
-      <v-btn v-for="item in menuLinks" :key="item.name">
+      <v-btn v-for="item in menuLinks" :key="item.name" @click="item.goTo($router)"  >
         <span>{{ item.name }}</span>
         <v-icon size="20">{{ item.icon }}</v-icon>
       </v-btn>
@@ -157,14 +157,23 @@ export default {
         {
           icon: "mdi-home",
           name: "Inicio",
+          goTo: function(route){
+            route.push('/user')
+          }
         },
         {
           icon: "mdi-book-variant",
           name: "Biblioteca",
+          goTo: function(route){
+            route.push('/user/my-books')
+          }
         },
         {
           icon: "mdi-account",
           name: "Cuenta",
+          goTo: function(route){
+            route.push('/user/profile')
+          }
         },
       ],
     };
