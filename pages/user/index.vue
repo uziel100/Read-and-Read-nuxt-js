@@ -26,7 +26,7 @@
       </v-col>
 
       <v-col cols="12" sm="12" md="9">
-        <v-card elevation="1" class="pl-6 pt-4">
+        <v-card elevation="1" class="pa-3 pl-sm-5 pl-md-6 pt-4">
           <p class="caption">Leidos recientemente</p>
           <v-divider></v-divider>
           <v-row>
