@@ -135,7 +135,7 @@
               <p>
                 El sitio Web
                 <nuxt-link to="/" class="nuxt-link-exact-active"
-                  >https://www.read&read.mx </nuxt-link
+                  >https://read-and-read.herokuapp.com</nuxt-link
                 >tiene como responsabilidad atender mensajes dirigidos a
                 nuestras áreas de operación y administración. Los datos de
                 identificación y contacto de la persona que estará a cargo de
@@ -190,7 +190,7 @@
                 anunciantes cuya información, imágenes, anuncios y demás
                 material publicitario o promocional (en lo subsecuente material
                 publicitario) puede ser publicado en el sitio web
-                <nuxt-link to="/">https://www.read&read.mx</nuxt-link>
+                <nuxt-link to="/">https://read-and-read.herokuapp.com</nuxt-link>
                 El usuario reconoce y acepta que el material publicitario no
                 forma parte del contenido principal que se publica en dicho
                 sitio. Asimismo, reconoce y acepta con este acto que este
@@ -202,7 +202,7 @@
                 En caso de que exista una modificación a este aviso de
                 privacidad, se notificará a través del propio sitio web
                 <nuxt-link to="/" class="nuxt-link-exact-active"
-                  >https://www.read&read.mx
+                  >https://read-and-read.herokuapp.com/ayuda/politica-de-privacidad
                 </nuxt-link>
               </p>
               <a name="actual"></a>

@@ -34,9 +34,11 @@
             />
           </v-col>
           <v-col class="d-sm-none d-block" cols="12">
-            <v-btn class="text-none" rounded color="secondary" dark block>
-              Comienza ahora
-            </v-btn>
+            <nuxt-link class="mt-8 text-decoration-none" to="/unirse/registro">
+              <v-btn class="text-none" rounded color="secondary" dark block>
+                Comienza ahora
+              </v-btn>
+            </nuxt-link>
           </v-col>
         </v-row>
       </v-container>
