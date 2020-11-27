@@ -10,7 +10,7 @@
             >
               Un libro es un regalo que puedes abrir una y otra vez
             </h1>
-            <nuxt-link class="text-decoration-none" to="/join/register">
+            <nuxt-link class="text-decoration-none" to="/unirse/registro">
               <v-btn
                 class="mt-8 btn-primary d-none d-sm-block text-none"
                 rounded
