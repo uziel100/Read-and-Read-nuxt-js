@@ -44,7 +44,7 @@
           </v-card>
         </v-col>
         <v-col cols="12" md="6">
-          <v-card class="pt-6" min-height="500px" elevation="1">
+          <v-card :loading="form.loading" :disabled="form.disabled" class="pt-6" min-height="500px" elevation="1">
             <v-divider></v-divider>
             <div v-if="showFormEdit" class="py-8 px-2 px-md-16">
               <v-text-field
@@ -123,10 +123,10 @@
                 </v-date-picker>
               </v-dialog>              
               <div class="text-right mt-2">
-                <v-btn small  color="error" class="mr-0 mr-md-4 text-none"  @click="hiddenFormEditUser"
+                <v-btn small text color="error" class="mr-0 mr-md-4 text-none"  @click="hiddenFormEditUser"
                   >Cancelar</v-btn
                 >
-                <v-btn small @click="saveData" color="secondary" class="mr-0 mr-md-4 text-none"
+                <v-btn small @click="saveData" color="accent" class="mr-0 mr-md-4 text-none"
                   >Guardar cambios</v-btn
                 >
               </div>
@@ -168,6 +168,10 @@ export default {
       modal: false,
       showFormEdit: false,
       showButtonEdit: true,
+      form:{
+        loading: false,
+        disabled: false
+      },
       user: {
         name: null, 
         lastName: null, 
@@ -182,10 +186,28 @@ export default {
 
   methods: {
     ...mapActions(["showNotification"]),
-    showFormEditUser() {
+    async showFormEditUser() {
+      this.loadingForm(true);
+      await this.getDataUser();
       this.showFormEdit = true; 
       this.showButtonEdit = false;
+      this.loadingForm(false);
     },
+
+    async getDataUser(){      
+        const dataUser = await this.$axios.$get(`user/${ this.$auth.user._id }`);          
+        this.fillFields(dataUser);      
+    },
+
+    fillFields( data ){
+      this.user.name = data.user.name ? data.user.name : '';
+      this.user.lastName = data.user.lastName ? data.user.lastName : '';
+      this.user.birthDate = data.user.birthDate ? data.user.birthDate : '';
+      this.user.phone = data.user.phone ? data.user.phone : '';
+      this.user.gender = data.user.gender ? data.user.gender : '';
+      this.user.address = data.user.address ? data.user.address : '';
+    },
+
     hiddenFormEditUser(){
       this.showFormEdit = false; 
       this.showButtonEdit = true;
@@ -193,14 +215,21 @@ export default {
     
     async saveData(){      
       try {
-        const res = await this.$axios.$put(`user/${ this.$auth.user._id }`, this.user)
-        console.log(res);
+        this.loadingForm(true);
+        const res = await this.$axios.$put(`user/${ this.$auth.user._id }`, this.user)        
         this.showNotification( { active: true, type: 'accent', msg: res.message } );   
         this.hiddenFormEditUser();
+        this.loadingForm(false);
       } catch (err) {
+        this.loadingForm(false);
         const msg = err.response ? err.response.data.message : 'Ha ocurrido un error';              
         this.showNotification( { active: true, type: 'error', msg } );   
       }
+    },
+
+    loadingForm(value){
+      this.form.loading = value;
+      this.form.disabled = value;
     }
   },
 };
