@@ -212,6 +212,7 @@
     </v-snackbar>
     <!-- /Notificacion -->
 
+
     <!-- button theme -->
     <v-fab-transition>
       <v-tooltip right>
@@ -321,6 +322,9 @@ export default {
   
   data() {
     return {
+      snackbar:{
+        active: false
+      },
       hidden: false,
       drawer: false,
       rightDrawer: true,
