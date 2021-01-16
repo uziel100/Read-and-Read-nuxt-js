@@ -1,139 +1,55 @@
-<template>
-  <section class="mb-16 container imagen-login">
-    <v-row>
-      <v-col cols="12" sm="6" md="4" lg="4">
-        <v-card
-          :loading="form.loading"
-          :disabled="form.disabled"
-          elevation="2"
-          class="pb-4"
-        >
-          <v-form class="mt-4" v-model="form.valid" ref="form">
-            <v-card-text>
-              <h2 class="text-center text-h5 mb-8 title--text">
-                Inicia sesión y comienza a leer
-              </h2>
-              <div class="d-flex my-8">
-                <v-btn  @click="handleLogin" class="text-none" dark outlined color="accent"  rounded block>
-                  <v-icon left> mdi-google </v-icon>
-                  Continuar con Google
-                </v-btn>
-              </div>
-              <v-text-field
-                label="Correo electronico *"
-                outlined
-                type="email"                
-                color="accent"
-                required
-                v-model="form.email"
-                :rules="[form.emailRequired, form.emailRules]"
-              ></v-text-field>
-
-              <v-text-field
-                label="Contraseña *"
-                outlined                
-                color="accent"
-                :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="show ? 'text' : 'password'"
-                @click:append="show = !show"
-                required
-                v-model="form.password"
-                :rules="[form.passwordRules]"
-              ></v-text-field>
-
-              <v-btn
-                @click="handleLogin"
-                :disabled="!form.valid"
-                color="secondary"
-                class="my-3"
-                block
-                >Iniciar sesión</v-btn
-              >
-            </v-card-text>
-          </v-form>
-          <div class="text-center">
-            <p class="text-caption ma-1">
-              <nuxt-link to="/"> ¿Has olvidado tu contraseña? </nuxt-link>
-            </p>
-            <p class="text-caption">
-              No tienes una cuenta
-              <nuxt-link class="accent--text" to="/unirse/registro"
-                >Registrate</nuxt-link
-              >
-            </p>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
-  </section>
+<template>          
+  <user-auth-form  :onSubmit="handleLogin" ></user-auth-form>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 
-import { mapActions } from 'vuex'
-
-export default {
+export default {  
   transition: "home",
   head: {
     title: "Comienza a leer ya",
-  },  
-  data() {
-    return {
-      show: false,
-      form: {
-        valid: false,
-        loading: false,
-        disabled: false,
-        email: "",
-        password: "",
-        emailRequired: (val) => !!val || "Correo obligatorio",
-        emailRules: (val) => /.+@.+\..+/.test(val) || "Correo debe ser valido",
-        passwordRules: (val) => !!val || "Contraseña obligatoria",
-      },
-    };
   },
 
   methods: {
     ...mapActions(["showNotification"]),
-    
-    async handleLogin() {
-      this.validateForm();
-      this.isLoadingForm(true);
+
+    async handleLogin( formData ) {
+      this.isLoadingForm(formData, true );
       try {
-        const response = await this.loginNormal();  
-        await this.saveUserDataPersist( response.data.user )        
-        this.isLoadingForm(false)
-        this.$router.push('/user')
-      } catch (err) {  
-        this.isLoadingForm(false)
-        const msg = err.response ? err.response.data.message : 'Ha ocurrido un error';              
-        this.showNotification( { active: true, type: 'error', msg } );   
+        const { email, password } = formData;
+        const response = await this.loginNormal({ email, password });
+        await this.saveUserDataPersist(response.data.user);        
+        this.isLoadingForm(formData, false );
+        this.$router.push("/perfil");
+      } catch (err) {
+        this.isLoadingForm(formData, false );
+        const msg = err.response
+          ? err.response.data.message
+          : "Ha ocurrido un error";
+        this.showNotification({ active: true, type: "error", msg });
       }
     },
 
-    async loginNormal(){            
-      return await this.$auth.loginWith('local', {
+    async loginNormal(loginInf) {
+      return await this.$auth.loginWith("local", {
         data: {
-          email: this.form.email,
-          password: this.form.password,
+          email: loginInf.email,
+          password: loginInf.password,
         },
-      });       
+      });
     },
 
-    async saveUserDataPersist(data){
-      await this.$auth.$storage.setLocalStorage('_user', data, true)          
-      await this.$auth.setUser(data)
+    saveUserDataPersist(data) {
+      this.$auth.$storage.setLocalStorage("_user", data, true);
+      this.$auth.setUser(data);
     },
 
-    isLoadingForm(value) {
-      this.form.loading = value;
-      this.form.disabled = value;
-    },    
-
-
-    validateForm() {
-        this.$refs.form.validate()
+    isLoadingForm( form, value ) {
+      form.loading = value;
+      form.disabled = value;
     },
+    
   },
 };
 </script>
