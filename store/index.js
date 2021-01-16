@@ -7,8 +7,8 @@ export const state = () => ({
 });
 
 export const mutations = {  
-  setNotification(state, payload) {            
-    state.notification.active = payload.active;
+  setNotification(state, payload) {       
+    state.notification.active =  payload.active;
     state.notification.msg = payload.msg || '';
     state.notification.type = payload.type || 'success';       
   }
@@ -33,7 +33,7 @@ export const actions = {
         await this.$auth.setUser(data)
       }else{
         // clear data for user of localStorage
-        await this.$auth.$storage.setLocalStorage('_user', {}, true);
+        this.$auth.$storage.setLocalStorage('_user', {}, true);
       }
     }
 }

@@ -164,7 +164,7 @@
           </v-btn>
         </v-badge>
 
-        <v-btn @click="$router.push('/user')"  v-if="$auth.loggedIn" class="ml-0 ml-sm-2 " text icon>
+        <v-btn @click="$router.push('/perfil')"  v-if="$auth.loggedIn" class="ml-0 ml-sm-2 " text icon>
           <v-avatar size="36">
             <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
           </v-avatar>

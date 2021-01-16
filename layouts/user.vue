@@ -115,7 +115,7 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex'
-let routeUser = "/user";
+let routeUser = "/perfil";
 export default {
   middleware: 'auth-user',
   transition: "home",
@@ -134,7 +134,7 @@ export default {
         },
         {
           name: "Perfil",
-          link: routeUser + "/profile",
+          link: routeUser + "/informacion",
         },
       ],
 
@@ -172,7 +172,7 @@ export default {
           icon: "mdi-account",
           name: "Cuenta",
           goTo: function(route){
-            route.push('/user/profile')
+            route.push('/perfil/informacion')
           }
         },
       ],
