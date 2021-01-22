@@ -117,7 +117,7 @@
 import { mapActions, mapMutations, mapState } from 'vuex'
 let routeUser = "/perfil";
 export default {
-  middleware: 'auth-user',
+  middleware: ['is-logged','is-user-role'],
   transition: "home",
   name: 'User',
   data() {
@@ -179,8 +179,8 @@ export default {
     };
   },
 
-  created(){
-   this.init();
+  async created(){
+    await this.init();
   },
 
   computed:{    

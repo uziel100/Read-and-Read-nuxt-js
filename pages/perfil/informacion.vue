@@ -194,7 +194,8 @@ export default {
       this.loadingForm(false);
     },
 
-    async getDataUser(){      
+    async getDataUser(){     
+        this.$axios.setHeader('token', this.$auth.strategy.token.get()) 
         const dataUser = await this.$axios.$get(`user/${ this.$auth.user._id }`);          
         this.fillFields(dataUser);      
     },

@@ -12,7 +12,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["showNotification"]),
+    ...mapActions(["showNotification", "setUserRole"]),
 
     async handleLogin( formData ) {
       this.isLoadingForm(formData, true );
@@ -43,6 +43,7 @@ export default {
     saveUserDataPersist(data) {
       this.$auth.$storage.setLocalStorage("_user", data, true);
       this.$auth.setUser(data);
+      // this.setUserRole(data.role)
     },
 
     isLoadingForm( form, value ) {

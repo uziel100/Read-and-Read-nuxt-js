@@ -56,7 +56,7 @@
 <script>
 export default {
   layout: "user",
-   head: {
+  head: {
     title: "Bienvenido",
   },
   data() {
