@@ -107,7 +107,7 @@ export default {
     strategies: {
       local: {
         endpoints: {
-          login: { url: 'login', method: 'post', propertyName: 'user' },
+          login: { url: 'login', method: 'post', propertyName: 'token' },
           // user: { url: 'me', method: 'get', propertyName: 'user' },
           user: false,
           logout: false

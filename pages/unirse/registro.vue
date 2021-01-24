@@ -30,7 +30,7 @@ export default {
 
     async register( userInf ) {
       // logica de registro
-      return await this.$axios.$post("user", userInf );      
+      return await this.$axios.$post("register", userInf );      
     },
 
     isLoadingForm(form, value) {

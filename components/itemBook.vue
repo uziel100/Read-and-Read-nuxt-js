@@ -13,7 +13,7 @@
       style="cursor: pointer"
     ></v-img>
     <v-card-text>
-      <div>{{ title }}</div>
+      <div>{{ title | spliceText }}</div>
       <v-card-title class="pa-0 text-black">$ {{ price }} MX</v-card-title>
     </v-card-text>
     <v-btn  color="red" dark class="text-none" block>Agregar al carrito</v-btn>
@@ -24,6 +24,10 @@
 export default {
   props: {
     title: {
+      type: String,
+      required: true
+    },
+    idBook: {
       type: String,
       required: true
     },
@@ -56,7 +60,16 @@ export default {
   },
   methods:{
     goDetailBook(){
-      this.$router.push('/libro')
+      this.$router.push(`/libro/${ this.idBook }`)
+    }
+  },
+
+  filters: {
+    spliceText(value){
+      if(value.length > 20){
+        value = value.slice(0,20) + "..."
+      }
+      return value;
     }
   }
 };

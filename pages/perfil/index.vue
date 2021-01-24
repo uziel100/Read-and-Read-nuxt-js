@@ -29,6 +29,7 @@
         <v-card elevation="1" class="pa-3 pl-sm-5 pl-md-6 pt-4">
           <p class="caption">Leidos recientemente</p>
           <v-divider></v-divider>
+          <v-btn class="my-2 text-none" small  color="error" @click="$nuxt.error({ statusCode: 500 })" >Solicitar error</v-btn>
           <v-row>
             <v-col v-for="(libro, idx) in 2" :key="idx" cols="6" sm="4" md="3">
               <item-book-2

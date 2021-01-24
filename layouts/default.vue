@@ -47,12 +47,12 @@
           <nuxt-link
             class="pa-0 ma-0"
             v-for="item in categories"
-            :key="item.urlNice"
-            :to="'/categoria/' + item.urlNice"
+            :key="item.data.niceName"
+            :to="'/categoria/' + item.data.niceName"
           >
             <v-list-item class="ml-5" link>
               <v-list-item-content>
-                <v-list-item-title v-text="item.category"></v-list-item-title>
+                <v-list-item-title v-text="item.data.name"></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </nuxt-link>
@@ -119,28 +119,28 @@
               </v-btn>
             </template>
             <div class="d-flex">
-              <v-list rounded v-for="(item, i) in categories" :key="i">
-                <v-subheader>{{ item.category }}</v-subheader>
+              <v-list rounded v-for="(category, i) in categories" :key="i">
+                <v-subheader>{{ category.data.name }}</v-subheader>
                 <v-divider></v-divider>
                 <v-list-item
                   class="ma-0 pa-0"
-                  v-for="(menu, idx) in item.subcategories"
+                  v-for="(subcategory, idx) in category.subcategories"
                   :key="idx"
                 >
                   <v-list-item-content class="ma-0 pa-0">
-                    <nuxt-link :to="`/categoria/${menu.urlNice}`">
+                    <nuxt-link :to="`/${subcategory.niceName}`">
                       <v-btn text color="primary" class="text-none">{{
-                        menu.subcategory
+                        subcategory.name
                       }}</v-btn>
                     </nuxt-link>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item
-                  v-if="item.subcategories.length === 0"
+                  v-if="category.subcategories.length === 0"
                   class="ma-0 pa-0"
                 >
                   <v-list-item-content class="ma-0 pa-0">
-                    <nuxt-link :to="`/categoria/${item.urlNice}`">
+                    <nuxt-link :to="`/categoria/${category.data.niceName}`">
                       <v-btn text color="primary" class="text-none"
                         >Ver libros</v-btn
                       >
@@ -152,7 +152,7 @@
           </v-menu>
         </div>
 
-        <v-badge  :class="$auth.loggedIn? 'd-none': 'd-block'"  left overlap :value="0">
+        <v-badge  left overlap :value="0">
           <v-btn @click="$router.push('/cesta')" text icon>
             <v-icon color="icons" medium>mdi-cart-outline</v-icon>
           </v-btn>
@@ -316,8 +316,8 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'Default',
   transition: "home",
-  async created(){    
-    await this.getUserIfLogged();
+  created(){    
+    this.init()
   },
   
   data() {
@@ -339,72 +339,72 @@ export default {
         { title: "Click Me" },
         { title: "Click Me 2" },
       ],
-      categories: [
-        {
-          category: "Ciencia ficción",
-          urlNice: "ciencia-ficcion",
-          subcategories: [],
-        },
-        {
-          category: "Matematicas",
-          urlNice: "matematicas",
-          subcategories: [
-            {
-              subcategory: "Algebra",
-              urlNice: "algebra",
-            },
-            {
-              subcategory: "Aritmetrica",
-              urlNice: "aritmetrica",
-            },
-            {
-              subcategory: "Cálculo diferencial",
-              urlNice: "calculo-diferencial",
-            },
-          ],
-        },
-        {
-          category: "Romance",
-          urlNice: "romance",
-          subcategories: [],
-        },
-        {
-          category: "Tecnologia",
-          urlNice: "tecnologia",
-          subcategories: [
-            {
-              subcategory: "Programación",
-              urlNice: "programacion",
-            },
-            {
-              subcategory: "Base de datos",
-              urlNice: "BD",
-            },
-            {
-              subcategory: "Sistemas operativos",
-              urlNice: "SO",
-            },
-          ],
-        },
-        {
-          category: "Cuentos",
-          urlNice: "cuentos",
-          subcategories: [
-            {
-              subcategory: "Infantiles",
-              urlNice: "infantiles",
-            },
-            {
-              subcategory: "Amor",
-              urlNice: "amor",
-            },
-            {
-              subcategory: "Terror",
-              urlNice: "terror",
-            },
-          ],
-        },
-      ],
+      // categories: [
+        // {
+        //   category: "Ciencia ficción",
+        //   urlNice: "ciencia-ficcion",
+        //   subcategories: [],
+        // },
+        // {
+        //   category: "Matematicas",
+        //   urlNice: "matematicas",
+        //   subcategories: [
+        //     {
+        //       subcategory: "Algebra",
+        //       urlNice: "algebra",
+        //     },
+        //     {
+        //       subcategory: "Aritmetrica",
+        //       urlNice: "aritmetrica",
+        //     },
+        //     {
+        //       subcategory: "Cálculo diferencial",
+        //       urlNice: "calculo-diferencial",
+        //     },
+        //   ],
+        // },
+        // {
+        //   category: "Romance",
+        //   urlNice: "romance",
+        //   subcategories: [],
+        // },
+        // {
+        //   category: "Tecnologia",
+        //   urlNice: "tecnologia",
+        //   subcategories: [
+        //     {
+        //       subcategory: "Programación",
+        //       urlNice: "programacion",
+        //     },
+        //     {
+        //       subcategory: "Base de datos",
+        //       urlNice: "BD",
+        //     },
+        //     {
+        //       subcategory: "Sistemas operativos",
+        //       urlNice: "SO",
+        //     },
+        //   ],
+        // },
+        // {
+        //   category: "Cuentos",
+        //   urlNice: "cuentos",
+        //   subcategories: [
+        //     {
+        //       subcategory: "Infantiles",
+        //       urlNice: "infantiles",
+        //     },
+        //     {
+        //       subcategory: "Amor",
+        //       urlNice: "amor",
+        //     },
+        //     {
+        //       subcategory: "Terror",
+        //       urlNice: "terror",
+        //     },
+        //   ],
+        // },
+      // ],
       linksFooter: [
         {
           title: "Nosotros",
@@ -442,13 +442,22 @@ export default {
 
   
   computed:{
-    ...mapState(['notification']),
+    ...mapState(['notification','categories']),
   },
 
   methods: {
     ...mapMutations(['setNotification']),
-    ...mapActions(['getUserIfLogged']),
+    ...mapActions(['getUserIfLogged', 'getCategories']),
     
+    async init(){
+      try {
+        await Promise.all([this.getUserIfLogged(), this.getCategories()])
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+
 
     modeDark() {
       if ("mdi-white-balance-sunny" === this.modeTheme) {

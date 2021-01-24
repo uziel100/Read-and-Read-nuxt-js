@@ -11,6 +11,7 @@
     </section>
 
     <v-container class="mb-16">
+      <v-breadcrumbs class="pl-0 pt-2 pb-4 text-center" :items="breadcumbs"></v-breadcrumbs>
       <v-row>          
         <v-col class="ml-0 ml-sm-10" cols="12" sm="7" md="4" lg="4">
           <v-card
@@ -102,6 +103,18 @@ export default {
   data() {
     return {
       show: false,
+       breadcumbs:[
+        {
+         text: "Inicio",
+         disabled: false,
+         to: "/",
+        },
+         {
+         text: "Contacto",
+         disabled: true,
+         to: "/ayuda/contacto",
+        }
+      ],
       form: {
         valid: false,
         loading: false,

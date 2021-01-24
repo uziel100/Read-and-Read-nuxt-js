@@ -1,11 +1,20 @@
+
 export const state = () => ({  
-  userRole: null,
   notification: { 
     active: false,   
     type: "success",      
     msg: "Bienvenido"
-  }
+  },
+  categories: []
 });
+
+export const getters = {
+  getSubcategories: state => searchCategory => {
+    return state.categories.filter( category => category.data.niceName === searchCategory, {});
+  }
+}
+
+
 
 export const mutations = {  
   setNotification(state, payload) {       
@@ -16,13 +25,17 @@ export const mutations = {
 
   setUserRole(state, payload){
     state.userRole = payload
+  },
+
+  setCategories(state, payload){
+    state.categories = payload
   }
 };
 
 export const actions = {
     nuxtServerInit ({state, dispatch }, { $auth }) {
       console.log('nuxtServerInit start')
-      console.log( $auth.strategy.token.get() )      
+      // console.log( $auth.strategy.token.get() )      
 
     },
     showNotification({ commit, state }, data ){
@@ -45,6 +58,11 @@ export const actions = {
         // clear data for user at localStorage
         this.$auth.$storage.setLocalStorage('_user', {}, true);
       }
+    },
+
+    async getCategories({ commit }){
+      const data = await this.$axios.$get('category');
+      commit('setCategories', data.categories)
     },
 
     setUserRole({ commit }, role){

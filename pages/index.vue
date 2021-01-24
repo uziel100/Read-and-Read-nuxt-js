@@ -128,6 +128,7 @@
               img="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
               :price="450"
               :width="200"
+              idBook="12132jkljjlk"
               margin="mx-1"
               max-width="350"
             ></item-book>

@@ -1,5 +1,6 @@
 <template>
   <section class="mb-25 container mt-sm-5">
+     <v-breadcrumbs class="pl-0 pt-2 pb-4 text-center" :items="breadcumbs"></v-breadcrumbs>
     <v-card elevation="3" class="py-2 my-6">
       <v-row>
         <v-col cols="12" sm="4" md="4" class="text-center">         
@@ -68,6 +69,22 @@ export default {
   head: {
     title: "Acerca de nosotros",
   },
+  data(){
+    return{
+      breadcumbs:[
+        {
+         text: "Inicio",
+         disabled: false,
+         to: "/",
+        },
+         {
+         text: "Acerca de la empresa",
+         disabled: true,
+         to: "/nosotros",
+        }
+      ]
+    }
+  }
 };
 </script>
 

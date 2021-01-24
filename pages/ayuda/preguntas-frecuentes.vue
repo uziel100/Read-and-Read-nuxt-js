@@ -8,6 +8,7 @@
       </v-container>
     </v-container>
     <v-container>
+      <v-breadcrumbs  class="pl-0 pt-2 pb-4 text-center" :items="breadcumbs"></v-breadcrumbs>
       <v-row>
         <v-col class="d-none d-sm-block" md="4">
           <v-card>
@@ -172,5 +173,22 @@ export default {
    head: {
     title: "Preguntas frecuentes",
   },
+   data(){
+    return{
+      breadcumbs:[
+        {
+         text: "Inicio",
+         disabled: false,
+         to: "/",
+         exact:true
+        },
+         {
+         text: "Preguntas frecuentes",
+         disabled: true,
+         to: "/ayuda/preguntas-frecuentes",
+        }
+      ],
+    }
+   }
 }
 </script>

@@ -10,7 +10,7 @@
       </v-container>
     </v-container>
 
-    <v-container class="mt-10">
+    <!-- <v-container class="mt-10">
       <p class="text-h6 font-weight-bold">Selecciona</p>
       <v-divider class="mb-4"></v-divider>
       <div class="subcategories">
@@ -33,7 +33,7 @@
       <div class="text-center my-5">
         <v-btn class="text-none" color="blue" outlined block rounded>Ver más</v-btn>
       </div>
-    </v-container>
+    </v-container> -->
   </div>
 </template>
 
@@ -90,8 +90,9 @@ export default {
       ],
     };
   },
-
-  methods: {},
+  created(){
+     console.log( this.$route )
+  }
 };
 </script>
 

@@ -7,6 +7,7 @@
     </v-container>
 
     <v-container>
+      <v-breadcrumbs class="pl-0 pt-2 pb-4 text-center" :items="breadcumbs"></v-breadcrumbs>
       <v-row>
         <v-col class="d-none d-sm-block" md="4">
           <v-card>
@@ -224,5 +225,21 @@ export default {
   head: {
     title: "Política de privacidad",
   },
+  data(){
+    return{
+      breadcumbs:[
+        {
+         text: "Inicio",
+         disabled: false,
+         to: "/",
+        },
+         {
+         text: "Politica de privacidad",
+         disabled: true,
+         to: "/ayuda/politica-de-privacidad",
+        }
+      ],
+    }
+  }
 }
 </script>
