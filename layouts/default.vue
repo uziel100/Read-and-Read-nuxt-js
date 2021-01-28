@@ -93,10 +93,13 @@
           type="search"
           name="search"
           id="search"
+          class="title--text"
           autocomplete="false"
           placeholder="Buscar por titulo, autor, ISBN"
+          v-model="searchText"
+          @keypress.enter="goSearch"
         />
-        <v-btn text>
+        <v-btn @click="goSearch" text>
           <img src="@/assets/img/search-24px.svg" alt="lupa" />
         </v-btn>
       </div>
@@ -322,6 +325,7 @@ export default {
   
   data() {
     return {
+      searchText: '',
       snackbar:{
         active: false
       },
@@ -333,78 +337,6 @@ export default {
       selectedItem: 0,
       fab: false,
       modeTheme: "mdi-white-balance-sunny",
-      items: [
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me 2" },
-      ],
-      // categories: [
-        // {
-        //   category: "Ciencia ficción",
-        //   urlNice: "ciencia-ficcion",
-        //   subcategories: [],
-        // },
-        // {
-        //   category: "Matematicas",
-        //   urlNice: "matematicas",
-        //   subcategories: [
-        //     {
-        //       subcategory: "Algebra",
-        //       urlNice: "algebra",
-        //     },
-        //     {
-        //       subcategory: "Aritmetrica",
-        //       urlNice: "aritmetrica",
-        //     },
-        //     {
-        //       subcategory: "Cálculo diferencial",
-        //       urlNice: "calculo-diferencial",
-        //     },
-        //   ],
-        // },
-        // {
-        //   category: "Romance",
-        //   urlNice: "romance",
-        //   subcategories: [],
-        // },
-        // {
-        //   category: "Tecnologia",
-        //   urlNice: "tecnologia",
-        //   subcategories: [
-        //     {
-        //       subcategory: "Programación",
-        //       urlNice: "programacion",
-        //     },
-        //     {
-        //       subcategory: "Base de datos",
-        //       urlNice: "BD",
-        //     },
-        //     {
-        //       subcategory: "Sistemas operativos",
-        //       urlNice: "SO",
-        //     },
-        //   ],
-        // },
-        // {
-        //   category: "Cuentos",
-        //   urlNice: "cuentos",
-        //   subcategories: [
-        //     {
-        //       subcategory: "Infantiles",
-        //       urlNice: "infantiles",
-        //     },
-        //     {
-        //       subcategory: "Amor",
-        //       urlNice: "amor",
-        //     },
-        //     {
-        //       subcategory: "Terror",
-        //       urlNice: "terror",
-        //     },
-        //   ],
-        // },
-      // ],
       linksFooter: [
         {
           title: "Nosotros",
@@ -454,6 +386,13 @@ export default {
         await Promise.all([this.getUserIfLogged(), this.getCategories()])
       } catch (error) {
         console.log(error)
+      }
+    },
+
+    goSearch(){
+      if(this.searchText.trim().length > 0){
+        this.$router.push({ path: '/buscar', query: { q: this.searchText }})
+        this.searchText = ''
       }
     },
 

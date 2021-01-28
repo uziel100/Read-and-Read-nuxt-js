@@ -14,22 +14,39 @@
     <v-container>
       <v-breadcrumbs class="pl-0 py-2" :items="breadcumbs"></v-breadcrumbs>
     </v-container>
-    <v-container class="mt-10">
+    <v-container class="mt-3">
       <p class="text-h6 mb-2">Categorias</p>
       <v-divider class="mb-2"></v-divider>
-      <div class="subcategories">
+      <div>
         <v-btn
-          v-for="currentCategory in selectedSubcategories"
-          :key="currentCategory.niceName"
-          class="ma-2"
+          v-for="subcategory1 in selectedSubcategories"
+          :key="subcategory1.niceName"
+          class="ma-2 text-none"
           color="accent"
-          :outlined="currentCategory.active"
+          :outlined="subcategory1.active"
           rounded
-          >{{ currentCategory.name }}</v-btn
+          small
+          @click="toggleSubcategory(subcategory1._id)"
+          >{{ subcategory1.name }}</v-btn
         >
       </div>
-
-      <v-row class="d-flex">
+      <v-row v-if="loading" class="d-flex">
+       <v-col
+          class="ma-0"
+          v-for="i in 8"
+          :key="i"
+          cols="6"
+          sm="4"
+          md="3"
+        >
+          <v-skeleton-loader
+            class="mx-auto"
+            max-width="300"
+            type="image, list-item-three-line"
+          ></v-skeleton-loader>
+       </v-col>
+      </v-row>
+      <v-row v-else class="d-flex">       
         <v-col
           class="ma-0"
           v-for="book in books"
@@ -47,7 +64,9 @@
             max-width="350"
           ></item-book>
         </v-col>
-        <p class="text-center ml-3 my-10" v-if="books.length === 0">No hay libros en esta categoria</p>
+        <p class="text-center ml-3 my-10" v-if="books.length === 0">
+          No hay libros en esta categoria
+        </p>
       </v-row>
       <div v-if="books.length > 0" class="text-center my-5">
         <v-btn class="text-none" color="blue" outlined block rounded
@@ -67,8 +86,8 @@ export default {
   },
   data() {
     return {
+      loading: true,
       selectedSubcategories: null,
-      currentSubcategory: null,
       books: [],
       breadcumbs: [],
     };
@@ -87,10 +106,9 @@ export default {
   },
 
   created() {
-    this.setCurrentSubcategory();
-    this.selectedSubcategory();
-    this.fetchBooksOfSubcategory();
+    this.toggleSubcategory(this.subcategory._id);
     this.setItemsBreadcumb();
+    this.loading = false;
   },
 
   methods: {
@@ -99,7 +117,7 @@ export default {
         {
           text: "Inicio",
           disabled: false,
-          to: "/"
+          to: "/",
         },
         {
           text: this.currentSubcategory.name,
@@ -109,32 +127,41 @@ export default {
       ];
       this.breadcumbs = links;
     },
-    setCurrentSubcategory() {
-      const { name, niceName, _id } = this.subcategory;
-      this.currentSubcategory = { name, niceName, _id };
-    },
-    selectedSubcategory() {
-      this.selectedSubcategories = this.subcategories.map((subcate) => {
+
+    selectedSubcategory(idSubcategory) {
+      this.selectedSubcategories = this.subcategories.map((subcategory) => {
         let buttonSubcategory = {
-          niceName: subcate.niceName,
-          name: subcate.name,
+          _id: subcategory._id,
+          niceName: subcategory.niceName,
+          name: subcategory.name,
           active: true,
         };
-        if (subcate.niceName === this.currentSubcategory.niceName) {
+        if (subcategory._id === idSubcategory) {
           buttonSubcategory.active = false;
         }
         return buttonSubcategory;
-      }, {});
+      }, []);
     },
-    async fetchBooksOfSubcategory() {
-      const res = await this.$axios.$get(
-        `/booksInCategory/${this.currentSubcategory._id}`
-      );
+
+    toggleSubcategory(idSubcategory) {
+      this.loading = true;
+      this.selectedSubcategory(idSubcategory);
+      this.fetchBooksOfSubcategory(idSubcategory);
+    },
+
+    async fetchBooksOfSubcategory(idSubcategory) {
+      const res = await this.$axios.$get(`/book/subcategory/${idSubcategory}`);
       this.books = res.books;
+      this.loading = false;        
     },
   },
 
-  computed: {},
+  computed: {
+    currentSubcategory() {
+      const { _id, name, niceName } = this.subcategory;
+      return { _id, name, niceName };
+    },
+  },
 };
 </script>
 

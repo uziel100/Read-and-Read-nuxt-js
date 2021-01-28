@@ -9,8 +9,11 @@ export const state = () => ({
 });
 
 export const getters = {
-  getSubcategories: state => searchCategory => {
-    return state.categories.filter( category => category.data.niceName === searchCategory, {});
+  getAllSubcategories(state) {
+    return state.categories.reduce( (list, currentSubcategory) => {
+      list.push( currentSubcategory.subcategories );
+      return list
+    }, []).flat();
   }
 }
 
