@@ -3,7 +3,7 @@
     <h1 class="font-weight-medium mb-4">
       Buscaste "{{ this.$route.query.q }}"
     </h1>
-    <p class="font-weight-light">
+    <p  class="font-weight-light">
       Se han encontrado {{ books.length }} coincidencias
     </p>
     <v-sheet color="white" min-width="auto" max-width="450">
@@ -22,15 +22,6 @@
               required
               v-model="form.title"
             ></v-text-field>
-            <!-- <v-text-field
-              label="Author"
-              outlined
-              type="text"
-              color="accent"
-              dense
-              required
-              v-model="form.author"
-            ></v-text-field> -->
 
             <v-select
               dense
@@ -86,6 +77,7 @@
 
     <v-row v-else class="d-flex mb-16">
       <v-col
+        
         class=""
         v-for="book in books"
         :key="book._id"
@@ -120,7 +112,10 @@ export default {
   head: {
     title: "Busca tu libro fav",
   },
+  watchQuery: ['q'],
+
   async asyncData({ $axios, query, error }) {
+    console.log('asyndata')
     const textSearch = query.q;
     if (textSearch) {
       try {
@@ -150,10 +145,13 @@ export default {
     };
   },
 
+  
   methods: {
     goDetailBook(idBook) {
       this.$router.push(`/libro/${idBook}`);
     },
+
+   
 
     async doAdvancedSearch(){
       
