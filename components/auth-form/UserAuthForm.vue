@@ -12,16 +12,31 @@
           <v-form class="mt-4" v-model="form.valid" ref="form">
             <v-card-text>
               <h2 class="text-center text-h5 title--text">
-                {{ isLogin? 'Inicia sesión y comienza a leer' : '¿Eres nuevo en Read&Read?' }}                
+                {{
+                  isLogin
+                    ? "Inicia sesión y comienza a leer"
+                    : "¿Eres nuevo en Read&Read?"
+                }}
               </h2>
-              <h2 v-if="!isLogin" class="text-center text-h5 mb-8 accent--text">Únete ahora</h2>
+              <h2 v-if="!isLogin" class="text-center text-h5 mb-8 accent--text">
+                Únete ahora
+              </h2>
               <div class="d-flex my-8">
-                <v-btn class="text-none" outlined dark color="accent" rounded block>
+                <v-btn
+                  class="text-none"
+                  outlined
+                  dark
+                  color="accent"
+                  rounded
+                  block
+                >
                   <v-icon left> mdi-google </v-icon>
-                  {{ isLogin? 'Continuar con Google' : 'Registrarse con Google' }}                                  
+                  {{
+                    isLogin ? "Continuar con Google" : "Registrarse con Google"
+                  }}
                 </v-btn>
               </div>
-             
+
               <v-text-field
                 label="Correo electronico *"
                 outlined
@@ -33,7 +48,7 @@
                 :rules="[form.emailRequired, form.emailRules]"
               ></v-text-field>
 
-              <v-text-field                
+              <v-text-field
                 label="Contraseña *"
                 outlined
                 dense
@@ -71,9 +86,9 @@
             </v-card-text>
           </v-form>
           <div v-if="isLogin" class="text-center">
-            <p class="text-caption ma-1">
-              <nuxt-link to="/"> ¿Has olvidado tu contraseña? </nuxt-link>
-            </p>
+            <v-btn @click="dialog = true" class="text-none text-caption ma-1" text color="primary" >
+               ¿Has olvidado tu contraseña? 
+            </v-btn>
             <p class="text-caption">
               No tienes una cuenta
               <nuxt-link class="accent--text" to="/unirse/registro"
@@ -84,6 +99,38 @@
         </v-card>
       </v-col>
     </v-row>
+
+    <v-dialog v-model="dialog" transition="dialog-top-transition" max-width="600">
+        <v-card>
+          <v-toolbar color="primary" dark>Recuperación de contraseña</v-toolbar>
+          <p class="text-center my-4">
+            <img width="150px" src="../../assets/img/unirse/mail.svg" >
+          </p>
+          <v-card-text>
+            <v-form class="mt-4" v-model="form2.valid" ref="form2">
+              <p class="my-3">
+                Coloca el correo electronico de tu cuenta
+              </p>
+              <v-text-field
+                label="Correo electronico *"
+                outlined
+                type="email"
+                color="accent"
+                dense
+                required
+                v-model="form2.email"
+                :rules="[form.emailRequired, form.emailRules]"
+                ></v-text-field>
+            </v-form>
+            <p class="text-center text-h6">{{ form2.message }}</p>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn class="text-none" color="error" text @click="dialog = false">Cerrar</v-btn>
+            <v-btn v-if="form2.status" @click="onForgotPasssword(form2)" :disabled="!form2.valid"  class="text-none" color="accent">Continuar</v-btn>
+          </v-card-actions>
+        </v-card>
+    </v-dialog>
+
   </section>
 </template>
 
@@ -100,9 +147,16 @@ export default {
       type: Function,
       required: true,
     },
+
+    onForgotPasssword: {
+      type: Function,
+      required: false,
+    },
   },
   data() {
-    return {      
+    return {
+      dialog: false,
+  
       form: {
         show: false,
         show2: false,
@@ -110,20 +164,28 @@ export default {
         loading: false,
         disabled: false,
         email: "",
+        
         password: "",
         confirmPassword: "",
         emailRequired: (val) => !!val || "Correo obligatorio",
         emailRules: (val) => /.+@.+\..+/.test(val) || "Correo debe ser valido",
         passwordRules: (val) => !!val || "Contraseña obligatoria",
-        passwordMatch: (v) => v === this.form.password || "Las contraseñas no coinciden",                        
+        passwordMatch: (v) =>
+          v === this.form.password || "Las contraseñas no coinciden",
       },
+      form2:{
+        valid: false,
+        email: "",
+        message: '',
+        status: true
+      }
     };
   },
 
   computed: {
     backgroundFill() {
       return this.isLogin ? "imagen-login" : "imagen-registro";
-    },  
+    },
   },
 };
 </script>

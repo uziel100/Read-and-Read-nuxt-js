@@ -1,5 +1,6 @@
 <template>          
-  <user-auth-form  :onSubmit="handleLogin" ></user-auth-form>
+  <user-auth-form  :onSubmit="handleLogin" :onForgotPasssword="handleEmailSend" ></user-auth-form>
+  
 </template>
 
 <script>
@@ -43,13 +44,29 @@ export default {
     saveUserDataPersist(data) {
       this.$auth.$storage.setLocalStorage("_user", data, true);
       this.$auth.setUser(data);
-      // this.setUserRole(data.role)
     },
 
     isLoadingForm( form, value ) {
       form.loading = value;
       form.disabled = value;
     },
+
+    async handleEmailSend( form ){
+      const { email } = form;
+      form.message = "Enviando email...";
+      try {
+        await this.sendEmail( {email} );
+        form.message = "Email enviado, por favor revisa tu bandeja";
+        form.status = false; 
+      } catch (err) {
+        const msg = err.response ? err.response.data.message : 'Ha ocurrido algun error';  
+        form.message = msg;
+      }
+    },
+
+    async sendEmail( data ){
+      await this.$axios.$post('forgotPassword', data)
+    }
     
   },
 };
