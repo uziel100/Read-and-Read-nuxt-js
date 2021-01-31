@@ -3,7 +3,7 @@
     <h1 class="font-weight-medium mb-4">
       Buscaste "{{ this.$route.query.q }}"
     </h1>
-    <p  class="font-weight-light">
+    <p class="font-weight-light">
       Se han encontrado {{ books.length }} coincidencias
     </p>
     <v-sheet color="white" min-width="auto" max-width="450">
