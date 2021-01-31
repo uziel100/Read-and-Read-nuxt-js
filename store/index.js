@@ -36,11 +36,7 @@ export const mutations = {
 };
 
 export const actions = {
-    nuxtServerInit ({state, dispatch }, { $auth }) {
-      console.log('nuxtServerInit start')
-      // console.log( $auth.strategy.token.get() )      
-
-    },
+   
     showNotification({ commit, state }, data ){
       commit('setNotification', data);
       setTimeout(() => {
