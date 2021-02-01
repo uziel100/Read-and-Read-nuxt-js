@@ -119,7 +119,11 @@ export default {
           logout: false
         },        
         tokenType: false        
+      },
+      google: {   
+        clientId: '451024139586-ngq240pmq03op37iro4o8d73o64g641f.apps.googleusercontent.com',
       }
+    
     },
     redirect:{
       login: false,

@@ -29,6 +29,7 @@
                   color="accent"
                   rounded
                   block
+                  @click="signGoogle"
                 >
                   <v-icon left> mdi-google </v-icon>
                   {{
@@ -149,6 +150,10 @@ export default {
     },
 
     onForgotPasssword: {
+      type: Function,
+      required: false,
+    },
+    signGoogle: {
       type: Function,
       required: false,
     },
