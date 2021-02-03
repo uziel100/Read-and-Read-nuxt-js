@@ -22,22 +22,17 @@
                 Únete ahora
               </h2>
               <div class="d-flex my-8">
-                <v-btn
-                  class="text-none"
-                  outlined
-                  dark
-                  color="accent"
-                  rounded
-                  block
-                  @click="signGoogle"
-                >
-                  <v-icon left> mdi-google </v-icon>
-                  {{
-                    isLogin ? "Continuar con Google" : "Registrarse con Google"
-                  }}
-                </v-btn>
+              <g-signin-button
+                :params="googleSignInParams"
+                @success="onSuccess"
+                @error="onFailure">
+                {{
+                  isLogin
+                    ? "Continuar con Google"
+                    : "Registrarse con Google"
+                }}                
+              </g-signin-button>
               </div>
-
               <v-text-field
                 label="Correo electronico *"
                 outlined
@@ -50,6 +45,7 @@
               ></v-text-field>
 
               <v-text-field
+                v-if="isLogin"
                 label="Contraseña *"
                 outlined
                 dense
@@ -59,6 +55,19 @@
                 :append-icon="form.show ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="form.show ? 'text' : 'password'"
                 :rules="[form.passwordRules]"
+                required
+              ></v-text-field>
+              <v-text-field
+                v-if="!isLogin"
+                label="Contraseña *"
+                outlined
+                dense
+                color="accent"
+                v-model="form.password"
+                @click:append="form.show = !form.show"
+                :append-icon="form.show ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="form.show ? 'text' : 'password'"
+                :rules="[form.passwordRules, form.passwordRul, form.passwordPattern]"
                 required
               ></v-text-field>
 
@@ -100,7 +109,6 @@
         </v-card>
       </v-col>
     </v-row>
-
     <v-dialog v-model="dialog" transition="dialog-top-transition" max-width="600">
         <v-card>
           <v-toolbar color="primary" dark>Recuperación de contraseña</v-toolbar>
@@ -131,11 +139,12 @@
           </v-card-actions>
         </v-card>
     </v-dialog>
-
   </section>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "FormSubmit",
   props: {
@@ -152,24 +161,22 @@ export default {
     onForgotPasssword: {
       type: Function,
       required: false,
-    },
-    signGoogle: {
-      type: Function,
-      required: false,
-    },
+    }
   },
+  
   data() {
     return {
       dialog: false,
-  
+      googleSignInParams: {
+        client_id: '451024139586-ngq240pmq03op37iro4o8d73o64g641f.apps.googleusercontent.com'
+      },
       form: {
         show: false,
         show2: false,
         valid: false,
         loading: false,
         disabled: false,
-        email: "",
-        
+        email: "",  
         password: "",
         confirmPassword: "",
         emailRequired: (val) => !!val || "Correo obligatorio",
@@ -177,6 +184,8 @@ export default {
         passwordRules: (val) => !!val || "Contraseña obligatoria",
         passwordMatch: (v) =>
           v === this.form.password || "Las contraseñas no coinciden",
+        passwordRul: (val) => val.length >=8 || "Minimo 8 a 16 caracteres",
+        passwordPattern: (val) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&,.-_;(){}¡<>])([A-Za-z\d$@$!%*?&,.-_;(){}¡<>]|[^ ]){8,15}$/.test(val) ||"Coloque al menos un numero, una letra minúscula, mayúscula, 1 caracter especial y sin espacios en blanco.",
       },
       form2:{
         valid: false,
@@ -185,6 +194,47 @@ export default {
         status: true
       }
     };
+  },
+
+  methods:{
+    ...mapActions(["showNotification", "setLoggedIn"]),
+
+
+    async onSuccess(googleUser) {
+      const idtoken = googleUser.getAuthResponse().id_token;
+      
+      try {
+        this.isLoadingForm( true );
+        const res = await this.$axios.$post('google', { idtoken })
+        console.log(res.user)
+        this.saveUserDataPersist(res);
+        this.$router.push("/perfil");
+      } catch (err) {
+        console.log(err)
+        const msg = err.response
+          ? err.response.data.message
+          : "Ha ocurrido un error";
+        this.showNotification({ active: true, type: "error", msg });
+      }finally{
+        this.isLoadingForm( false );
+      }
+
+    },
+    onFailure (error) {
+      console.log(error)
+    },
+
+    saveUserDataPersist(data) {
+      this.$auth.$storage.setLocalStorage("_user", data.user, true);
+      this.$auth.setUser(data.user);
+      this.$auth.strategy.token.set(data.token)
+      this.setLoggedIn(true)
+    },
+
+    isLoadingForm(value) {
+      this.form.loading = value;
+      this.form.disabled = value;
+    },
   },
 
   computed: {
@@ -196,4 +246,17 @@ export default {
 </script>
 
 <style>
+.g-signin-button {
+  display: inline-block;
+  padding: 10px 8px;
+  border-radius: 3px;
+  background-color: #3c82f7;
+  color: #fff;
+  box-shadow: 0 5px 0 #1461e6;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+  transition: all .3s;
+}
+
 </style>

@@ -32,6 +32,10 @@ export const mutations = {
 
   setCategories(state, payload){
     state.categories = payload
+  },
+
+  setLoggedUser(state, payload){
+    state.auth.loggedIn = payload
   }
 };
 
@@ -62,6 +66,10 @@ export const actions = {
     async getCategories({ commit }){
       const data = await this.$axios.$get('category');
       commit('setCategories', data.categories)
+    },
+
+    setLoggedIn({ commit }, status){
+      commit('setLoggedUser', status)
     },
 
     setUserRole({ commit }, role){
