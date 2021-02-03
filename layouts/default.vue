@@ -4,7 +4,7 @@
     <v-navigation-drawer v-model="drawer" temporary fixed>
       <v-list-item v-if="$auth.loggedIn">
         <v-list-item-avatar>
-          <v-img src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+          <v-img :src="$auth.user.photo? $auth.user.photo : 'https://cdn.vuetifyjs.com/images/john.jpg'"></v-img>
         </v-list-item-avatar>
         <v-list-item-content>
           <v-list-item-title>{{ $auth.user.email }}</v-list-item-title>
@@ -169,7 +169,7 @@
 
         <v-btn @click="$router.push('/perfil')"  v-if="$auth.loggedIn" class="ml-0 ml-sm-2 " text icon>
           <v-avatar size="36">
-            <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+            <img :src="$auth.user.photo? $auth.user.photo : 'https://cdn.vuetifyjs.com/images/john.jpg'" alt="John" />
           </v-avatar>
         </v-btn>
 
@@ -325,6 +325,11 @@ export default {
         src: '//code.jivosite.com/widget/oihn0z9QfM',
         defer: true,
         async: true 
+      },
+      {
+        src: 'https://apis.google.com/js/api:client.js',
+         defer: true,
+        async: true
       }
     ]
   },

@@ -53,7 +53,7 @@
                   type="number"
                   dense
                   color="accent"
-                  v-model="form.number"
+                  v-model="form.phone"
                   :rules="[form.numberRequired, form.numberRules]"
                 ></v-text-field>
 
@@ -62,11 +62,11 @@
                   outlined                  
                   name="input-7-4"
                   label="Comentario *"
-                  v-model="form.coment"
+                  v-model="form.comment"
                   :rules="[form.comentRequired]"
                 ></v-textarea>
 
-                <v-btn :disabled="!form.valid" color="secondary" class="my-3" block>Enviar</v-btn>
+                <v-btn :disabled="!form.valid" color="secondary" class="my-3" block @click="handleContact">Enviar</v-btn>
               </v-card-text>
             </v-form>
           </v-card>
@@ -94,6 +94,9 @@
 </template>
 
 <script>
+
+import { mapActions } from 'vuex'
+
 export default {
   scrollToTop: true,
   transition: "home",
@@ -120,10 +123,10 @@ export default {
         loading: false,
         disabled: false,
         name: "",
-        number: "",
+        phone: "",
         email: "",
         password: "",
-        coment: "",
+        comment: "",
         emailRequired: (val) => !!val || "Correo obligatorio",
         emailRules: (val) => /.+@.+\..+/.test(val) || "Correo debe ser valido",
         passwordRules: (val) => !!val || "Contraseña obligatoria",
@@ -137,12 +140,48 @@ export default {
   },
 
   methods: {
+    ...mapActions(["showNotification"]),
+
     handleLogin() {
       this.validateForm();
     },
 
     validateForm() {
       this.$refs.form.validate();
+    },
+
+    async handleContact() {
+      try{
+        this.loadingForm(true);
+        const { name, email, phone, comment} = this.form;
+        const res = await this.sendComment( { name, email, phone, comment } );
+        this.clearFields()
+        this.showNotification({ active: true, msg: res.message, type: "success" });
+      }catch(error){
+        const msg = err.response
+        ? err.response.data.message
+        : "Ha ocurrido un error";
+        this.showNotification({active: true, msg, type: "error"});
+      }finally{
+        this.loadingForm(false);
+      }
+    },
+
+    async sendComment(data) {
+      return await this.$axios.$post('feedback',data)
+    },
+
+    clearFields(){
+      this.form.name = '';
+      this.form.email = '';
+      this.form.phone = '';
+      this.form.comment = '';
+      this.$refs.form.resetValidation()
+    },
+
+    loadingForm(value) {
+      this.form.loading = value;
+      this.form.disabled = value;
     },
   },
 };

@@ -5,7 +5,7 @@
         <v-list-item>
           <v-list-item-avatar>
             <v-img
-              src="https://cdn.vuetifyjs.com/images/john.jpg"
+              :src="$auth.user.photo? $auth.user.photo : 'https://cdn.vuetifyjs.com/images/john.jpg'"
             ></v-img>
           </v-list-item-avatar>
         </v-list-item>
@@ -79,7 +79,7 @@
 
       <v-btn class="ml-2" text icon>
         <v-avatar size="32">
-          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+          <img :src="$auth.user.photo? $auth.user.photo : 'https://cdn.vuetifyjs.com/images/john.jpg'" alt="John" />
         </v-avatar>
       </v-btn>
     </v-app-bar>
@@ -117,7 +117,7 @@
 import { mapActions, mapMutations, mapState } from 'vuex'
 let routeUser = "/perfil";
 export default {
-  middleware: ['is-logged','is-user-role'],
+  middleware: ['is-logged'],
   transition: "home",
   name: 'User',
   data() {

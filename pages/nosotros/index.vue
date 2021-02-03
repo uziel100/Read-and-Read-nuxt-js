@@ -29,9 +29,13 @@
           <v-card-text>
             <h2 class="text-center title--text">Misión</h2>
             <p class="mt-5 mt-sm-10">
-              Ser el referente del conocimiento y entretenimiento para enriquecer
-              la cultura de las personas, propiciando la transformación de la
-              comunidad a la que servimos.
+              La librería Read&Read tiene como misión, fomentar la lectura y dar una excelente
+              experiencia a todos los usuarios de esta plataforma, la empresa está dedicada a todo el
+              público en general, está comprometida a mejorar la calidad de sus servicios de acuerdo a las
+              necesidades que demanden los usuarios, facilitamos el acceso a libros de gran calidad e
+              importancia a un menor costo, teniendo a disposición muchos libros desde los más antiguos
+              hasta los más novedosos, resolviendo las problemáticas de las librerías tradicionales y
+              transformando la manera de obtener los recursos literarios
             </p>
           </v-card-text>
         </v-col>
@@ -53,8 +57,10 @@
           <v-card-text>
             <h2 class="text-center title--text">Visión</h2>
             <p class="mt-5 mt-sm-10 text-left">
-              Contribuimos a la difusión de la cultura y el entretenimiento
-              creando experiencias para el encuentro con el conocimiento.
+              Ser una empresa reconocida por su excelente calidad de nuestros productos, y ser
+              impulsadora al conocimiento y entretenimiento digital a nivel nacional, gracias al esfuerzo,
+              dedicación y profesionalismo de nuestros empleados, tomando en cuenta las necesidades de
+              nuestros clientes.
             </p>
           </v-card-text>
         </v-col>

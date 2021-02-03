@@ -13,7 +13,7 @@
               <v-row justify="center">
                 <v-avatar class="ma-3" size="100">
                   <img
-                    src="https://cdn.vuetifyjs.com/images/john.jpg"
+                    :src="$auth.user.photo? $auth.user.photo : 'https://cdn.vuetifyjs.com/images/john.jpg'"
                     alt="John"
                   />
                 </v-avatar>
@@ -45,6 +45,7 @@
         </v-col>
         <v-col cols="12" md="6">
           <v-card :loading="form.loading" :disabled="form.disabled" class="pt-6" min-height="500px" elevation="1">
+            <v-form v-model="form.valid" ref="form"> 
             <v-divider></v-divider>
             <div v-if="showFormEdit" class="py-8 px-2 px-md-16">
               <v-text-field
@@ -55,6 +56,7 @@
                 dense
                 color="accent"
                 required
+                :rules="[form.nameRequired, form.onlyLetters]"
               ></v-text-field>
               <v-text-field              
                 label="Apellidos"
@@ -64,6 +66,7 @@
                 dense
                 color="accent"
                 required
+                :rules="[form.lastNameRequired, form.onlyLetters]"
               ></v-text-field>
               <v-combobox
                 dense
@@ -73,6 +76,7 @@
                 clearable
                 outlined
                 small-chips
+                :rules="[form.genresRequired]"
               ></v-combobox>
               <v-text-field
                 label="Domicilio"
@@ -82,6 +86,7 @@
                 dense
                 color="accent"
                 required
+                :rules="[form.addressRequired]"
               ></v-text-field>
               <v-text-field
                 dense
@@ -90,6 +95,7 @@
                 clearable
                 type="number"
                 v-model="user.phone"
+                :rules="[form.phoneRequired, form.phoneRul]"
               ></v-text-field>
               <v-dialog
                 ref="dialog"
@@ -106,6 +112,7 @@
                     readonly
                     v-bind="attrs"
                     v-on="on"
+                    :rules="[form.dateRequired]"
                   ></v-text-field>
                 </template>
                 <v-date-picker v-model="user.birthDate" scrollable>
@@ -122,15 +129,17 @@
                   </v-btn>
                 </v-date-picker>
               </v-dialog>              
+            
               <div class="text-right mt-2">
                 <v-btn small text color="error" class="mr-0 mr-md-4 text-none"  @click="hiddenFormEditUser"
                   >Cancelar</v-btn
                 >
-                <v-btn small @click="saveData" color="accent" class="mr-0 mr-md-4 text-none"
+                <v-btn small :disabled="!form.valid" @click="saveData" color="accent" class="mr-0 mr-md-4 text-none"
                   >Guardar cambios</v-btn
                 >
               </div>
             </div>
+            </v-form>
           </v-card>
         </v-col>
         <v-col cols="12" md="3">
@@ -169,8 +178,17 @@ export default {
       showFormEdit: false,
       showButtonEdit: true,
       form:{
+        valid: false,
         loading: false,
-        disabled: false
+        disabled: false,
+        nameRequired: (val) => !!val || "Nombre obligatorio",
+        lastNameRequired:  (val) => !!val || "Apellido obligatorio",
+        onlyLetters:  (val) => /^[a-zA-Z ]+$/.test(val) || "Solo letras",
+        genresRequired: (val) => !!val || "Genero obligatorio",
+        addressRequired: (val) => !!val || "Apellido obligatorio",
+        phoneRequired: (val) => !!val || "Número de telefono obligatorio",
+        phoneRul: (val) => val.length ==10 || "Solo se aceptan 10 digitos",
+        dateRequired: (val) => !!val || "Fecha de nacimiento obligatorio",
       },
       user: {
         name: null, 

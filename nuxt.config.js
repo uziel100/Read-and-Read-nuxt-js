@@ -29,8 +29,7 @@ export default {
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [
-  ],
+  plugins: ['@/plugins/google-sign-in.js'],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,
@@ -119,9 +118,6 @@ export default {
           logout: false
         },        
         tokenType: false        
-      },
-      google: {   
-        clientId: '451024139586-ngq240pmq03op37iro4o8d73o64g641f.apps.googleusercontent.com',
       }
     
     },
