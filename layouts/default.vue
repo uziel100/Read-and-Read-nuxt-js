@@ -246,6 +246,7 @@
       <v-tooltip left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+          class="mt-16"
             v-bind="attrs"
             v-on="on"
             v-scroll="onScroll"
@@ -255,7 +256,7 @@
             color="primary"
             dark
             fixed
-            bottom
+            top
             right
             fab
           >
@@ -319,20 +320,6 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'Default',
   transition: "home",
-  head: {
-    script: [
-      {
-        src: '//code.jivosite.com/widget/oihn0z9QfM',
-        defer: true,
-        async: true 
-      },
-      {
-        src: 'https://apis.google.com/js/api:client.js',
-         defer: true,
-        async: true
-      }
-    ]
-  },
   created(){    
     this.init()
   },
@@ -424,7 +411,7 @@ export default {
     onScroll(e) {
       if (typeof window === "undefined") return;
       const top = window.pageYOffset || e.target.scrollTop || 0;
-      this.fab = top > 20;
+      this.fab = top > 800;
     },
 
     toTop() {
