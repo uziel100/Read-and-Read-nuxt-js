@@ -1,18 +1,18 @@
 <template>
   <div>
     <!-- BANNER -->
-    <v-container fluid class="pa-0 section banner py-md-16">
+    <v-container fluid class="pa-0 section banner  py-md-16">
       <v-container>
         <v-row>
           <v-col class="pt-2 pt-md-16" cols="12" sm="5">
             <h1
-              class="text-lg-h4 text-xs-h6 font-weight-black white--text text-center text-sm-left pr-md-16"
+              class="text-lg-h4 text-xs-h6 font-weight-black white--text text-center text-sm-left pr-md-16 animation-toRigh"
             >
               Un libro es un regalo que puedes abrir una y otra vez
             </h1>
-            <nuxt-link class="text-decoration-none" to="/unirse/registro">
+            <nuxt-link class="text-decoration-none " to="/unirse/registro">
               <v-btn
-                class="mt-8 btn-primary d-none d-sm-block text-none"
+                class="mt-8 btn-primary d-none d-sm-block text-none animation-toTop"
                 rounded
                 color="secondary"
                 large
@@ -28,6 +28,7 @@
             sm="7"
           >
             <img
+              class="animation-toLeft"
               width="320px"
               src="@/assets/img/img-index.svg"
               alt="Persona leyendo"
@@ -61,13 +62,15 @@
                   contain
                   aspect-ratio="1.7"
                   src="/img/caracteristica1.svg"
+                  :class="hover? 'animation-toBottom-fast' : ''"                  
                 ></v-img>
                 <v-card-text class="mt-4">
-                  <div
+                  <p
                     class="text-center text-h6 text-md-h6"
+                    :class="hover? 'animation-toTop-fast' : ''"
                   >
                     Disfruta de una gran variedad de libros
-                  </div>
+                  </p>
                 </v-card-text>
               </v-card>
             </v-hover>
@@ -75,7 +78,7 @@
           <v-col cols="12" sm="4">
             <v-hover v-slot:default="{ hover }" open-delay="50">
               <v-card
-                :elevation="hover ? 2 : 0"
+                :elevation="hover ? 2 : 0"                
                 class="mx-auto my-sm-3 pa-2"
                 max-width="330"
                 color="cards"          
@@ -84,11 +87,12 @@
                   contain
                   aspect-ratio="1.7"
                   src="/img/caracteristica2.svg"
+                  :class="hover? 'animation-toBottom-fast' : ''"                  
                 ></v-img>
                 <v-card-text class="mt-4">
-                  <div class="text-center text-h6">
+                  <p class="text-center text-h6" :class="hover? 'animation-toTop-fast' : ''">
                     Accede a la plataforma desde cualquier dispositivo
-                  </div>
+                  </p>
                 </v-card-text>
               </v-card>
             </v-hover>
@@ -105,11 +109,12 @@
                   contain
                   aspect-ratio="1.7"
                   src="/img/caracteristica3.svg"
+                  :class="hover? 'animation-toBottom-fast' : ''"                  
                 ></v-img>
                 <v-card-text class="mt-4">
-                  <div class="text-center text-h6">
+                  <p class="text-center text-h6" :class="hover? 'animation-toTop-fast' : ''" >
                     Administra tu propio perfil y guarda tus libros favoritos
-                  </div>
+                  </p>
                 </v-card-text>
               </v-card>
             </v-hover>
@@ -122,13 +127,13 @@
         <h2>Nuevos libros</h2>
         <v-divider class="mb-4"></v-divider>
         <v-slide-group class="pa-0" show-arrows>
-          <v-slide-item v-for="n in 10" :key="n">
+          <v-slide-item v-for="book in newBooks" :key="book._id">
             <item-book
-              title="lorem insum lore insum letra com..."
+              :title="book.title"
               img="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-              :price="450"
+              :price="book.price"
               :width="200"
-              idBook="12132jkljjlk"
+              :idBook="book._id"
               margin="mx-1"
               max-width="350"
             ></item-book>
@@ -198,6 +203,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   scrollToTop: true,
   transition: "home",
@@ -243,6 +250,10 @@ export default {
     };
   },
 
+  computed:{
+    ...mapState(['newBooks'])
+  },
+
   methods: {},
 };
 </script>
@@ -256,6 +267,80 @@ export default {
   /* background-position-x: 560px; */
   background-position-x: calc(76% + 100px );
   background-position-y: -100px;
+}
+
+.animation-toTop-fast{
+  animation: toTop 400ms linear;
+}
+
+.animation-toTop{  
+  animation: toTop 1s linear;
+}
+
+.animation-toLeft-fast{
+  animation: toLeft 400ms linear;
+}
+
+.animation-toLeft{
+  animation: toLeft 1s linear;
+}
+.animation-toRigh-fast{
+  animation: toRigth 400ms  linear;
+}
+.animation-toRigh{
+  animation: toRigth 1s  linear;
+}
+
+.animation-toBottom-fast{
+  animation: toBottom 600ms linear;
+}
+
+.animation-toBottom{
+  animation: toBottom 1s  linear;
+}
+
+@keyframes toRigth {
+   from{
+      opacity: 0;
+      transform: translateX(-200%);        
+    }    
+    to{
+      opacity: 1;
+      transform: translateX(0%);        
+    }
+}
+
+@keyframes toTop {
+   from{
+      opacity: 0;
+      transform: translateY(200%);        
+    }    
+    to{
+      opacity: 1;
+      transform: translateY(0%);        
+    }
+}
+
+@keyframes toBottom {
+   from{
+      opacity: 0;
+      transform: translateY(-200%);        
+    }    
+    to{
+      opacity: 1;
+      transform: translateY(0%);        
+    }
+}
+
+@keyframes toLeft {
+    from{
+      opacity: 0;
+      transform: translateX(300%);        
+    }    
+    to{
+      opacity: 1;
+      transform: translateX(0%);        
+    }
 }
 
 

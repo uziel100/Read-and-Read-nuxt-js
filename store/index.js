@@ -5,7 +5,8 @@ export const state = () => ({
     type: "success",      
     msg: "Bienvenido"
   },
-  categories: []
+  categories: [],
+  newBooks: [],
 });
 
 export const getters = {
@@ -16,8 +17,6 @@ export const getters = {
     }, []).flat();
   }
 }
-
-
 
 export const mutations = {  
   setNotification(state, payload) {       
@@ -32,6 +31,10 @@ export const mutations = {
 
   setCategories(state, payload){
     state.categories = payload
+  },
+
+  setNewBooks(state, payload){
+    state.newBooks = payload
   },
 
   setLoggedUser(state, payload){
@@ -66,6 +69,11 @@ export const actions = {
     async getCategories({ commit }){
       const data = await this.$axios.$get('category');
       commit('setCategories', data.categories)
+    },
+
+    async getNewBooks({  commit }){
+      const data = await this.$axios.$get('book/new');
+      commit('setNewBooks', data.books )
     },
 
     setLoggedIn({ commit }, status){

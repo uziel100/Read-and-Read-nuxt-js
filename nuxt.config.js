@@ -15,12 +15,12 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
     ],
-    script: [
+    script: [  
       {
         src: '//code.jivosite.com/widget/oihn0z9QfM',
         defer: true,
         async: true 
-      },
+      },   
       {
         src: 'https://apis.google.com/js/api:client.js',
         defer: true,
@@ -29,7 +29,8 @@ export default {
       {
         src: "https://www.google.com/recaptcha/api.js?render=6LdQSkkaAAAAANrCpXGxHSzUEN3khnp3A4_pqn4T"
       }
-    ]
+    ] 
+
   },
   loading: {
     color: '#2F80ED',

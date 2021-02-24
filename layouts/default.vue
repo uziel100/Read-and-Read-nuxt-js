@@ -46,13 +46,13 @@
 
           <nuxt-link
             class="pa-0 ma-0"
-            v-for="item in categories"
-            :key="item.data.niceName"
-            :to="'/categoria/' + item.data.niceName"
+            v-for="category in categories"
+            :key="category.data.niceName"
+            :to="'/' + category.subcategories[0].niceName"
           >
             <v-list-item class="ml-5" link>
               <v-list-item-content>
-                <v-list-item-title v-text="item.data.name"></v-list-item-title>
+                <v-list-item-title v-text="category.data.name"></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </nuxt-link>
@@ -320,6 +320,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'Default',
   transition: "home",
+  
   created(){    
     this.init()
   },
@@ -380,11 +381,11 @@ export default {
 
   methods: {
     ...mapMutations(['setNotification']),
-    ...mapActions(['getUserIfLogged', 'getCategories']),
+    ...mapActions(['getUserIfLogged', 'getCategories', 'getNewBooks']),
     
     async init(){
       try {
-        await Promise.all([this.getUserIfLogged(), this.getCategories()])
+        await Promise.all([this.getUserIfLogged(), this.getCategories(), this.getNewBooks()])
       } catch (error) {
         console.log(error)
       }

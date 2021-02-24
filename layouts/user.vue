@@ -158,14 +158,14 @@ export default {
           icon: "mdi-home",
           name: "Inicio",
           goTo: function(route){
-            route.push('/user')
+            route.push('/perfil')
           }
         },
         {
           icon: "mdi-book-variant",
           name: "Biblioteca",
           goTo: function(route){
-            route.push('/user/my-books')
+            route.push('/perfil/my-books')
           }
         },
         {

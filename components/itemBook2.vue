@@ -29,6 +29,7 @@
 
 <script>
 export default {
+  name: 'itemBook2',
   props: {
     title: {
       type: String,

@@ -3,9 +3,13 @@
     <v-container fluid class="pa-0 bannerDetailBook py-md-1">
       <v-container>
         <div class="text-center text-md-left">
-          <v-breadcrumbs dark class="pl-0 pt-2 pb-4 text-center" :items="breadcumbs"></v-breadcrumbs>
+          <v-breadcrumbs
+            dark
+            class="pl-0 pt-2 pb-4 text-center"
+            :items="breadcumbs"
+          ></v-breadcrumbs>
         </div>
-        
+
         <v-row class="d-flex">
           <v-col
             class="pt-2 pl-0 pt-md-8 order-1 order-md-0"
@@ -38,21 +42,22 @@
               <div class="text-center text-md-left">
                 <p class="white--text">
                   <span class="font-weight-bold"> Autor(s): </span>
-                  <span>{{ stringAuthors }}</span> 
+                  <span>{{ stringAuthors }}</span>
                 </p>
                 <p class="white--text">
-                  <span class="font-weight-bold">Editorial:</span> {{ book.publisher }}
+                  <span class="font-weight-bold">Editorial:</span>
+                  {{ book.publisher }}
                 </p>
                 <p class="white--text">
                   <span class="font-weight-bold">Idioma: </span>
                   {{ book.lang }}
                 </p>
               </div>
-              
-                <v-btn class="mt-10 text-none" rounded color="error" dark>
-                  <v-icon left> mdi-heart </v-icon>
-                  Añadir a la lista de deseos
-                </v-btn>              
+
+              <v-btn class="mt-10 text-none" rounded color="error" dark>
+                <v-icon left> mdi-heart </v-icon>
+                Añadir a la lista de deseos
+              </v-btn>
             </div>
           </v-col>
           <v-col
@@ -90,45 +95,56 @@
       <v-row>
         <v-col class="pt-2 pt-md-10" cols="12" sm="12" md="8">
           <v-card flat>
-            <v-card-text>
-              <h2 class="font-weight-black title--text mb-4">
+            <v-card-actions class="justify-space-between">
+              <h2 class="font-weight-black title--text ml-2">
                 Descripción de libro
               </h2>
-              <v-divider class="mb-2"></v-divider>
-              <p class="pa-0">
-               {{ book.summary }}
-              </p>
-              <h2 class="font-weight-black title--text mb-4">
-                Detalles del libro
-              </h2>
-              <v-divider class="mb-2"></v-divider>
-              <p>
-                <span class="font-weight-black title--text">ISBN: </span>
-                {{ book.ISBN }}
-              </p>
-              <p>
-                <span class="font-weight-black title--text">Idioma: </span>
-                {{ book.lang }}
-              </p>
-              <p>
-                <span class="font-weight-black title--text">Paginas: </span>
-                {{ book.numPages }}
-              </p>
-              <p>
-                <span class="font-weight-black title--text"
-                  >Año de publicación:
-                </span>
-                10 octubre 2018
-              </p>
-              <p>
-                <span class="font-weight-black title--text">Editorial: </span>
-                {{ book.publisher }}
-              </p>
-              <p>
-                <span class="font-weight-black title--text">Autores: </span>
-                Van Der Meer Rémy Bastien
-              </p>
-            </v-card-text>
+              <v-btn icon @click="show = !show">
+                <v-icon>{{
+                  show ? "mdi-chevron-up" : "mdi-chevron-down"
+                }}</v-icon>
+              </v-btn>
+            </v-card-actions>
+            <v-expand-transition>
+              <v-card-text v-show="show">
+                <v-divider class="mb-2"></v-divider>
+                
+
+                  <p class="pa-0">
+                    {{ book.summary }}
+                  </p>
+                  <h2 class="font-weight-black title--text mb-4">
+                    Detalles del libro
+                  </h2>
+                  <v-divider class="mb-2"></v-divider>
+                  <p>
+                    <span class="font-weight-black title--text">ISBN: </span>
+                    {{ book.ISBN }}
+                  </p>
+                  <p>
+                    <span class="font-weight-black title--text">Idioma: </span>
+                    {{ book.lang }}
+                  </p>
+                  <p>
+                    <span class="font-weight-black title--text">Paginas: </span>
+                    {{ book.numPages }}
+                  </p>
+                  <p>
+                    <span class="font-weight-black title--text"
+                      >Año de publicación:
+                    </span>
+                    10 octubre 2018
+                  </p>
+                  <p>
+                    <span class="font-weight-black title--text">Editorial: </span>
+                    {{ book.publisher }}
+                  </p>
+                  <p>
+                    <span class="font-weight-black title--text">Autores: </span>
+                    Van Der Meer Rémy Bastien
+                  </p>              
+              </v-card-text>
+            </v-expand-transition>
           </v-card>
         </v-col>
         <v-spacer></v-spacer>
@@ -142,7 +158,7 @@
                 Comentarios del los lectores
               </h2>
               <v-row>
-                <v-col col="12" sm="3" md="4" class="text-center pt-5">                  
+                <v-col col="12" sm="3" md="4" class="text-center pt-5">
                   <p class="font-weight-bold text-h4">4.5</p>
                   <v-rating
                     :value="4.5"
@@ -154,21 +170,21 @@
                   ></v-rating>
                   <p>Valoración del libro</p>
                 </v-col>
-                <v-col sm="9" md="8" class="d-none d-sm-block" >   
+                <v-col sm="9" md="8" class="d-none d-sm-block">
                   <div class="d-flex align-center">
                     <v-progress-linear
                       color="primary"
                       rounded
-                      value="80"                      
+                      value="80"
                       height="6"
                     ></v-progress-linear>
                     <v-rating
                       :value="5"
                       color="warning"
                       readonly
-                      size="15px"                       
-                    ></v-rating>                  
-                  </div>                
+                      size="15px"
+                    ></v-rating>
+                  </div>
                   <div class="d-flex align-center">
                     <v-progress-linear
                       color="primary"
@@ -180,9 +196,9 @@
                       :value="4"
                       color="warning"
                       readonly
-                      size="15px"                      
-                    ></v-rating>                  
-                  </div>                
+                      size="15px"
+                    ></v-rating>
+                  </div>
                   <div class="d-flex align-center">
                     <v-progress-linear
                       color="primary"
@@ -194,9 +210,9 @@
                       :value="3"
                       color="warning"
                       readonly
-                      size="15px"                      
-                    ></v-rating>                  
-                  </div>                
+                      size="15px"
+                    ></v-rating>
+                  </div>
                   <div class="d-flex align-center">
                     <v-progress-linear
                       color="primary"
@@ -208,9 +224,9 @@
                       :value="2"
                       color="warning"
                       readonly
-                      size="15px"                      
-                    ></v-rating>                  
-                  </div>                
+                      size="15px"
+                    ></v-rating>
+                  </div>
                   <div class="d-flex align-center">
                     <v-progress-linear
                       color="primary"
@@ -224,15 +240,16 @@
                       readonly
                       size="15px"
                       height="6"
-                    ></v-rating>                  
-                  </div>                
+                    ></v-rating>
+                  </div>
                 </v-col>
-              </v-row>  
-              
+              </v-row>
+
               <div class="text-center text-sm-left">
-                <v-btn class="text-none" rounded  color="accent" >Escribir mi opinión</v-btn>                                                              
+                <v-btn class="text-none" rounded color="accent"
+                  >Escribir mi opinión</v-btn
+                >
               </div>
-              
             </v-card-text>
           </v-card>
         </v-col>
@@ -281,7 +298,7 @@
           </v-btn>
         </v-col>
       </v-row>
-    </v-container> 
+    </v-container>
   </div>
 </template>
 
@@ -290,32 +307,31 @@ export default {
   head: {
     title: "Un libro es el mejor regalo",
   },
-  
 
-  async asyncData({ $axios, route, error }){
-     try {
-      const res = await $axios.$get(`book/${ route.params.idBook }`);
-      return { 
-        book: res.book
-      }
-      
+  async asyncData({ $axios, route, error }) {
+    try {
+      const res = await $axios.$get(`book/${route.params.idBook}`);
+      return {
+        book: res.book,
+      };
     } catch (err) {
-      error({ statusCode: err.response.status })
+      error({ statusCode: err.response.status });
     }
   },
 
-  data(){
+  data() {
     return {
-      breadcumbs: []
-    }
+      breadcumbs: [],
+      show: true,
+    };
   },
 
-  created(){
+  created() {
     this.setItemsBreadcumb();
   },
 
-  methods:{
-     setItemsBreadcumb() {
+  methods: {
+    setItemsBreadcumb() {
       const links = [
         {
           text: "Inicio",
@@ -328,7 +344,10 @@ export default {
           to: "/" + this.book.subCategory.niceName,
         },
         {
-          text: this.book.title.length > 40? this.book.title.slice(0, 40) + "..." : this.book.title,
+          text:
+            this.book.title.length > 40
+              ? this.book.title.slice(0, 40) + "..."
+              : this.book.title,
           disabled: true,
           to: "/libro/" + this.book._id,
         },
@@ -337,11 +356,11 @@ export default {
     },
   },
 
-  computed:{
-    stringAuthors(){
-      return this.book.author.map( author => author.name ).join(', ')
-    }
-  }
+  computed: {
+    stringAuthors() {
+      return this.book.author.map((author) => author.name).join(", ");
+    },
+  },
 };
 </script>
 
