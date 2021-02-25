@@ -61,7 +61,7 @@
                 <v-img
                   contain
                   aspect-ratio="1.7"
-                  src="/img/caracteristica1.svg"
+                  src="/img/caracteristica1.png"
                   :class="hover? 'animation-toBottom-fast' : ''"                  
                 ></v-img>
                 <v-card-text class="mt-4">
@@ -86,7 +86,7 @@
                 <v-img
                   contain
                   aspect-ratio="1.7"
-                  src="/img/caracteristica2.svg"
+                  src="/img/caracteristica2.png"
                   :class="hover? 'animation-toBottom-fast' : ''"                  
                 ></v-img>
                 <v-card-text class="mt-4">
@@ -108,7 +108,7 @@
                 <v-img
                   contain
                   aspect-ratio="1.7"
-                  src="/img/caracteristica3.svg"
+                  src="/img/caracteristica3.png"
                   :class="hover? 'animation-toBottom-fast' : ''"                  
                 ></v-img>
                 <v-card-text class="mt-4">
@@ -154,7 +154,7 @@
             sm="4"
             md="3"
           >
-            <v-card outlined class="mx-auto" max-width="300" color="cards">
+            <v-card outlined class="mx-auto zoom" max-width="300" color="cards">
               <v-img :src="category.img" height="300px"></v-img>
               <v-card-title>{{ category.title }}</v-card-title>
             </v-card>
@@ -261,10 +261,14 @@ export default {
 
 <style scoped>
 
+.zoom:hover{
+  transform: scale(1.1);
+  transition: transform .5s;
+}
+
 .banner {
   background-image: url(../assets/img/mancha.png);
-  background-repeat: no-repeat;
-  /* background-position-x: 560px; */
+  background-repeat: no-repeat;  
   background-position-x: calc(76% + 100px );
   background-position-y: -100px;
 }
