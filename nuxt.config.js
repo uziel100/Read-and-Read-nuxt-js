@@ -18,16 +18,16 @@ export default {
     script: [  
       {
         src: '//code.jivosite.com/widget/oihn0z9QfM',
-        defer: true,
-        async: true 
+        defer: true,        
       },   
       {
         src: 'https://apis.google.com/js/api:client.js',
-        defer: true,
-        async: true
+        defer: true,        
       },
       {
-        src: "https://www.google.com/recaptcha/api.js?render=6LdQSkkaAAAAANrCpXGxHSzUEN3khnp3A4_pqn4T"
+        src: "https://www.google.com/recaptcha/api.js?render=6LdQSkkaAAAAANrCpXGxHSzUEN3khnp3A4_pqn4T",
+        defer:true
+
       }
     ] 
 
