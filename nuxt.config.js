@@ -15,11 +15,7 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }
     ],
-    script: [  
-      {
-        src: '//code.jivosite.com/widget/oihn0z9QfM',
-        defer: true,        
-      },   
+    script: [         
       {
         src: 'https://apis.google.com/js/api:client.js',
         defer: true,        

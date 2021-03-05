@@ -39,7 +39,7 @@
                   dense
                   color="accent"
                   v-model="form.name"
-                  :rules="[form.nameRequired]"
+                  :rules="[form.nameRequired, form.nameValid]"
                 ></v-text-field>
 
                 <v-text-field
@@ -68,7 +68,7 @@
                   name="input-7-4"
                   label="Comentario *"
                   v-model="form.comment"
-                  :rules="[form.comentRequired]"
+                  :rules="[form.comentRequired, form.commentValid]"
                 ></v-textarea>
 
                 <v-btn
@@ -142,10 +142,12 @@ export default {
         emailRules: (val) => /.+@.+\..+/.test(val) || "Correo debe ser valido",
         passwordRules: (val) => !!val || "Contraseña obligatoria",
         nameRequired: (val) => !!val || "Nombre obligatorio",
+        nameValid: (val) => /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/.test(val) || "Entrada no válida",
         numberRequired: (val) => !!val || "Numero telefonico obligatorio",
         numberRules: (val) =>
           val.length <= 10 || " El Numero telefonico excede los 10 digitos",
         comentRequired: (val) => !!val || "Texto obligatorio",
+        commentValid: (val) => /^[!¡?¿,.A-ZÀ-ÿa-z0-9\s\u00f1\u00d1]+$/g.test(val) || "Entrada no válida"
       },
     };
   },
