@@ -320,7 +320,14 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'Default',
   transition: "home",
-  
+  head:{
+    script: [
+      {
+        src: '//code.jivosite.com/widget/oihn0z9QfM',
+        defer: true,        
+      },  
+    ]
+  },
   created(){    
     this.init()
   },
