@@ -31,22 +31,15 @@
         >
       </div>
       <v-row v-if="loading" class="d-flex">
-       <v-col
-          class="ma-0"
-          v-for="i in 8"
-          :key="i"
-          cols="6"
-          sm="4"
-          md="3"
-        >
+        <v-col class="ma-0" v-for="i in 8" :key="i" cols="6" sm="4" md="3">
           <v-skeleton-loader
             class="mx-auto"
             max-width="300"
             type="image, list-item-three-line"
           ></v-skeleton-loader>
-       </v-col>
+        </v-col>
       </v-row>
-      <v-row v-else class="d-flex">       
+      <v-row v-else class="d-flex">
         <v-col
           class="ma-0"
           v-for="book in books"
@@ -57,7 +50,11 @@
         >
           <item-book
             :title="book.title"
-            img="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+            :img="
+              book.imgUrl
+                ? baseUrl.images + book.imgUrl
+                : 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg'
+            "
             :price="book.price"
             :width="250"
             :idBook="book._id"
@@ -78,6 +75,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   scrollToTop: true,
   transition: "home",
@@ -152,11 +150,12 @@ export default {
     async fetchBooksOfSubcategory(idSubcategory) {
       const res = await this.$axios.$get(`/book/subcategory/${idSubcategory}`);
       this.books = res.books;
-      this.loading = false;        
+      this.loading = false;
     },
   },
 
   computed: {
+    ...mapState(["baseUrl"]),
     currentSubcategory() {
       const { _id, name, niceName } = this.subcategory;
       return { _id, name, niceName };
