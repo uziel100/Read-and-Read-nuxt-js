@@ -4,9 +4,13 @@ export const state = () => ({
     active: false,   
     type: "success",      
     msg: "Bienvenido"
-  },
+  },  
   categories: [],
   newBooks: [],
+  baseUrl:{
+    images: 'https://d3a1k1s7tqtsjr.cloudfront.net/imageBook/',
+    files: 'https://d3a1k1s7tqtsjr.cloudfront.net/fileBook/'
+  }
 });
 
 export const getters = {
@@ -66,9 +70,11 @@ export const actions = {
       }
     },
 
-    async getCategories({ commit }){
-      const data = await this.$axios.$get('category');
-      commit('setCategories', data.categories)
+    async getCategories({ state,  commit }){
+      if(!state.categories.length){
+        const data = await this.$axios.$get('category');
+        commit('setCategories', data.categories)
+      }
     },
 
     async getNewBooks({  commit }){
