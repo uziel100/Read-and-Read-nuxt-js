@@ -26,9 +26,9 @@
                 block
                 color="accent"
                 class="ma-0 text-none btn-block"
+                v-show="!form.profile"
+                @click="form.profile = true"
               >
-                <!-- v-show="showButtonEdit"
-                @click="showFormEditUser" -->
                 Editar perfil
               </v-btn>
               <v-row class="d-sm-none">
@@ -45,21 +45,29 @@
         </v-col>
         <v-col cols="12" md="6">
             <v-card              
-              class="pt-6"
+              
               min-height="500px"
               elevation="1"
+              :loading="form.loading"
+              :disabled="form.loading"
             >
-              <update-information />
+            <!-- CONTENT -->
+            <keep-alive>
+              <form-update-information 
+                v-if="form.profile" 
+                :show.sync="form.profile" 
+                :loading.sync="form.loading"
+              ></form-update-information>
+            </keep-alive>
             </v-card>
         </v-col>
         <v-col cols="12" md="3">
           <v-card class="text-right d-none d-md-flex">
             <v-card-text>
               <div class="contenido mt-3 ml-2">
+                <a href="#"><p class="title--text">Cambiar contraseña</p></a>
+                <a href="#"><p class="title--text">Configurar pregunta secreta</p></a>                
                 <a href="#"><p class="title--text">Comentarios</p></a>
-                <a href="#"><p class="title--text">Seguridad de la cuenta</p></a>
-                <a href="#"><p class="title--text">Metodo de pago</p></a>
-                <a href="#"><p class="title--text">Privacidad</p></a>
                 <a href="#"><p class="title--text">Cerrar sesion</p></a>
               </div>
             </v-card-text>
@@ -82,7 +90,11 @@ export default {
 
   data() {
     return {
-     
+      form:{
+        profile: false,
+        comment: false,
+        loading: false,
+      }
     };
   },
 

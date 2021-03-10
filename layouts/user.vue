@@ -85,19 +85,18 @@
     </v-app-bar>
 
     <v-main class="backgrounduser">
+      <!-- Notificacion -->
+      <v-snackbar :timeout="-1" :value="notification.active" :color="notification.type" elevation="24">
+        {{ notification.msg }}
+        <template v-slot:action="{ attrs }">
+          <v-btn dark text v-bind="attrs" @click="setNotification({ active: false })">
+            Cerrar
+          </v-btn>
+        </template>
+      </v-snackbar>
+      <!-- /Notificacion -->
       <nuxt />
     </v-main>
-
-     <!-- Notificacion -->
-    <v-snackbar :timeout="-1" :value="notification.active" :color="notification.type" elevation="24">
-      {{ notification.msg }}
-      <template v-slot:action="{ attrs }">
-        <v-btn dark text v-bind="attrs" @click="setNotification({ active: false })">
-          Cerrar
-        </v-btn>
-      </template>
-    </v-snackbar>
-    <!-- /Notificacion -->
 
     <v-bottom-navigation
       fixed
@@ -192,6 +191,7 @@ export default {
     ...mapActions(['showNotification','getUserIfLogged']),
     async init(){
       await this.getUserIfLogged()     
+      this.$axios.setHeader("token", this.$auth.strategy.token.get());
     },
     goTo(url) {
       this.$router.push(url);
@@ -209,4 +209,5 @@ export default {
 .home-leave-active {
   opacity: 0;
 }
+
 </style>

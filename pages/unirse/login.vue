@@ -1,9 +1,22 @@
 <template>
+  <div>      
     <user-auth-form
       :onSubmit="handleLogin"
-      :onForgotPasssword="handleEmailSend"
+      @showModalToOptionsRecoverPassword="handleModal"
     ></user-auth-form>
-
+    <modal-options-to-restore-password         
+      :show.sync="modal.root"
+      @showModal="handleFormModal"
+    ></modal-options-to-restore-password>
+    <modal-form-to-restore-by-email
+      :show.sync="modal.email"
+    >      
+    </modal-form-to-restore-by-email>
+    <modal-form-to-restore-by-message-text
+      :show.sync="modal.msgText"
+    >
+    </modal-form-to-restore-by-message-text>
+  </div>
 </template>
 
 <script>
@@ -15,7 +28,15 @@ export default {
     title: "Comienza a leer ya",
   },
 
-  
+  data() {
+    return {
+      modal: {
+        root: false,
+        email: false,
+        msgText: false,
+      },
+    };
+  },
 
   methods: {
     ...mapActions(["showNotification"]),
@@ -56,23 +77,16 @@ export default {
       form.disabled = value;
     },
 
-    async handleEmailSend(form) {
-      const { email } = form;
-      form.message = "Enviando email...";
-      try {
-        await this.sendEmail({ email });
-        form.message = "Email enviado, por favor revisa tu bandeja";
-        form.status = false;
-      } catch (err) {
-        const msg = err.response
-          ? err.response.data.message
-          : "Ha ocurrido algun error";
-        form.message = msg;
-      }
+
+    handleModal(value) {
+      this.modal.root = value;
     },
 
-    async sendEmail(data) {
-      await this.$axios.$post("forgotPassword", data);
+    handleFormModal( value ){
+      this.modal.root = false;
+      setTimeout(() => {
+        this.modal[ value ] = true;
+      }, 1000);
     },
   },
 };
@@ -98,14 +112,13 @@ export default {
   justify-content: center;
 }
 #google-signin-button > div {
-  width: calc( 100% - 2px )  !important;
+  width: calc(100% - 2px) !important;
   box-shadow: 0px !important;
 }
 
 #google-signin-button:hover {
   cursor: pointer;
 }
-
 
 @media (max-width: 600px) {
   .imagen-login {

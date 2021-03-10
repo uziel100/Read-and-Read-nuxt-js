@@ -1,8 +1,7 @@
 <template>
   <v-form v-model="form.valid" ref="form">
     <v-divider></v-divider>
-    <div  class="py-8 px-2 px-md-16">
-      <!-- v-if="showFormEdit" -->
+    <div class="py-8 px-2 px-md-16">
       <v-text-field
         label="Nombre"
         v-model="user.name"
@@ -89,7 +88,7 @@
           text
           color="error"
           class="mr-0 mr-md-4 text-none"
-          @click="hiddenFormEditUser"
+          @click="$emit('update:show', false)"
           >Cancelar</v-btn
         >
         <v-btn
@@ -109,6 +108,10 @@
 import { mapActions } from "vuex";
 
 export default {
+  props: ["show","loading"],
+  created(){    
+    this.init();
+  },
   data() {
     return {
       modal: false,
@@ -129,26 +132,25 @@ export default {
         dateRequired: (val) => !!val || "Fecha de nacimiento obligatorio",
       },
       user: {
-        name: '',
-        lastName: '',
-        address: '',
-        phone: '',
+        name: "",
+        lastName: "",
+        address: "",
+        phone: "",
         birthDate: new Date().toISOString().substr(0, 10),
-        gender: '',
+        gender: "",
       },
       genres: ["Masculino", "Femenino"],
     };
   },
   methods: {
     ...mapActions(["showNotification"]),
-    async showFormEditUser() {
-      this.loadingForm(true);
+    async init() {
+      this.loadingForm(true);      
       await this.getDataUser();
-      this.loadingForm(false);
+      this.loadingForm(false);      
     },
 
-    async getDataUser() {
-      this.$axios.setHeader("token", this.$auth.strategy.token.get());
+    async getDataUser() {    
       const dataUser = await this.$axios.$get(`user/${this.$auth.user._id}`);
       this.fillFields(dataUser);
     },
@@ -162,11 +164,6 @@ export default {
       this.user.address = data.user.address ? data.user.address : "";
     },
 
-    hiddenFormEditUser() {
-      //   this.showFormEdit = false;
-      //   this.showButtonEdit = true;
-    },
-
     async saveData() {
       try {
         this.loadingForm(true);
@@ -178,11 +175,12 @@ export default {
           active: true,
           type: "accent",
           msg: res.message,
-        });
-        this.hiddenFormEditUser();
+        });        
         this.loadingForm(false);
       } catch (err) {
         this.loadingForm(false);
+        console.log(err)
+        console.log(err.response)
         const msg = err.response
           ? err.response.data.message
           : "Ha ocurrido un error";
@@ -191,8 +189,7 @@ export default {
     },
 
     loadingForm(value) {
-      this.form.loading = value;
-      this.form.disabled = value;
+      this.$emit('update:loading', value);      
     },
   },
 };

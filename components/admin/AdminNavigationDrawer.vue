@@ -11,8 +11,8 @@
 
     <v-list>
       <v-list-item
-        @click="goTo($router)"
-        v-for="[icon, text, goTo] in links"
+        @click="goTo(url)"
+        v-for="[icon, text, url] in links"
         :key="text"
         link
       >
@@ -26,7 +26,7 @@
       </v-list-item>
       <v-list-item link>
         <v-list-item-icon>
-          <v-icon>mdi-delete</v-icon>
+          <v-icon>mdi-logout</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -45,22 +45,19 @@ export default {
         drawer: true,
       links: [
          [
-          "mdi-send",
+          "mdi-home",
           "Inicio",
-          function (route) {
-            route.push("/admin");
-          },
+          "/admin"
         ],
         [
-          "mdi-inbox-arrow-down",
+          "mdi-book",
           "libros",
-          function (route) {
-            route.push("/admin/book");
-          },
+          '/admin/book', 
         ],
-        ["mdi-send", "Categorias"],
-        ["mdi-delete", "Usuarios"],
-        ["mdi-alert-octagon", "Ventas"],
+        ["mdi-bookmark", "Categorias",'/admin/category'],
+        ["mdi-bookmark", "Subcategorias",'/admin/subcategory'],
+        ["mdi-account", "Usuarios"],
+        ["mdi-cash", "Ventas"],
       ],
     };
   },
@@ -69,6 +66,10 @@ export default {
     catchEventTouch( value ){
       // this.active = value;
       this.$emit('activeDrawer', value)
+    },
+
+    goTo(url){
+      this.$router.push(url)
     }
   }
 };

@@ -9,7 +9,7 @@
       :active="drawer"
     ></admin-bar-header>
     <v-main>
-      <v-container class="py-6 px-6 d-flex justify-center">
+      <v-container class="py-6 px-6">
         <admin-notification-bar></admin-notification-bar>
         <nuxt></nuxt>
       </v-container>

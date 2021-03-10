@@ -1,7 +1,7 @@
 <template>
-  <v-row>
+  <v-row class="justify-center">
     <v-col cols="12" md="5">
-      <h1 class="mb-4">Agrega nuevos libros</h1>
+      <h1 class="mb-4 ">Agrega nuevos libros</h1>
       <v-sheet :elevation="6" class="pa-5 rounded-lg">
         <v-form ref="form">
           <v-text-field
@@ -142,7 +142,8 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-
+import API from "@/API/index";
+const api = new API();
 export default {
   layout: "admin",
   head: {
@@ -151,9 +152,9 @@ export default {
 
   async asyncData({ $axios, route, error }) {
     try {
-      const languaje = await $axios.$get("languaje");
-      const authors = await $axios.$get("author");
-      const publishers = await $axios.$get("publisher");
+      const languaje = await api.list("languaje");
+      const authors = await api.list("author");
+      const publishers = await api.list("publisher");
       return {
         languajes: languaje.data,
         authors: authors.data,

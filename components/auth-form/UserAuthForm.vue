@@ -22,16 +22,15 @@
                 Únete ahora
               </h2>
               <div class="d-flex my-8">
-              <g-signin-button
-                :params="googleSignInParams"
-                @success="onSuccess"
-                @error="onFailure">
-                {{
-                  isLogin
-                    ? "Continuar con Google"
-                    : "Registrarse con Google"
-                }}                
-              </g-signin-button>
+                <g-signin-button
+                  :params="googleSignInParams"
+                  @success="onSuccess"
+                  @error="onFailure"
+                >
+                  {{
+                    isLogin ? "Continuar con Google" : "Registrarse con Google"
+                  }}
+                </g-signin-button>
               </div>
               <v-text-field
                 label="Correo electronico *"
@@ -67,7 +66,11 @@
                 @click:append="form.show = !form.show"
                 :append-icon="form.show ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="form.show ? 'text' : 'password'"
-                :rules="[form.passwordRules, form.passwordRul, form.passwordPattern]"
+                :rules="[
+                  form.passwordRules,
+                  form.passwordRul,
+                  form.passwordPattern,
+                ]"
                 required
               ></v-text-field>
 
@@ -96,8 +99,13 @@
             </v-card-text>
           </v-form>
           <div v-if="isLogin" class="text-center">
-            <v-btn @click="dialog = true" class="text-none text-caption ma-1" text color="primary" >
-               ¿Has olvidado tu contraseña? 
+            <v-btn
+              @click="showOptions"
+              class="text-none text-caption ma-1"
+              text
+              color="primary"
+            >
+              ¿Has olvidado tu contraseña?
             </v-btn>
             <p class="text-caption">
               No tienes una cuenta
@@ -109,36 +117,48 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog" transition="dialog-top-transition" max-width="600">
-        <v-card>
-          <v-toolbar color="primary" dark>Recuperación de contraseña</v-toolbar>
-          <p class="text-center my-4">
-            <img width="150px" src="../../assets/img/unirse/mail.svg" >
-          </p>
-          <v-card-text>
-            <v-form class="mt-4" v-model="form2.valid" ref="form2">
-              <p class="my-3">
-                Coloca el correo electronico de tu cuenta
-              </p>
-              <v-text-field
-                label="Correo electronico *"
-                outlined
-                type="email"
-                color="accent"
-                dense
-                required
-                v-model="form2.email"
-                :rules="[form.emailRequired, form.emailRules]"
-                ></v-text-field>
-            </v-form>
-            <p class="text-center text-h6">{{ form2.message }}</p>
-          </v-card-text>
-          <v-card-actions class="justify-end">
-            <v-btn class="text-none" color="error" text @click="dialog = false">Cerrar</v-btn>
-            <v-btn v-if="form2.status" @click="onForgotPasssword(form2)" :disabled="!form2.valid"  class="text-none" color="accent">Continuar</v-btn>
-          </v-card-actions>
-        </v-card>
-    </v-dialog>
+
+    <!-- <v-dialog
+      v-model="dialog"
+      transition="dialog-top-transition"
+      max-width="600"
+    >
+      <v-card>
+        <v-toolbar color="primary" dark>Recuperación de contraseña</v-toolbar>
+        <p class="text-center my-4">
+          <img width="150px" src="../../assets/img/unirse/mail.svg" />
+        </p>
+        <v-card-text>
+          <v-form class="mt-4" v-model="form2.valid" ref="form2">
+            <p class="my-3">Coloca el correo electronico de tu cuenta</p>
+            <v-text-field
+              label="Correo electronico *"
+              outlined
+              type="email"
+              color="accent"
+              dense
+              required
+              v-model="form2.email"
+              :rules="[form.emailRequired, form.emailRules]"
+            ></v-text-field>
+          </v-form>
+          <p class="text-center text-h6">{{ form2.message }}</p>
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <v-btn class="text-none" color="error" text @click="dialog = false"
+            >Cerrar</v-btn
+          >
+          <v-btn
+            v-if="form2.status"
+            @click="onForgotPasssword(form2)"
+            :disabled="!form2.valid"
+            class="text-none"
+            color="accent"
+            >Continuar</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-dialog> -->
   </section>
 </template>
 
@@ -161,14 +181,15 @@ export default {
     onForgotPasssword: {
       type: Function,
       required: false,
-    }
+    },
   },
-  
+
   data() {
     return {
-      dialog: false,
+      dialog: false,      
       googleSignInParams: {
-        client_id: '451024139586-ngq240pmq03op37iro4o8d73o64g641f.apps.googleusercontent.com'
+        client_id:
+          "451024139586-ngq240pmq03op37iro4o8d73o64g641f.apps.googleusercontent.com",
       },
       form: {
         show: false,
@@ -176,7 +197,7 @@ export default {
         valid: false,
         loading: false,
         disabled: false,
-        email: "",  
+        email: "",
         password: "",
         confirmPassword: "",
         emailRequired: (val) => !!val || "Correo obligatorio",
@@ -184,57 +205,70 @@ export default {
         passwordRules: (val) => !!val || "Contraseña obligatoria",
         passwordMatch: (v) =>
           v === this.form.password || "Las contraseñas no coinciden",
-        passwordRul: (val) => val.length >=8 || "Minimo 8 a 16 caracteres",
-        passwordPattern: (val) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&,.-_;(){}¡<>])([A-Za-z\d$@$!%*?&,.-_;(){}¡<>]|[^ ]){8,15}$/.test(val) ||"Coloque al menos un numero, una letra minúscula, mayúscula, 1 caracter especial y sin espacios en blanco.",
+        passwordRul: (val) => val.length >= 8 || "Minimo 8 a 16 caracteres",
+        passwordPattern: (val) =>
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&,.-_;(){}¡<>])([A-Za-z\d$@$!%*?&,.-_;(){}¡<>]|[^ ]){8,15}$/.test(
+            val
+          ) ||
+          "Coloque al menos un numero, una letra minúscula, mayúscula, 1 caracter especial y sin espacios en blanco.",
       },
-      form2:{
-        valid: false,
-        email: "",
-        message: '',
-        status: true
-      }
+      // form2: {
+      //   valid: false,
+      //   email: "",
+      //   message: "",
+      //   status: true,
+      // },
+      
     };
   },
 
-  methods:{
+  methods: {
     ...mapActions(["showNotification", "setLoggedIn"]),
-
 
     async onSuccess(googleUser) {
       const idtoken = googleUser.getAuthResponse().id_token;
-      
+
       try {
-        this.isLoadingForm( true );
-        const res = await this.$axios.$post('google', { idtoken })
-        console.log(res.user)
+        this.isLoadingForm(true);
+        const res = await this.$axios.$post("google", { idtoken });
+        console.log(res.user);
         this.saveUserDataPersist(res);
         this.$router.push("/perfil");
       } catch (err) {
-        console.log(err)
+        console.log(err);
         const msg = err.response
           ? err.response.data.message
           : "Ha ocurrido un error";
         this.showNotification({ active: true, type: "error", msg });
-      }finally{
-        this.isLoadingForm( false );
+      } finally {
+        this.isLoadingForm(false);
       }
-
     },
-    onFailure (error) {
-      console.log(error)
+    onFailure(error) {
+      console.log(error);
     },
 
     saveUserDataPersist(data) {
       this.$auth.$storage.setLocalStorage("_user", data.user, true);
       this.$auth.setUser(data.user);
-      this.$auth.strategy.token.set(data.token)
-      this.setLoggedIn(true)
+      this.$auth.strategy.token.set(data.token);
+      this.setLoggedIn(true);
     },
 
     isLoadingForm(value) {
       this.form.loading = value;
       this.form.disabled = value;
     },
+    openDialogEmail(){
+      this["dialog2"] = false;
+      setTimeout(() => {
+        this.dialog = true;      
+      }, 1000);
+    },
+
+    showOptions(){
+      this.$emit('showModalToOptionsRecoverPassword', true)
+    }
   },
 
   computed: {
@@ -256,7 +290,17 @@ export default {
   width: 100%;
   cursor: pointer;
   text-align: center;
-  transition: all .3s;
+  transition: all 0.3s;
 }
-
+.hover-pointer{
+  overflow: hidden;
+}
+.hover-pointer:hover{  
+  transition: 300ms;  
+  box-shadow: 3px 3px  rgb(32, 129, 219)  !important;
+  cursor: pointer;
+}
+.hover-pointer:hover img{
+  transform: scale(1.2);
+}
 </style>

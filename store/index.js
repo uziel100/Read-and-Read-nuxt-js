@@ -77,9 +77,11 @@ export const actions = {
       }
     },
 
-    async getNewBooks({  commit }){
-      const data = await this.$axios.$get('book/new');
-      commit('setNewBooks', data.books )
+    async getNewBooks({ state, commit }){
+      if(!state.newBooks.length){
+        const data = await this.$axios.$get('book/new');
+        commit('setNewBooks', data.books )
+      }
     },
 
     setLoggedIn({ commit }, status){

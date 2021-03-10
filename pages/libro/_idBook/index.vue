@@ -46,7 +46,7 @@
                 </p>
                 <p class="white--text">
                   <span class="font-weight-bold">Editorial:</span>
-                  {{ book.publisher }}
+                  {{ stringEditorials }}
                 </p>
                 <p class="white--text">
                   <span class="font-weight-bold">Idioma: </span>
@@ -73,7 +73,7 @@
             </h1>
             <div class="d-flex justify-center">
               <v-card color="cards" height="450px" width="300px">
-                <v-img src="/img/libro.jpg" height="350px"></v-img>
+                <v-img :src="book.imgUrl? baseUrl.images + book.imgUrl :'/img/libro.jpg'" height="350px"></v-img>
                 <v-card-text>
                   <v-card-title class="pa-0 text-black"
                     >$ {{ book.price }} MX</v-card-title
@@ -137,7 +137,7 @@
                   </p>
                   <p>
                     <span class="font-weight-black title--text">Editorial: </span>
-                    {{ book.publisher }}
+                    {{ stringEditorials }}
                   </p>
                   <p>
                     <span class="font-weight-black title--text">Autores: </span>
@@ -303,6 +303,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   head: {
     title: "Un libro es el mejor regalo",
@@ -357,9 +358,16 @@ export default {
   },
 
   computed: {
+    ...mapState(["baseUrl"]),
     stringAuthors() {
       return this.book.author.map((author) => author.name).join(", ");
     },
+    stringEditorials(){
+      return this.book.publisher.map((publis) => publis.name).join(", ");
+    },
+    stringLenguajes(){
+
+    }
   },
 };
 </script>
