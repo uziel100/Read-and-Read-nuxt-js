@@ -9,7 +9,8 @@ export const state = () => ({
   newBooks: [],
   baseUrl:{
     images: 'https://d3a1k1s7tqtsjr.cloudfront.net/imageBook/',
-    files: 'https://d3a1k1s7tqtsjr.cloudfront.net/fileBook/'
+    files: 'https://d3a1k1s7tqtsjr.cloudfront.net/fileBook/',
+    category: 'https://d3a1k1s7tqtsjr.cloudfront.net/imgCategory/'
   }
 });
 
@@ -47,7 +48,7 @@ export const mutations = {
 };
 
 export const actions = {
-   
+  
     showNotification({ commit, state }, data ){
       commit('setNotification', data);
       setTimeout(() => {
@@ -59,11 +60,12 @@ export const actions = {
       }, 4000);
     },
 
-    async getUserIfLogged(){      
+    async getUserIfLogged({ commit }){      
       if(this.$auth.loggedIn){
         // user logged 
-        const data = await this.$auth.$storage.getLocalStorage('_user')
+        const data = await this.$auth.$storage.getLocalStorage('_user');        
         await this.$auth.setUser(data)
+        // commit('setUserRole', true)
       }else{
         // clear data for user at localStorage
         this.$auth.$storage.setLocalStorage('_user', {}, true);

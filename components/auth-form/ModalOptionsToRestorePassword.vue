@@ -6,25 +6,23 @@
       </v-card-title>
 
       <v-card-text class="d-flex justify-space-between">
-        <v-card elevation="0" class="pa-3 mr-3 text-center hover-pointer">
-          <img 
-            @click="$emit('showModal', 'email')"                   
+        <v-card @click="$emit('showModal', 'email')" elevation="0" class="pa-3 mr-3 text-center hover-pointer">
+          <img                                
             width="100%"
             src="../../assets/img/unirse/mail.svg"
             alt="Recuperar contraseña con algun correo electronico"
           />
           <p class="mt-2">Correo electrónico</p>
         </v-card>
-        <v-card elevation="0" class="pa-3 mr-3 text-center hover-pointer">
-          <img
-            @click="$emit('showModal', 'msgText')"  
+        <v-card @click="$emit('showModal', 'msgText')"   elevation="0"  class="pa-3 mr-3 text-center hover-pointer">
+          <img            
             width="100%"
             src="../../assets/img/unirse/phone-number-icon.svg"
             alt="Recuperar contraseña por mensaje de texto"
           />
           <p class="mt-2">Mensaje de texto</p>
         </v-card>
-        <v-card elevation="0" class="pa-3 text-center hover-pointer">
+        <v-card @click="$emit('showModal', 'question')"   elevation="0" class="pa-3 text-center hover-pointer">
           <img
             width="100%"
             src="../../assets/img/unirse/question-secret.svg"

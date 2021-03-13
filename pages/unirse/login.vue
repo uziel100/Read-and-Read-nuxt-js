@@ -1,28 +1,30 @@
 <template>
-  <div>      
+  <div>
     <user-auth-form
       :onSubmit="handleLogin"
       @showModalToOptionsRecoverPassword="handleModal"
     ></user-auth-form>
-    <modal-options-to-restore-password         
+    <modal-verify-code :show.sync="modal.code" :email="email" :password="password" >
+    </modal-verify-code>
+    <modal-options-to-restore-password
       :show.sync="modal.root"
       @showModal="handleFormModal"
     ></modal-options-to-restore-password>
-    <modal-form-to-restore-by-email
-      :show.sync="modal.email"
-    >      
+    <modal-form-to-restore-by-email :show.sync="modal.email">
     </modal-form-to-restore-by-email>
-    <modal-form-to-restore-by-message-text
-      :show.sync="modal.msgText"
-    >
+    <modal-form-to-restore-by-message-text :show.sync="modal.msgText">
     </modal-form-to-restore-by-message-text>
+    <modal-form-to-restore-by-question :show.sync="modal.question" >
+    </modal-form-to-restore-by-question>
   </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import ModalFormToRestoreByQuestion from '~/components/auth-form/ModalFormToRestoreByQuestion.vue';
 
 export default {
+  components: { ModalFormToRestoreByQuestion },
   transition: "home",
   head: {
     title: "Comienza a leer ya",
@@ -30,10 +32,14 @@ export default {
 
   data() {
     return {
+      email: "",
+      password: "",
       modal: {
         root: false,
         email: false,
         msgText: false,
+        code: false,
+        question: false,
       },
     };
   },
@@ -42,6 +48,25 @@ export default {
     ...mapActions(["showNotification"]),
 
     async handleLogin(formData) {
+      this.isLoadingForm(formData, true);
+      try {
+        const { email, password } = formData;
+        console.log(email, password)
+        const res = await this.login({ email, password });                
+        this.email = email;
+        this.password = password;
+        this.modal.code = true;        
+      } catch (err) {        
+        const msg = err.response
+          ? err.response.data.message
+          : "Ha ocurrido un error";
+        this.showNotification({ active: true, type: "error", msg });
+      }finally{
+        this.isLoadingForm(formData, false);
+      }
+    },
+
+    async handleLogin2(formData) {
       this.isLoadingForm(formData, true);
       try {
         const { email, password } = formData;
@@ -56,6 +81,10 @@ export default {
           : "Ha ocurrido un error";
         this.showNotification({ active: true, type: "error", msg });
       }
+    },
+
+    async login(data){
+      return await this.$axios.$post('login', data)
     },
 
     async loginNormal(loginInf) {
@@ -77,15 +106,14 @@ export default {
       form.disabled = value;
     },
 
-
     handleModal(value) {
       this.modal.root = value;
     },
 
-    handleFormModal( value ){
+    handleFormModal(value) {
       this.modal.root = false;
       setTimeout(() => {
-        this.modal[ value ] = true;
+        this.modal[value] = true;
       }, 1000);
     },
   },

@@ -56,6 +56,8 @@ export default {
         ],
         ["mdi-bookmark", "Categorias",'/admin/category'],
         ["mdi-bookmark", "Subcategorias",'/admin/subcategory'],
+        ["mdi-account", "Autores", '/admin/author'],
+        ["mdi-bookmark", "Editoriales",'/admin/publisher'],
         ["mdi-account", "Usuarios"],
         ["mdi-cash", "Ventas"],
       ],
@@ -63,8 +65,7 @@ export default {
   },
 
   methods:{
-    catchEventTouch( value ){
-      // this.active = value;
+    catchEventTouch( value ){      
       this.$emit('activeDrawer', value)
     },
 

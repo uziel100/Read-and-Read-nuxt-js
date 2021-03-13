@@ -171,20 +171,19 @@ export default {
           `user/${this.$auth.user._id}`,
           this.user
         );
+        this.$emit('update:show', false);
         this.showNotification({
           active: true,
           type: "accent",
           msg: res.message,
-        });        
-        this.loadingForm(false);
-      } catch (err) {
-        this.loadingForm(false);
-        console.log(err)
-        console.log(err.response)
+        });                
+      } catch (err) {        
         const msg = err.response
           ? err.response.data.message
           : "Ha ocurrido un error";
         this.showNotification({ active: true, type: "error", msg });
+      }finally{
+        this.loadingForm(false);    
       }
     },
 

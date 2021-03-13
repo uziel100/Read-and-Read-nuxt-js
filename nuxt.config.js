@@ -124,7 +124,7 @@ export default {
     strategies: {
       local: {
         endpoints: {
-          login: { url: 'login', method: 'post', propertyName: 'token' },
+          login: { url: 'login/twoFactor', method: 'post', propertyName: 'token' },
           // user: { url: 'me', method: 'get', propertyName: 'user' },
           user: false,
           logout: false
@@ -132,7 +132,7 @@ export default {
         tokenType: false        
       }
     
-    },
+    },    
     redirect:{
       login: false,
       home: false,

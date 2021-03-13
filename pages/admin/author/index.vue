@@ -5,31 +5,21 @@
       <v-sheet :elevation="2" class="pa-5 rounded-lg">
         <v-form ref="form">
           <v-text-field
-            label="Nombre"
-            placeholder="Ej: Programación funcional"
+            label="Nombre del autor *"
+            placeholder="Ej. Uziel Meliton Hernández"
             outlined
             dense
             v-model="form.name"
           ></v-text-field>
-          <v-text-field
-            label="Url"
-            placeholder="Ej. programacion-funcional"
+
+          <v-textarea            
             outlined
-            dense
-            v-model="form.niceName"
-          ></v-text-field>
-          <v-autocomplete
-            label="Categoria"
-            :items="categories"
-            item-text="name"
-            item-value="_id"
-            outlined
-            dense
-            v-model="form.category"
-          ></v-autocomplete>
+            label="Descripción del autor *"
+            v-model="form.about"
+          ></v-textarea>
           <v-btn
             :loading="loading"
-            @click="update ? updateCategory() : postCategory()"
+            @click="update ? updateAuthor() : handleSaveAuthor()"
             color="accent"
             class="mr-4"
             >{{ update ? "Actualizar" : "Agregar" }}
@@ -45,20 +35,18 @@
         <template v-slot:default>
           <thead>
             <tr>
-              <th class="text-left">Name</th>
-              <th class="text-left">Url</th>
-              <th class="text-left">Categoria</th>
+              <th class="text-left">Nombre del author</th>
+              <th class="text-left">Descripción</th>
               <th class="text-left">Opciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="subCategory in subcategories" :key="subCategory.name">
-              <td>{{ subCategory.name }}</td>
-              <td>{{ subCategory.niceName }}</td>
-              <td>{{ subCategory.category.name }}</td>
+            <tr v-for="author in authors" :key="author._id">
+              <td>{{ author.name }}</td>
+              <td>{{ author.about | cutLengthString }}</td>
               <td>
                 <v-btn
-                  @click="setDataInForm(subCategory)"
+                  @click="setDataInForm(author)"
                   color="primary"
                   class="mr-2"
                   fab
@@ -67,7 +55,13 @@
                 >
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
-                <v-btn @click="deleteCategory(subCategory._id)" color="error" fab small dark>
+                <v-btn
+                  @click="deleteAuthor(author._id)"
+                  color="error"
+                  fab
+                  small
+                  dark
+                >
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </td>
@@ -80,23 +74,21 @@
 </template>
 
 <script>
-import { mapActions  } from 'vuex'
+import { mapActions } from "vuex";
 import API from "@/API/index";
 const api = new API();
 
 export default {
   layout: "admin",
   head: {
-    title: "Subcategorias",
+    title: "Autores",
   },
 
   async asyncData({ error }) {
     try {
-      const dataSubcategory = await api.list("subcategory");
-      const dataCategory = await api.list('category/only')
+      const res = await api.list("author");
       return {
-        subcategories: dataSubcategory.subcategories,
-        categories: dataCategory.categories
+        authors: res.data,
       };
     } catch (err) {
       error({ statusCode: err.response.status });
@@ -106,29 +98,76 @@ export default {
   data() {
     return {
       loading: false,
-      title: "Subcategorias",
+      title: "Autores",
       update: false,
       form: {
         id: null,
         name: "",
-        niceName: "",
-        category: '',
+        about: "",
       },
     };
+  },
+  
+  filters:{
+    cutLengthString( value ){
+      if(value.length > 25){
+        value = value.slice(0, 25) + "...";        
+      }
+      return value;
+    }
   },
 
   methods: {
     ...mapActions("admin", ["showNotification"]),
 
-    async getCategories() {
-      const res = await api.list("subcategory");
-      this.subcategories = res.subcategories;
+    async handleSaveAuthor() {
+      this.loading = true;
+      const { name, about } = this.form;
+      try {
+        await api.post("author", { name, about });
+        this.handleLoading({
+          time: true,
+          active: true,
+          progressBar: false,
+          msg: "Author agregado :)",
+          type: "success",
+        });
+        this.getAuthors();
+        this.clearFields();
+      } catch (err) {
+        const msg = err.response
+          ? err.response.data.message
+          : "Ha ocurrido un error";
+        this.handleLoading({
+          time: true,
+          active: true,
+          progressBar: false,
+          msg,
+          type: "error",
+        });
+      } finally {
+        this.loading = false;
+      }
     },
-    async postCategory() {
+
+    async getAuthors() {
+      const res = await api.list("author");
+      this.authors = res.data;
+    },
+
+    async updateAuthor() {
       try {
         this.loading = true;
-        await api.post("subcategory", this.form);
-        this.getCategories();
+        const { name, about, id } = this.form;
+        await this.$axios.$put(`author/${id}`, { name, about });
+        this.handleLoading({
+          time: true,
+          active: true,
+          progressBar: false,
+          msg: "Author actualizado :)",
+          type: "success",
+        });
+        this.getAuthors();
         this.clearFields();
       } catch (err) {
         const msg = err.response
@@ -146,34 +185,21 @@ export default {
       }
     },
 
-    async updateCategory() {      
-      try {        
-        this.loading = true;               
-        await this.$axios.$put(`subcategory/${ this.form.id }`, this.form );
-        this.getCategories();
-        this.clearFields();
-      } catch (err) {
-        const msg = err.response
-          ? err.response.data.message
-          : "Ha ocurrido un error";
-        this.handleLoading({
-          time: true,
-          active: true,
-          progressBar: false,
-          msg,
-          type: "error",
-        });
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async deleteCategory( id ){
+    async deleteAuthor(id) {
       try {
-        await this.$axios.$delete(`subcategory/${ id }`)
-        this.getCategories();
+        await this.$axios.$delete(`author/${id}`);
+        this.getAuthors();
       } catch (err) {
-        console.log(err)
+        const msg = err.response
+          ? err.response.data.message
+          : "Ha ocurrido un error";
+        this.handleLoading({
+          time: true,
+          active: true,
+          progressBar: false,
+          msg,
+          type: "error",
+        });
       }
     },
 
@@ -183,17 +209,18 @@ export default {
     },
 
     clearFields() {
+      this.form.id = "";
       this.form.name = "";
-      this.form.niceName = "";
+      this.form.about = "";
     },
 
     setDataInForm(data) {
       this.update = true;
-      this.form.name = data.name;
-      this.form.niceName = data.niceName;
       this.form.id = data._id;
-      this.form.category = data.category._id      
+      this.form.name = data.name;
+      this.form.about = data.about;
     },
+
     handleLoading(data) {
       this.showNotification(data);
       if (data.time) {
@@ -205,3 +232,6 @@ export default {
   },
 };
 </script>
+
+<style>
+</style>

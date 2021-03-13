@@ -19,14 +19,14 @@
             dense
             v-model="form.title"
           ></v-text-field>
-
-          <v-text-field
+                  
+          <v-textarea            
             label="Resumen"
             placeholder="Resumén del libro"
-            outlined
+            outlined            
             v-model="form.summary"
-            dense
-          ></v-text-field>
+            dense            
+          ></v-textarea>
 
           <v-select
             :items="languajes"
