@@ -21,6 +21,7 @@
 import { mapActions } from 'vuex'
 
 export default {
+  middleware: ['is-logged','is-admin-role'],
   data() {
     return {      
       drawer: true,

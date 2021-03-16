@@ -10,7 +10,8 @@ export const state = () => ({
   baseUrl:{
     images: 'https://d3a1k1s7tqtsjr.cloudfront.net/imageBook/',
     files: 'https://d3a1k1s7tqtsjr.cloudfront.net/fileBook/',
-    category: 'https://d3a1k1s7tqtsjr.cloudfront.net/imgCategory/'
+    category: 'https://d3a1k1s7tqtsjr.cloudfront.net/imgCategory/',
+    avatar: 'https://d3a1k1s7tqtsjr.cloudfront.net/avatar/'
   }
 });
 
@@ -20,6 +21,24 @@ export const getters = {
       list.push( currentSubcategory.subcategories );
       return list
     }, []).flat();
+  },
+
+  getImageProfile(state){
+    const url = state.baseUrl.avatar;  
+    try {
+      if(state.auth.user){
+        if( !state.auth.user.photo){
+          return url + 'avatar-default.png'
+        }else if(state.auth.user.photo.startsWith('https://') ){
+          return state.auth.user.photo;
+        }else{      
+          return url + state.auth.user.photo;
+        }            
+      }
+      return url + 'avatar-default.png'      
+    } catch (err) {     
+      return url + 'avatar-default.png'
+    }       
   }
 }
 
@@ -41,6 +60,7 @@ export const mutations = {
   setNewBooks(state, payload){
     state.newBooks = payload
   },
+
 
   setLoggedUser(state, payload){
     state.auth.loggedIn = payload
@@ -64,8 +84,7 @@ export const actions = {
       if(this.$auth.loggedIn){
         // user logged 
         const data = await this.$auth.$storage.getLocalStorage('_user');        
-        await this.$auth.setUser(data)
-        // commit('setUserRole', true)
+        await this.$auth.setUser(data)        
       }else{
         // clear data for user at localStorage
         this.$auth.$storage.setLocalStorage('_user', {}, true);
@@ -89,6 +108,8 @@ export const actions = {
     setLoggedIn({ commit }, status){
       commit('setLoggedUser', status)
     },
+
+   
 
     setUserRole({ commit }, role){
       commit('setUserRole', role)

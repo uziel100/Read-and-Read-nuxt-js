@@ -66,8 +66,8 @@ export default {
 
   filters: {
     spliceText(value){
-      if(value.length > 20){
-        value = value.slice(0,20) + "..."
+      if(value.length > 17){
+        value = value.slice(0, 17) + "..."
       }
       return value;
     }

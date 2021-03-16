@@ -150,15 +150,18 @@ export default {
     title: "Libros",
   },
 
-  async asyncData({ $axios, route, error }) {
+  async asyncData({ $axios, route, error, store }) {
     try {
       const languaje = await api.list("languaje");
       const authors = await api.list("author");
       const publishers = await api.list("publisher");
+      const categories = await api.list("category");
+      store.commit('setCategories', categories.categories);
       return {
         languajes: languaje.data,
         authors: authors.data,
         publishers: publishers.data,
+        
       };
     } catch (err) {
       error({ statusCode: err.response.status });

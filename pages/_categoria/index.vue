@@ -39,37 +39,37 @@
           ></v-skeleton-loader>
         </v-col>
       </v-row>
-      <v-row v-else class="d-flex">
-        <v-col
-          class="ma-0"
-          v-for="book in books"
-          :key="book._id"
-          cols="6"
-          sm="4"
-          md="3"
-        >
-          <item-book
-            :title="book.title"
-            :img="
-              book.imgUrl
-                ? baseUrl.images + book.imgUrl
-                : 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg'
-            "
-            :price="book.price"
-            :width="250"
-            :idBook="book._id"
-            max-width="350"
-          ></item-book>
-        </v-col>
-        <p class="text-center ml-3 my-10" v-if="books.length === 0">
-          No hay libros en esta categoria
-        </p>
+      <v-row v-else class="d-flex">        
+          <v-col
+            class="ma-0"
+            v-for="book in books"
+            :key="book._id"
+            cols="6"
+            sm="4"
+            md="3"
+          >
+            <item-book
+              :title="book.title"
+              :img="
+                book.imgUrl
+                  ? baseUrl.images + book.imgUrl
+                  : 'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg'
+              "
+              :price="book.price"
+              :width="250"
+              :idBook="book._id"
+              max-width="350"
+            ></item-book>
+          </v-col>
+          <p class="text-center ml-3 my-10" v-if="books.length === 0">
+            No hay libros en esta categoria
+          </p>        
       </v-row>
-      <div v-if="books.length > 0" class="text-center my-5">
+      <!-- <div v-if="books.length > 0" class="text-center my-5">
         <v-btn class="text-none" color="blue" outlined block rounded
           >Ver más</v-btn
         >
-      </div>
+      </div> -->
     </v-container>
   </div>
 </template>

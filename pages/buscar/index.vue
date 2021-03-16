@@ -98,7 +98,7 @@
           color="cards"
         >
           <v-img
-            src="https://cdn.vuetifyjs.com/images/cards/road.jpg"
+            :src="baseUrl.images +  book.imgUrl"
             height="300px"
           ></v-img>
           <v-card-text>{{ book.title | spliceText }}</v-card-text>
@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "Buscar",
@@ -119,7 +119,7 @@ export default {
   watchQuery: ["q"],
 
   async asyncData({ $axios, query, error }) {
-    console.log("asyndata");
+    
     const textSearch = query.q;
     if (textSearch) {
       try {
@@ -176,6 +176,7 @@ export default {
   },
 
   computed: {
+    ...mapState(['baseUrl']),
     ...mapGetters(["getAllSubcategories"]),
   },
 

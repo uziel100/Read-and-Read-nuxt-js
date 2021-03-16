@@ -50,8 +50,7 @@ export default {
     async handleLogin(formData) {
       this.isLoadingForm(formData, true);
       try {
-        const { email, password } = formData;
-        console.log(email, password)
+        const { email, password } = formData;        
         const res = await this.login({ email, password });                
         this.email = email;
         this.password = password;

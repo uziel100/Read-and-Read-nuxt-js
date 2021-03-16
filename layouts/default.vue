@@ -6,20 +6,15 @@
         <v-list-item v-if="$auth.loggedIn">
           <v-list-item-avatar>
             <v-img
-              :src="
-                $auth.user.photo
-                  ? $auth.user.photo
-                  : 'https://cdn.vuetifyjs.com/images/john.jpg'
-              "
+              :src="getImageProfile"
             ></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>{{ $auth.user.email }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="!$auth.loggedIn">
-          <nuxt-link
-            v-if="!login"
+        <v-list-item v-else >
+          <nuxt-link            
             class="text-decoration-none"
             to="/unirse/login"
           >
@@ -53,9 +48,9 @@
 
             <nuxt-link
               class="pa-0 ma-0"
-              v-for="category in categories"
+              v-for="category in menuCategories"
               :key="category.data.niceName"
-              :to="'/' + category.subcategories[0].niceName"
+              :to="'/' +  category.subcategories[0].niceName"
             >
               <v-list-item class="ml-5" link>
                 <v-list-item-content>
@@ -79,7 +74,7 @@
       <!--  /Navigation left movil -->
 
       <!-- Navbar -->
-      <v-app-bar color="navbar" elevation="3" height="60px" fixed app>
+      <v-app-bar color="navbar" elevation="3" height="60px" fixed app>         
         <v-app-bar-nav-icon
           @click.stop="drawer = !drawer"
           class="ma-0 d-block d-sm-block d-md-none"
@@ -131,7 +126,7 @@
                 </v-btn>
               </template>
               <div class="d-flex">
-                <v-list rounded v-for="(category, i) in categories" :key="i">
+                <v-list rounded v-for="(category, i) in menuCategories" :key="i">
                   <v-subheader>{{ category.data.name }}</v-subheader>
                   <v-divider></v-divider>
                   <v-list-item
@@ -146,19 +141,7 @@
                         }}</v-btn>
                       </nuxt-link>
                     </v-list-item-content>
-                  </v-list-item>
-                  <v-list-item
-                    v-if="category.subcategories.length === 0"
-                    class="ma-0 pa-0"
-                  >
-                    <v-list-item-content class="ma-0 pa-0">
-                      <nuxt-link :to="`/categoria/${category.data.niceName}`">
-                        <v-btn text color="primary" class="text-none"
-                          >Ver libros</v-btn
-                        >
-                      </nuxt-link>
-                    </v-list-item-content>
-                  </v-list-item>
+                  </v-list-item>                
                 </v-list>
               </div>
             </v-menu>
@@ -191,11 +174,7 @@
           >
             <v-avatar size="36">
               <img
-                :src="
-                  $auth.user.photo
-                    ? $auth.user.photo
-                    : 'https://cdn.vuetifyjs.com/images/john.jpg'
-                "
+                :src="getImageProfile"
                 alt="John"
               />
             </v-avatar>
@@ -206,8 +185,7 @@
             class="text-decoration-none d-none d-sm-block"
             to="/unirse/login"
           >
-            <v-btn
-              v-if="!login"
+            <v-btn              
               class="ma-2 text-none d-none d-sm-block"
               outlined
               color="secondary"
@@ -352,7 +330,7 @@
 </template>
  
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Default",
@@ -377,11 +355,7 @@ export default {
         active: false,
       },
       hidden: false,
-      drawer: false,
-      rightDrawer: true,
-      login: false,
-      isNotification: false,
-      selectedItem: 0,
+      drawer: false,                
       fab: false,
       modeTheme: "mdi-white-balance-sunny",
       linksFooter: [
@@ -421,6 +395,13 @@ export default {
 
   computed: {
     ...mapState(["notification", "categories"]),
+    ...mapGetters(['getImageProfile']),
+
+    menuCategories(){          
+      const categories = this.categories;
+      return categories.filter( category => category.subcategories.length , [])           
+    }
+
   },
 
   methods: {

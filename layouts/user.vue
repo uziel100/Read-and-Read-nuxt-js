@@ -5,7 +5,7 @@
         <v-list-item>
           <v-list-item-avatar>
             <v-img
-              :src="$auth.user.photo? $auth.user.photo : 'https://cdn.vuetifyjs.com/images/john.jpg'"
+              :src="getImageProfile"
             ></v-img>
           </v-list-item-avatar>
         </v-list-item>
@@ -79,7 +79,7 @@
 
       <v-btn class="ml-2" text icon>
         <v-avatar size="32">
-          <img :src="$auth.user.photo? $auth.user.photo : 'https://cdn.vuetifyjs.com/images/john.jpg'" alt="John" />
+          <img :src="getImageProfile" :alt="'Foto de perfil del usuario con el email ' + $auth.user.email" />
         </v-avatar>
       </v-btn>
     </v-app-bar>
@@ -113,10 +113,10 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState, mapGetters } from 'vuex'
 let routeUser = "/perfil";
 export default {
-  middleware: ['is-logged'],
+  middleware: ['is-logged', 'is-user-role'],
   transition: "home",
   name: 'User',
   data() {
@@ -178,17 +178,21 @@ export default {
     };
   },
 
-  async created(){
+  async created(){  
     await this.init();
+    
   },
 
   computed:{    
-    ...mapState(['notification'])
+    ...mapState(['notification', 'baseUrl']),
+    ...mapGetters(['getImageProfile']),
+    
   },
 
   methods: {
     ...mapMutations(['setNotification']),
     ...mapActions(['showNotification','getUserIfLogged']),
+   
     async init(){
       await this.getUserIfLogged()     
       this.$axios.setHeader("token", this.$auth.strategy.token.get());

@@ -130,7 +130,7 @@
           <v-slide-item v-for="book in newBooks" :key="book._id">
             <item-book
               :title="book.title"
-              img="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+              :img="baseUrl.images + book.imgUrl"
               :price="book.price"
               :width="200"
               :idBook="book._id"
@@ -148,30 +148,33 @@
 
         <v-row class="d-none d-sm-flex">
           <v-col
-            v-for="(category, idx) in categories"
-            :key="idx"
+            v-for="category in menuCategories"
+            :key="category.data._id"
             cols="12"
             sm="4"
             md="3"
           >
+          <nuxt-link :to="`/${ category.subcategories[0].niceName }`">
             <v-card outlined class="mx-auto zoom" max-width="300" color="cards">
-              <v-img :src="category.img" height="300px"></v-img>
-              <v-card-title>{{ category.title }}</v-card-title>
+              <v-img :src="baseUrl.category + category.data.img" height="300px"></v-img>
+              <v-card-title>{{ category.data.name }}</v-card-title>
             </v-card>
+          </nuxt-link>
           </v-col>
         </v-row>
 
         <!-- MOVIL ONLY -->
         <div class="d-block d-sm-none">
           <v-btn
-            v-for="(category, idx) in categories"
-            :key="idx"
+            v-for="(category, idx) in menuCategories"
+            :key="category.data._id + idx"
             class="ma-2"
             outlined
             rounded
             color="primary"
             style="text-transform: none !important"
-            >{{ category.title }}</v-btn
+            @click="$router.push(`/${ category.subcategories[0].niceName }`)"
+            >{{ category.data.name }}</v-btn
           >
         </div>
       </section>
@@ -213,48 +216,18 @@ export default {
   },
   data() {
     return {
-      categories: [
-        {
-          title: "Ciencia ficción",
-          img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-        },
-        {
-          title: "Matematicas",
-          img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        },
-        {
-          title: "Romance",
-          img: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
-        },
-        {
-          title: "Tecnologia",
-          img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-        },
-        {
-          title: "Cuentos",
-          img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        },
-        {
-          title: "Arte",
-          img: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
-        },
-        {
-          title: "Fantastica",
-          img: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-        },
-        {
-          title: "Poesia",
-          img: "https://cdn.vuetifyjs.com/images/cards/cooking.png",
-        },
-      ],
+      
     };
   },
 
   computed:{
-    ...mapState(['newBooks'])
+    ...mapState(['newBooks', 'baseUrl', 'categories']),
+    menuCategories(){          
+      const categories = this.categories;
+      return categories.filter( category => category.subcategories.length , [])           
+    }
   },
-
-  methods: {},
+  
 };
 </script>
 

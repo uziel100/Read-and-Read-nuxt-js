@@ -125,7 +125,7 @@ export default {
       local: {
         endpoints: {
           login: { url: 'login/twoFactor', method: 'post', propertyName: 'token' },
-          // user: { url: 'me', method: 'get', propertyName: 'user' },
+          // user: { url: 'me', method: 'get', propertyName: 'data' },
           user: false,
           logout: false
         },        

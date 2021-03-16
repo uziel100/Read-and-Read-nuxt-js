@@ -6,7 +6,7 @@
           <v-divider></v-divider>
         </v-card-text>                          
         <v-row>
-          <v-col class="ma-3" v-for="(libro, idx) in 15" :key="idx" >
+          <v-col class="ma-3" v-for="(libro, idx) in 6" :key="idx" >
             <item-book-2
               title="Programación"
               img="https://cdn.vuetifyjs.com/images/cards/road.jpg"            

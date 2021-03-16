@@ -25,9 +25,9 @@
             <div class="text-center text-md-left">
               <div class="d-sm-flex d-block justify-sm-center justify-md-start">
                 <div class="d-flex justify-center">
-                  <p class="white--text d-block">4.3</p>
+                  <p class="white--text d-block">{{ score.average }}</p>
                   <v-rating
-                    :value="5"
+                    :value="score.average"
                     color="warning"
                     readonly
                     size="15px"
@@ -35,9 +35,7 @@
                     dense
                   ></v-rating>
                 </div>
-                <p class="white--text d-block mt-0">
-                  (1,340 calificaciones) 4,342 lectores
-                </p>
+                <p class="white--text d-block mt-0">({{ evaluations  }} calificaciones)</p>
               </div>
               <div class="text-center text-md-left">
                 <p class="white--text">
@@ -50,7 +48,7 @@
                 </p>
                 <p class="white--text">
                   <span class="font-weight-bold">Idioma: </span>
-                  {{ book.lang }}
+                  {{ book.lang.name }}
                 </p>
               </div>
 
@@ -73,7 +71,14 @@
             </h1>
             <div class="d-flex justify-center">
               <v-card color="cards" height="450px" width="300px">
-                <v-img :src="book.imgUrl? baseUrl.images + book.imgUrl :'/img/libro.jpg'" height="350px"></v-img>
+                <v-img
+                  :src="
+                    book.imgUrl
+                      ? baseUrl.images + book.imgUrl
+                      : '/img/libro.jpg'
+                  "
+                  height="350px"
+                ></v-img>
                 <v-card-text>
                   <v-card-title class="pa-0 text-black"
                     >$ {{ book.price }} MX</v-card-title
@@ -108,41 +113,34 @@
             <v-expand-transition>
               <v-card-text v-show="show">
                 <v-divider class="mb-2"></v-divider>
-                
 
-                  <p class="pa-0">
-                    {{ book.summary }}
-                  </p>
-                  <h2 class="font-weight-black title--text mb-4">
-                    Detalles del libro
-                  </h2>
-                  <v-divider class="mb-2"></v-divider>
-                  <p>
-                    <span class="font-weight-black title--text">ISBN: </span>
-                    {{ book.ISBN }}
-                  </p>
-                  <p>
-                    <span class="font-weight-black title--text">Idioma: </span>
-                    {{ book.lang }}
-                  </p>
-                  <p>
-                    <span class="font-weight-black title--text">Paginas: </span>
-                    {{ book.numPages }}
-                  </p>
-                  <p>
-                    <span class="font-weight-black title--text"
-                      >Año de publicación:
-                    </span>
-                    10 octubre 2018
-                  </p>
-                  <p>
-                    <span class="font-weight-black title--text">Editorial: </span>
-                    {{ stringEditorials }}
-                  </p>
-                  <p>
-                    <span class="font-weight-black title--text">Autores: </span>
-                    Van Der Meer Rémy Bastien
-                  </p>              
+                <p class="pa-0">
+                  {{ book.summary }}
+                </p>
+                <h2 class="font-weight-black title--text mb-4">
+                  Detalles del libro
+                </h2>
+                <v-divider class="mb-2"></v-divider>
+                <p>
+                  <span class="font-weight-black title--text">ISBN: </span>
+                  {{ book.ISBN }}
+                </p>
+                <p>
+                  <span class="font-weight-black title--text">Idioma: </span>
+                  {{ book.lang.name }}
+                </p>
+                <p>
+                  <span class="font-weight-black title--text">Paginas: </span>
+                  {{ book.numPages }}
+                </p>
+                <p>
+                  <span class="font-weight-black title--text">Editorial: </span>
+                  {{ stringEditorials }}
+                </p>
+                <p>
+                  <span class="font-weight-black title--text">Autores: </span>
+                  {{ stringAuthors }}
+                </p>
               </v-card-text>
             </v-expand-transition>
           </v-card>
@@ -159,9 +157,9 @@
               </h2>
               <v-row>
                 <v-col col="12" sm="3" md="4" class="text-center pt-5">
-                  <p class="font-weight-bold text-h4">4.5</p>
+                  <p class="font-weight-bold text-h4">{{ score.average }}</p>
                   <v-rating
-                    :value="4.5"
+                    :value="score.average"
                     color="warning"
                     readonly
                     size="15px"
@@ -171,82 +169,33 @@
                   <p>Valoración del libro</p>
                 </v-col>
                 <v-col sm="9" md="8" class="d-none d-sm-block">
-                  <div class="d-flex align-center">
+                  <div
+                    v-for="item in score.points"
+                    :key="item.counter"
+                    class="d-flex align-center"
+                  >
                     <v-progress-linear
                       color="primary"
                       rounded
-                      value="80"
+                      :value="item.value"
                       height="6"
                     ></v-progress-linear>
                     <v-rating
-                      :value="5"
+                      :value="item.counter"
                       color="warning"
                       readonly
                       size="15px"
-                    ></v-rating>
-                  </div>
-                  <div class="d-flex align-center">
-                    <v-progress-linear
-                      color="primary"
-                      rounded
-                      value="50"
-                      height="6"
-                    ></v-progress-linear>
-                    <v-rating
-                      :value="4"
-                      color="warning"
-                      readonly
-                      size="15px"
-                    ></v-rating>
-                  </div>
-                  <div class="d-flex align-center">
-                    <v-progress-linear
-                      color="primary"
-                      rounded
-                      value="30"
-                      height="6"
-                    ></v-progress-linear>
-                    <v-rating
-                      :value="3"
-                      color="warning"
-                      readonly
-                      size="15px"
-                    ></v-rating>
-                  </div>
-                  <div class="d-flex align-center">
-                    <v-progress-linear
-                      color="primary"
-                      rounded
-                      value="20"
-                      height="6"
-                    ></v-progress-linear>
-                    <v-rating
-                      :value="2"
-                      color="warning"
-                      readonly
-                      size="15px"
-                    ></v-rating>
-                  </div>
-                  <div class="d-flex align-center">
-                    <v-progress-linear
-                      color="primary"
-                      rounded
-                      value="10"
-                      height="6"
-                    ></v-progress-linear>
-                    <v-rating
-                      :value="1"
-                      color="warning"
-                      readonly
-                      size="15px"
-                      height="6"
                     ></v-rating>
                   </div>
                 </v-col>
               </v-row>
 
               <div class="text-center text-sm-left">
-                <v-btn class="text-none" rounded color="accent"
+                <v-btn
+                  @click="handleSendComment"
+                  class="text-none"
+                  rounded
+                  color="accent"
                   >Escribir mi opinión</v-btn
                 >
               </div>
@@ -258,27 +207,32 @@
 
       <v-row>
         <v-col class="pt-2 pt-md-10" cols="12" sm="12" md="8">
-          <v-card color="cards" v-for="(user, i) in 8" :key="i" flat>
+          <v-card class="py-6" v-if="!evaluations" color="cards" flat>
+            <div class="ml-3">
+              <p class="title--text ma-0">
+                No hay ningún comentario
+              </p>
+            </div>
+          </v-card>
+          <v-card v-else color="cards" v-for="comment in getComments" :key="comment._id" flat>
             <v-card-text>
               <div class="d-flex">
                 <v-avatar>
-                  <img src="@/assets/img/senora.jpg" alt="señora" />
+                  <img :src="comment.user.photo" alt="Foto de perfil" />
                 </v-avatar>
                 <div class="ml-3">
                   <p class="font-weight-black title--text ma-0">
-                    Danna Sofía Hernandez Alonso
+                    {{ comment.user.email }}
                   </p>
                   <v-rating
-                    :value="4"
+                    :value="comment.score"
                     color="warning"
                     readonly
                     size="18px"
                     dense
                   ></v-rating>
                   <v-card-text class="pa-0">
-                    Este libro es exelente, lo recomiendo mucho, a mi hijo le
-                    encanta que le cuente un cuento diferenente cada noche antes
-                    de dormir.
+                    {{ comment.content }}
                   </v-card-text>
                 </div>
               </div>
@@ -286,7 +240,7 @@
             <v-divider></v-divider>
           </v-card>
 
-          <v-btn
+          <!-- <v-btn
             class="mt-16 d-sm-block text-none"
             rounded
             outlined
@@ -295,15 +249,16 @@
             block
           >
             Ver mas comentarios
-          </v-btn>
+          </v-btn> -->
         </v-col>
       </v-row>
     </v-container>
+    <modal-book-rating @updateComment="update" :scoreAll="book.score" :show.sync="modal.rating"></modal-book-rating>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 export default {
   head: {
     title: "Un libro es el mejor regalo",
@@ -312,8 +267,11 @@ export default {
   async asyncData({ $axios, route, error }) {
     try {
       const res = await $axios.$get(`book/${route.params.idBook}`);
+      const comments = await $axios.$get(`comment/book/${route.params.idBook}`);      
       return {
         book: res.book,
+        comments: comments.data,
+        evaluations: comments.data.length,
       };
     } catch (err) {
       error({ statusCode: err.response.status });
@@ -323,12 +281,17 @@ export default {
   data() {
     return {
       breadcumbs: [],
-      show: true,
+      show: true,      
+      score: [],
+      modal:{
+        rating: false,
+      }
     };
   },
 
   created() {
     this.setItemsBreadcumb();
+    this.loadScore();
   },
 
   methods: {
@@ -355,6 +318,67 @@ export default {
       ];
       this.breadcumbs = links;
     },
+
+    async update(val){
+      if(val){        
+        this.evaluations++;        
+        const newComment = {
+          content: val.content,
+          score: val.score,
+          user: {
+            email: this.$auth.user.email,
+            photo: this.$auth.user.photo
+          }
+        }        
+        this.comments.unshift( newComment )        
+        this.loadScore();
+      }
+    },
+
+    loadScore() {
+      const { score } = this.book;
+      
+      const scoreKeys = Object.keys(score);
+      const totalScores = this.evaluations === 0? 1 : this.evaluations;
+      
+      let counter = 1,
+        scoreTotal = 0;
+      
+      const points = scoreKeys.map((namePropertly) => {
+        let value = score[namePropertly] * 100 / totalScores;        
+        scoreTotal += counter * score[namePropertly];
+        const obj = {
+          value,
+          counter: counter++,
+        };
+        return obj;
+      }, []);
+
+      const average = scoreTotal / totalScores;      
+      this.score = {
+        average: parseFloat( average.toFixed(1) ),
+        points: points.reverse(),
+      };
+    },
+
+    handleSendComment() {
+      if (!this.$auth.loggedIn) {
+        this.$router.push("/unirse/login");
+      } else {
+        this.modal.rating = true;        
+      }
+    },
+
+    setImgProfile( photo ){
+      const url = this.baseUrl.avatar;            
+        if(!photo){
+          return url + 'avatar-default.png'
+        }else if(photo.startsWith('https://') ){
+          return photo;
+        }else{                
+          return url + photo;
+        }                        
+    }
   },
 
   computed: {
@@ -362,13 +386,17 @@ export default {
     stringAuthors() {
       return this.book.author.map((author) => author.name).join(", ");
     },
-    stringEditorials(){
+    stringEditorials() {
       return this.book.publisher.map((publis) => publis.name).join(", ");
     },
-    stringLenguajes(){
-
+    getComments(){
+      return this.comments.map( item => {
+        item.user.photo = item.user.photo? this.setImgProfile( item.user.photo ): this.setImgProfile( false )
+        return item;
+      })
     }
   },
+
 };
 </script>
 

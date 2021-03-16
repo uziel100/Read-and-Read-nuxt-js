@@ -44,12 +44,7 @@
 
 <script>
 export default {
-    props: ['show'],
-    methods:{
-        input( value ){
-         console.log('input: ',value)
-        }
-    }
+    props: ['show'],   
 };
 </script>
 

@@ -117,48 +117,6 @@
         </v-card>
       </v-col>
     </v-row>
-
-    <!-- <v-dialog
-      v-model="dialog"
-      transition="dialog-top-transition"
-      max-width="600"
-    >
-      <v-card>
-        <v-toolbar color="primary" dark>Recuperación de contraseña</v-toolbar>
-        <p class="text-center my-4">
-          <img width="150px" src="../../assets/img/unirse/mail.svg" />
-        </p>
-        <v-card-text>
-          <v-form class="mt-4" v-model="form2.valid" ref="form2">
-            <p class="my-3">Coloca el correo electronico de tu cuenta</p>
-            <v-text-field
-              label="Correo electronico *"
-              outlined
-              type="email"
-              color="accent"
-              dense
-              required
-              v-model="form2.email"
-              :rules="[form.emailRequired, form.emailRules]"
-            ></v-text-field>
-          </v-form>
-          <p class="text-center text-h6">{{ form2.message }}</p>
-        </v-card-text>
-        <v-card-actions class="justify-end">
-          <v-btn class="text-none" color="error" text @click="dialog = false"
-            >Cerrar</v-btn
-          >
-          <v-btn
-            v-if="form2.status"
-            @click="onForgotPasssword(form2)"
-            :disabled="!form2.valid"
-            class="text-none"
-            color="accent"
-            >Continuar</v-btn
-          >
-        </v-card-actions>
-      </v-card>
-    </v-dialog> -->
   </section>
 </template>
 
@@ -211,14 +169,7 @@ export default {
             val
           ) ||
           "Coloque al menos un numero, una letra minúscula, mayúscula, 1 caracter especial y sin espacios en blanco.",
-      },
-      // form2: {
-      //   valid: false,
-      //   email: "",
-      //   message: "",
-      //   status: true,
-      // },
-      
+      },           
     };
   },
 
@@ -230,12 +181,10 @@ export default {
 
       try {
         this.isLoadingForm(true);
-        const res = await this.$axios.$post("google", { idtoken });
-        console.log(res.user);
+        const res = await this.$axios.$post("google", { idtoken });        
         this.saveUserDataPersist(res);
         this.$router.push("/perfil");
-      } catch (err) {
-        console.log(err);
+      } catch (err) {        
         const msg = err.response
           ? err.response.data.message
           : "Ha ocurrido un error";
