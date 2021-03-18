@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="1" class="pa-3 pl-sm-5 pl-md-6 pt-4">
+  <section>
     <p class="caption">Leidos recientemente</p>
     <v-divider></v-divider>
     <v-row>
@@ -20,7 +20,7 @@
         ></item-book-2>
       </v-col>
     </v-row>
-  </v-card>
+  </section>
 </template>
 
 <script>

@@ -2,7 +2,7 @@
   <v-card elevation="1">
     <v-list dense flat>
       <v-list-item-group color="primary">
-        <v-list-item v-for="(item, idx) in links" :key="idx" link>
+        <v-list-item @click="$emit('formToggle', item.url )" v-for="(item, idx) in links" :key="idx" link>
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -28,14 +28,19 @@ export default {
     return {
       links: [
         {
+          name: "Inicio",
+          icon: "mdi-home",
+          url: "home",
+        },
+        {
           name: "Favoritos",
           icon: "mdi-star",
-          url: "",
+          url: "favorite",
         },
         {
           name: "Lista de deseos",
           icon: "mdi-cards-heart",
-          url: "",
+          url: "wishlist",
         },
       ],
     };
