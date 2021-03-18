@@ -63,6 +63,7 @@ export default {
 
   methods: {
     ...mapActions(["showNotification"]),
+    ...mapActions('user',["setWishList"]),
 
     async handleVerifyCode() {
       this.form.loading = true;
@@ -74,6 +75,8 @@ export default {
         };
         const res = await this.loginNormal(data);
         this.saveUserDataPersist(res.data.user);
+        const list = await this.getWishList( res.data.user._id );                    
+        this.setWishList( list );     
         this.$emit("update:show", false);
         this.$router.push("/perfil");
       } catch (err) {
@@ -95,10 +98,19 @@ export default {
       });
     },
 
+    async getWishList(userId){
+      const res = await this.$axios.$get(`wishlist/user/${ userId }`)
+      return res.data
+    },
+
     saveUserDataPersist(data) {
       this.$auth.$storage.setLocalStorage("_user", data, true);
       this.$auth.setUser(data);
     },
+
+    saveListPersist( data ){
+      this.$auth.$storage.setLocalStorage("_list", data, true);
+    }
   },
 };
 </script>

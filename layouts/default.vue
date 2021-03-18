@@ -5,19 +5,14 @@
       <v-navigation-drawer v-model="drawer" temporary fixed>
         <v-list-item v-if="$auth.loggedIn">
           <v-list-item-avatar>
-            <v-img
-              :src="getImageProfile"
-            ></v-img>
+            <v-img :src="getImageProfile"></v-img>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>{{ $auth.user.email }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-else >
-          <nuxt-link            
-            class="text-decoration-none"
-            to="/unirse/login"
-          >
+        <v-list-item v-else>
+          <nuxt-link class="text-decoration-none" to="/unirse/login">
             <v-btn class="text-none" outlined color="secondary">
               Iniciar sesión
             </v-btn>
@@ -50,7 +45,7 @@
               class="pa-0 ma-0"
               v-for="category in menuCategories"
               :key="category.data.niceName"
-              :to="'/' +  category.subcategories[0].niceName"
+              :to="'/' + category.subcategories[0].niceName"
             >
               <v-list-item class="ml-5" link>
                 <v-list-item-content>
@@ -74,7 +69,7 @@
       <!--  /Navigation left movil -->
 
       <!-- Navbar -->
-      <v-app-bar color="navbar" elevation="3" height="60px" fixed app>         
+      <v-app-bar color="navbar" elevation="3" height="60px" fixed app>
         <v-app-bar-nav-icon
           @click.stop="drawer = !drawer"
           class="ma-0 d-block d-sm-block d-md-none"
@@ -126,7 +121,11 @@
                 </v-btn>
               </template>
               <div class="d-flex">
-                <v-list rounded v-for="(category, i) in menuCategories" :key="i">
+                <v-list
+                  rounded
+                  v-for="(category, i) in menuCategories"
+                  :key="i"
+                >
                   <v-subheader>{{ category.data.name }}</v-subheader>
                   <v-divider></v-divider>
                   <v-list-item
@@ -141,7 +140,7 @@
                         }}</v-btn>
                       </nuxt-link>
                     </v-list-item-content>
-                  </v-list-item>                
+                  </v-list-item>
                 </v-list>
               </div>
             </v-menu>
@@ -152,19 +151,7 @@
               <v-icon color="icons" medium>mdi-cart-outline</v-icon>
             </v-btn>
           </v-badge>
-
-          <v-badge
-            class="d-none d-sm-block"
-            v-if="$auth.loggedIn"
-            left
-            overlap
-            :value="0"
-          >
-            <v-btn text icon>
-              <v-icon color="icons" medium>mdi-heart</v-icon>
-            </v-btn>
-          </v-badge>
-
+          <wishlist v-if="$auth.loggedIn" ></wishlist>        
           <v-btn
             @click="$router.push('/perfil')"
             v-if="$auth.loggedIn"
@@ -173,10 +160,7 @@
             icon
           >
             <v-avatar size="36">
-              <img
-                :src="getImageProfile"
-                alt="John"
-              />
+              <img :src="getImageProfile" alt="John" />
             </v-avatar>
           </v-btn>
 
@@ -185,7 +169,7 @@
             class="text-decoration-none d-none d-sm-block"
             to="/unirse/login"
           >
-            <v-btn              
+            <v-btn
               class="ma-2 text-none d-none d-sm-block"
               outlined
               color="secondary"
@@ -332,7 +316,7 @@
 <script>
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 
-export default {
+export default {  
   name: "Default",
   transition: "home",
   head: {
@@ -349,13 +333,13 @@ export default {
   },
 
   data() {
-    return {
+    return {      
       searchText: "",
       snackbar: {
         active: false,
       },
       hidden: false,
-      drawer: false,                
+      drawer: false,
       fab: false,
       modeTheme: "mdi-white-balance-sunny",
       linksFooter: [
@@ -394,14 +378,13 @@ export default {
   },
 
   computed: {
-    ...mapState(["notification", "categories"]),
-    ...mapGetters(['getImageProfile']),
+    ...mapState(["notification", "categories"]),    
+    ...mapGetters(["getImageProfile"]),
 
-    menuCategories(){          
+    menuCategories() {
       const categories = this.categories;
-      return categories.filter( category => category.subcategories.length , [])           
-    }
-
+      return categories.filter((category) => category.subcategories.length, []);
+    },
   },
 
   methods: {

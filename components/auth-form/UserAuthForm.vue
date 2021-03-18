@@ -175,13 +175,16 @@ export default {
 
   methods: {
     ...mapActions(["showNotification", "setLoggedIn"]),
+    ...mapActions('user',["setWishList"]),    
 
     async onSuccess(googleUser) {
       const idtoken = googleUser.getAuthResponse().id_token;
 
       try {
         this.isLoadingForm(true);
-        const res = await this.$axios.$post("google", { idtoken });        
+        const res = await this.$axios.$post("google", { idtoken });
+        const list = await this.getWishList( res.user._id );              
+        this.setWishList( list );
         this.saveUserDataPersist(res);
         this.$router.push("/perfil");
       } catch (err) {        
@@ -203,6 +206,13 @@ export default {
       this.$auth.strategy.token.set(data.token);
       this.setLoggedIn(true);
     },
+
+    async getWishList(userId){
+      const res = await this.$axios.$get(`wishlist/user/${ userId }`)
+      return res.data
+    },
+
+    
 
     isLoadingForm(value) {
       this.form.loading = value;

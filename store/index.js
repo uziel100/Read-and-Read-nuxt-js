@@ -80,13 +80,16 @@ export const actions = {
       }, 4000);
     },
 
-    async getUserIfLogged({ commit }){      
+    async getUserIfLogged({ commit, dispatch }){      
       if(this.$auth.loggedIn){
         // user logged 
+        const wishlist = await this.$auth.$storage.getLocalStorage('_list');  
         const data = await this.$auth.$storage.getLocalStorage('_user');        
-        await this.$auth.setUser(data)        
+        await this.$auth.setUser( data )  
+        dispatch('user/setWishList', wishlist )      
       }else{
         // clear data for user at localStorage
+        this.$auth.$storage.setLocalStorage('_list', {}, true);
         this.$auth.$storage.setLocalStorage('_user', {}, true);
       }
     },

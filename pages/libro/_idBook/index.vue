@@ -52,9 +52,9 @@
                 </p>
               </div>
 
-              <v-btn class="mt-10 text-none" rounded color="error" dark>
+              <v-btn :loading="loading" @click="ifBookAddedToWishList? '' : handleAddtoWishList()" class="mt-10 text-none" rounded color="error" dark>
                 <v-icon left> mdi-heart </v-icon>
-                Añadir a la lista de deseos
+                {{ ifBookAddedToWishList? 'En lista de deseos' : 'Añadir a la lista de deseos' }}                
               </v-btn>
             </div>
           </v-col>
@@ -258,7 +258,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   head: {
     title: "Un libro es el mejor regalo",
@@ -283,6 +283,7 @@ export default {
       breadcumbs: [],
       show: true,      
       score: [],
+      loading: false,
       modal:{
         rating: false,
       }
@@ -295,6 +296,9 @@ export default {
   },
 
   methods: {
+    ...mapActions(["showNotification"]),
+    ...mapActions('user',["setWishList"]),   
+
     setItemsBreadcumb() {
       const links = [
         {
@@ -361,6 +365,36 @@ export default {
       };
     },
 
+    async handleAddtoWishList(  ){      
+      if ( !this.$auth.loggedIn ) {
+        this.showNotification({ active: true, msg: 'Necesitas tener una cuenta :(', type: "accent" });        
+      }else{
+        try {
+          this.loading = true;
+          const data = await this.addToWishList();                          
+          await this.updateWishList( data.book );
+          this.showNotification({ active: true, msg: data.message, type: "accent" });        
+        } catch (err) {
+          console.log(err)
+           const msg = err.response
+          ? err.response.data.message
+          : "Ha ocurrido un error";
+          this.showNotification({ active: true, type: "error", msg });
+        }finally{
+          this.loading = false;
+        }
+      }
+    },
+
+    async addToWishList(){
+      const data = {
+        userId: this.$auth.user._id,
+        bookId: this.$route.params.idBook
+      }
+      return await this.$axios.$post('wishlist', data);      
+      
+    },
+
     handleSendComment() {
       if (!this.$auth.loggedIn) {
         this.$router.push("/unirse/login");
@@ -378,11 +412,19 @@ export default {
         }else{                
           return url + photo;
         }                        
-    }
+    },
+
+    async updateWishList(){
+      const res = await this.$axios.$get(`wishlist/user/${ this.$auth.user._id }`)
+      this.setWishList( res.data );
+    } 
   },
 
   computed: {
     ...mapState(["baseUrl"]),
+    ...mapState('user',["wishlist"]),
+    ...mapGetters('user',['getWishList']),
+
     stringAuthors() {
       return this.book.author.map((author) => author.name).join(", ");
     },
@@ -394,6 +436,11 @@ export default {
         item.user.photo = item.user.photo? this.setImgProfile( item.user.photo ): this.setImgProfile( false )
         return item;
       })
+    },
+
+    ifBookAddedToWishList(){
+      const bookId = this.$route.params.idBook;
+      return this.getWishList.includes( bookId );
     }
   },
 

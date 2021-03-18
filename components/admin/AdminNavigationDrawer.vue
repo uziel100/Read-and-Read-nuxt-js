@@ -59,6 +59,7 @@ export default {
         ["mdi-account", "Autores", '/admin/author'],
         ["mdi-bookmark", "Editoriales",'/admin/publisher'],
         ["mdi-account", "Usuarios"],
+        ["mdi-account", "Permisos", '/admin/permission'],
         ["mdi-cash", "Ventas"],
       ],
     };
