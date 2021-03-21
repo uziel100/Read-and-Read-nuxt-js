@@ -6,10 +6,11 @@
           <v-divider></v-divider>
         </v-card-text>                          
         <v-row>
-          <v-col cols="6" sm="4" md="3"  v-for="(libro, idx) in 6" :key="idx" >
+          <v-col cols="6" sm="4" md="3"  v-for="(libro, idx) in 1" :key="idx" >
             <item-book-2
               title="Programación"
-              img="https://cdn.vuetifyjs.com/images/cards/road.jpg"            
+              :img="baseUrl.images + 'cover-example-book.jpg'"  
+              to="/perfil/read"          
             ></item-book-2>
           </v-col>
         </v-row>        
@@ -18,12 +19,16 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex'
   export default {
       layout: 'user',
       head: {
         title: "Mis libros",
       },
+
+       computed:{
+      ...mapState(['baseUrl'])
+    }
   }
 </script>
 

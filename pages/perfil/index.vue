@@ -35,8 +35,8 @@ export default {
   },
    data(){
       return{
-        booksReading: [{ title: 'Programación' },{ title: 'Sql desde cero' },{ title: 'Algebra lineal' },{ title: 'Ciencia de datos' }],
-        booksAdded: [{ title: 'Programación' },{ title: 'Sql desde cero' }],
+        booksReading: [{ title: 'Javascript' } ],
+        booksAdded: [{ title: 'Javascript' }],
         section:{
           home: true,
           favorite: false,

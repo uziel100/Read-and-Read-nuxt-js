@@ -6,7 +6,7 @@
       <v-col v-for="(book, idx) in recentlyReadBooks" :key="idx" cols="6" sm="4" md="3">
         <item-book-2
           :title="book.title"
-          img="https://cdn.vuetifyjs.com/images/cards/road.jpg"
+          :img="baseUrl.images + 'cover-example-book.jpg'"
           to="/perfil/read"
         ></item-book-2>
       </v-col>
@@ -17,7 +17,7 @@
       <v-col v-for="(book, idx) in recentlyAddBooks" :key="idx" cols="6" sm="4" md="3">
         <item-book-2
           :title="book.title"
-          img="https://cdn.vuetifyjs.com/images/cards/road.jpg"
+          :img="baseUrl.images + 'cover-example-book.jpg'"
           to="/perfil/read"
         ></item-book-2>
       </v-col>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
     props:{
         recentlyReadBooks: {
@@ -36,6 +37,9 @@ export default {
             type: Array,
             required: true
         }
+    },
+    computed:{
+      ...mapState(['baseUrl'])
     }
 };
 </script>

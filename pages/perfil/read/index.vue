@@ -3,7 +3,7 @@
     <no-ssr>
       <pdf
         style="width: 900px"
-        src="https://d3a1k1s7tqtsjr.cloudfront.net/fileBook/example-book-js.pdf"
+        src="/example-book-js.pdf"
         @num-pages="pageCount = $event"
         @page-loaded="currentPage = $event"
         :page="nextPage"
@@ -67,7 +67,7 @@ export default {
   bottom: 40px;  
   width: 300px;  
   background: #fff;
-  box-shadow: 5px 5px 8px #ccc, 5px 5px 4px #ccc ;
+  box-shadow: 5px 5px 8px #555;
   padding: 10px 5px;
   border-radius: 8px;
   display: flex;
