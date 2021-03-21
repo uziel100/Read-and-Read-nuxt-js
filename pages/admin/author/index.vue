@@ -75,8 +75,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import API from "@/API/index";
-const api = new API();
+
 
 export default {
   layout: "admin",
@@ -84,14 +83,15 @@ export default {
     title: "Autores",
   },
 
-  async asyncData({ error }) {
-    try {
-      const res = await api.list("author");
+  async asyncData({ error, redirect, $axios, $auth }) {
+    try {      
+      $axios.setHeader("token", $auth.strategy.token.get());
+      const authors = await $axios.$get("author");
       return {
-        authors: res.data,
+        authors: authors.data,
       };
     } catch (err) {
-      error({ statusCode: err.response.status });
+      redirect('/admin')      
     }
   },
 
@@ -124,7 +124,7 @@ export default {
       this.loading = true;
       const { name, about } = this.form;
       try {
-        await api.post("author", { name, about });
+        await this.$axios.$post("author", { name, about });
         this.handleLoading({
           time: true,
           active: true,
@@ -151,7 +151,7 @@ export default {
     },
 
     async getAuthors() {
-      const res = await api.list("author");
+      const res = await this.$axios.$get("author");
       this.authors = res.data;
     },
 

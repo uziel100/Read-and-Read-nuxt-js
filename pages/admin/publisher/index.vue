@@ -67,8 +67,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import API from "@/API/index";
-const api = new API();
+
 
 export default {
   layout: "admin",
@@ -76,9 +75,9 @@ export default {
     title: "Editoriales",
   },
 
-   async asyncData({ error }) {
+   async asyncData({ error, $axios }) {
     try {
-      const res = await api.list("publisher");
+      const res = await $axios.$get("publisher");
       return {
         publishers: res.data,
       };
@@ -107,7 +106,7 @@ export default {
       this.loading = true;
       const { name, about } = this.form;      
       try {
-        await api.post("publisher", { name, about });        
+        await this.$axios.$post("publisher", { name, about });        
         this.handleLoading({
           time: true,
           active: true,
@@ -134,7 +133,7 @@ export default {
     },
 
     async getPublisher() {
-      const res = await api.list("publisher");
+      const res = await this.$axios.$get("publisher");
       this.publishers = res.data;
     },
 

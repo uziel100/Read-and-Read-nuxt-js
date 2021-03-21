@@ -98,8 +98,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import API from "@/API/index";
-const api = new API();
+
 
 export default {
   layout: "admin",
@@ -107,9 +106,9 @@ export default {
     title: "Categorias",
   },
 
-  async asyncData({ error }) {
+  async asyncData({ error, $axios }) {
     try {
-      const data = await api.list("category/only");
+      const data = await $axios.$get("category/only");
       return {
         categories: data.categories,
       };
@@ -138,7 +137,7 @@ export default {
     ...mapActions("admin", ["showNotification"]),
 
     async getCategories() {
-      const res = await api.list("category/only");
+      const res = await this.$axios.$get("category/only");
       this.categories = res.categories;
     },
 
@@ -153,9 +152,9 @@ export default {
         type: "accent",
       });
       try {
-        const res = await api.post("category", { name, niceName });
+        const res = await this.$axios.$post("category", { name, niceName });
         const img = await this.uploadImgCategory(res.category._id);
-        const data = await this.$axios.$put("category/" + res.category._id, {
+        await this.$axios.$put("category/" + res.category._id, {
           name,
           niceName,
           img,
@@ -167,28 +166,6 @@ export default {
           msg: "Categoria agregada :)",
           type: "success",
         });
-        this.getCategories();
-        this.clearFields();
-      } catch (err) {
-        const msg = err.response
-          ? err.response.data.message
-          : "Ha ocurrido un error";
-        this.handleLoading({
-          time: true,
-          active: true,
-          progressBar: false,
-          msg,
-          type: "error",
-        });
-      } finally {
-        this.loading = false;
-      }
-    },
-
-    async postCategory() {
-      try {
-        this.loading = true;
-        await api.post("category", this.form);
         this.getCategories();
         this.clearFields();
       } catch (err) {

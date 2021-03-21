@@ -81,8 +81,6 @@
 
 <script>
 import { mapActions  } from 'vuex'
-import API from "@/API/index";
-const api = new API();
 
 export default {
   layout: "admin",
@@ -90,10 +88,10 @@ export default {
     title: "Subcategorias",
   },
 
-  async asyncData({ error }) {
+  async asyncData({ error, $axios }) {
     try {
-      const dataSubcategory = await api.list("subcategory");
-      const dataCategory = await api.list('category/only')
+      const dataSubcategory = await $axios.$get("subcategory");
+      const dataCategory = await $axios.$get('category/only')
       return {
         subcategories: dataSubcategory.subcategories,
         categories: dataCategory.categories
@@ -121,13 +119,13 @@ export default {
     ...mapActions("admin", ["showNotification"]),
 
     async getCategories() {
-      const res = await api.list("subcategory");
+      const res = await this.$axios.$get("subcategory");
       this.subcategories = res.subcategories;
     },
     async postCategory() {
       try {
         this.loading = true;
-        await api.post("subcategory", this.form);
+        await this.$axios.$post("subcategory", this.form);
         this.getCategories();
         this.clearFields();
       } catch (err) {
