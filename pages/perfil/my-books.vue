@@ -1,12 +1,12 @@
 <template>
   <v-container>       
-      <v-card min-height="500px"  elevation="2" class="ma-0">
+      <v-card min-height="500px"  elevation="2" class="pl-3">
         <v-card-text>          
           Todos tus libros          
           <v-divider></v-divider>
         </v-card-text>                          
         <v-row>
-          <v-col class="ma-3" v-for="(libro, idx) in 6" :key="idx" >
+          <v-col cols="6" sm="4" md="3"  v-for="(libro, idx) in 6" :key="idx" >
             <item-book-2
               title="Programación"
               img="https://cdn.vuetifyjs.com/images/cards/road.jpg"            

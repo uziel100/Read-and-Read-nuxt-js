@@ -9,8 +9,7 @@
       <v-row class="d-flex justify-center">
         <v-col cols="12" md="3" d-sm="6" class="mx-auto">
           <v-card class="mt-md-n16 mt-0" elevation="3">
-            <v-card-text>
-              <!-- <v-row justify="center"> -->
+            <v-card-text>              
               <div class="text-center d-block">
                 <v-avatar class="ma-3" size="100">
                   <img
@@ -30,8 +29,7 @@
                   prepend-icon="mdi-camera"
                   v-model="user.img"
                 ></v-file-input>
-              </div>
-              <!-- </v-row> -->
+              </div>              
               <v-row align-content="center" justify="center">
                 <v-chip class="ma-2" color="primary" outlined pill>
                   {{ this.$auth.user.email }}
@@ -63,13 +61,22 @@
               </p>
               <v-row class="d-sm-none">
                 <div class="contenido mt-3 ml-4">
-                  <a href="#"><p class="title--text">Comentarios</p></a>
-                  <a href="#"
-                    ><p class="title--text">Seguridad de la cuenta</p></a
-                  >
-                  <a href="#"><p class="title--text">Metodo de pago</p></a>
-                  <a href="#"><p class="title--text">Privacidad</p></a>
-                  <a href="#"><p class="title--text">Cerrar sesion</p></a>
+                  <v-list>
+                    <v-list-item-group color="indigo">
+                      <v-list-item
+                        v-for="(option, i) in options"
+                        :key="i"
+                        @click="hiddenForm(option.name)"
+                        :disabled="option.disabled"
+                      >
+                        <v-list-item-content>
+                          <v-list-item-title
+                            v-text="option.title"
+                          ></v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-list-item-group>
+                  </v-list>
                 </div>
               </v-row>
             </v-card-text>
@@ -96,6 +103,7 @@
               <form-change-password
                 v-else-if="form.password"
                 :show.sync="form.password"
+                :loading.sync="form.loading"
               >
               </form-change-password>
               <form-view-commets
@@ -123,7 +131,7 @@
                     </v-list-item-content>
                   </v-list-item>
                 </v-list-item-group>
-              </v-list>             
+              </v-list>
             </v-card-text>
           </v-card>
         </v-col>

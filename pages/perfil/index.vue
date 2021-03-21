@@ -49,7 +49,7 @@ export default {
       showSection( name ){ 
         const keysSections = Object.keys( this.section );        
         keysSections.forEach(  sectionName => this.section[sectionName] = (sectionName === name)? true : false )
-      }
+      },   
     }
 };
 </script>
