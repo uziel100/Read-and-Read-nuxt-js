@@ -144,7 +144,7 @@ export default {
 
   data() {
     return {
-      dialog: false,      
+      dialog: false,
       googleSignInParams: {
         client_id:
           "451024139586-ngq240pmq03op37iro4o8d73o64g641f.apps.googleusercontent.com",
@@ -169,13 +169,13 @@ export default {
             val
           ) ||
           "Coloque al menos un numero, una letra minúscula, mayúscula, 1 caracter especial y sin espacios en blanco.",
-      },           
+      },
     };
   },
 
   methods: {
     ...mapActions(["showNotification", "setLoggedIn"]),
-    ...mapActions('user',["setWishList"]),    
+    ...mapActions("user", ["setWishList"]),
 
     async onSuccess(googleUser) {
       const idtoken = googleUser.getAuthResponse().id_token;
@@ -183,11 +183,11 @@ export default {
       try {
         this.isLoadingForm(true);
         const res = await this.$axios.$post("google", { idtoken });
-        const list = await this.getWishList( res.user._id );              
-        this.setWishList( list );
+        const list = await this.getWishList(res.user._id);
+        this.setWishList(list);
         this.saveUserDataPersist(res);
-        this.$router.push("/perfil");
-      } catch (err) {        
+        this.goLayoutByRole(res.user.role);
+      } catch (err) {
         const msg = err.response
           ? err.response.data.message
           : "Ha ocurrido un error";
@@ -207,27 +207,41 @@ export default {
       this.setLoggedIn(true);
     },
 
-    async getWishList(userId){
-      const res = await this.$axios.$get(`wishlist/user/${ userId }`)
-      return res.data
+    async getWishList(userId) {
+      const res = await this.$axios.$get(`wishlist/user/${userId}`);
+      return res.data;
     },
 
-    
+    goLayoutByRole(role) {
+      let layout = "";
+      switch (role) {
+        case "USER_ROLE":
+          layout = "/perfil";
+          break;
+        case "ADMIN_ROLE":
+          layout = "/admin";
+          break;
+        default:
+          layout = "/perfil";
+          break;
+      }
+      this.$router.push(layout);
+    },
 
     isLoadingForm(value) {
       this.form.loading = value;
       this.form.disabled = value;
     },
-    openDialogEmail(){
+    openDialogEmail() {
       this["dialog2"] = false;
       setTimeout(() => {
-        this.dialog = true;      
+        this.dialog = true;
       }, 1000);
     },
 
-    showOptions(){
-      this.$emit('showModalToOptionsRecoverPassword', true)
-    }
+    showOptions() {
+      this.$emit("showModalToOptionsRecoverPassword", true);
+    },
   },
 
   computed: {
@@ -251,15 +265,15 @@ export default {
   text-align: center;
   transition: all 0.3s;
 }
-.hover-pointer{
+.hover-pointer {
   overflow: hidden;
 }
-.hover-pointer:hover{  
-  transition: 300ms;  
-  box-shadow: 3px 3px  rgb(32, 129, 219)  !important;
+.hover-pointer:hover {
+  transition: 300ms;
+  box-shadow: 3px 3px rgb(32, 129, 219) !important;
   cursor: pointer;
 }
-.hover-pointer:hover img{
+.hover-pointer:hover img {
   transform: scale(1.2);
 }
 </style>

@@ -11,6 +11,7 @@
       :title="title"   
       color="cards"
       flat    
+      @click="$router.push( to )"
     >
       <v-img
         :src="img"
@@ -39,6 +40,11 @@ export default {
     img: {
       type: String,
       required: true
+    },
+
+    to: {
+      type: String,
+      required: false
     },
   },
 };

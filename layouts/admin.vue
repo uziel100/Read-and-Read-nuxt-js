@@ -21,17 +21,27 @@
 import { mapActions } from 'vuex'
 
 export default {
-  // middleware: ['is-logged','is-admin-role'],
+  middleware: ['is-logged','is-admin-role'],
   data() {
     return {      
       drawer: true,
     };
   },
   created(){
-    this.getCategories();  
+    this.init();    
   },
   methods: {
-    ...mapActions(["getCategories"]),
+    ...mapActions(["getCategories", "getUserIfLogged"]),
+    async init(){
+      await Promise.all(
+        [
+          this.getCategories(),
+          this.getUserIfLogged()
+        ]
+      );
+      this.$axios.setHeader("token", this.$auth.strategy.token.get());
+    },
+
     activeMenu(value) {
       this.drawer = value;
     },

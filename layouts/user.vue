@@ -19,7 +19,7 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-item link v-for="(item, idx) in menuMovil" :key="idx">
+        <v-list-item @click="$router.push( item.link )" link v-for="(item, idx) in menuMovil" :key="idx">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -141,14 +141,17 @@ export default {
         {
           icon: "mdi-home",
           name: "Inicio",
+          link: routeUser,
         },
         {
           icon: "mdi-star",
           name: "Favoritos",
+          link: routeUser + "/favorite",
         },
         {
           icon: "mdi-heart",
           name: "Lista de deseos",
+          link: routeUser + "/wishlist",
         },
       ],
 

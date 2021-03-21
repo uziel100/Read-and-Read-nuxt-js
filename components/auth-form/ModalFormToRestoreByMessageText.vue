@@ -8,7 +8,9 @@
     <v-card>
       <v-toolbar color="primary" dark>Recuperación de contraseña</v-toolbar>
       <p class="text-center my-4">
-        <img width="150px" src="../../assets/img/unirse/mail.svg" />
+        <img v-if="form.next === 'sms-send'" width="150px" src="../../assets/img/unirse/mail.svg" />
+        <img v-else-if="form.next === 'sms-verify'" width="150px" src="../../assets/img/unirse/mail-code.svg" />
+        <img v-else width="150px" src="../../assets/img/unirse/success.svg" />
       </p>
       <v-card-text>
         <v-form
@@ -65,7 +67,9 @@
         </v-form>
         <div v-else>
           <h3>Se ha restablecido tu contraseña</h3>
-          <p>Nuevo password {{ form.newPassword }}</p>
+          <p>No olvides cambiarlo lo mas pronto posible</p>
+          <p>Nuevo password: </p>
+          <p class="text-center text-h3" >{{ form.newPassword }}</p>
             <v-btn
             class="text-none"
             color="error"

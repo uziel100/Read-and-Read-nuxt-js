@@ -25,6 +25,7 @@
         <item-book-2
           :title="book.bookId.title"
           :img="`${baseUrl.images + book.bookId.imgUrl}`"
+          :to="`/libro/${ book.bookId._id }`"
         ></item-book-2>
       </v-col>
     </v-row>

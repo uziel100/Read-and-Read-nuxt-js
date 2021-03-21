@@ -1,10 +1,10 @@
 <template>
-  <v-navigation-drawer @input="catchEventTouch"  :value="active" touchless app >
+  <v-navigation-drawer @input="catchEventTouch" :value="active" touchless app>
     <v-sheet dark color="primary" class="pa-4">
       <v-avatar class="mb-4" color="grey darken-1" size="64">
-        <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+        <img :src="getImageProfile" alt="Foto de perfil" />
       </v-avatar>
-      <div>Uziel Meliton</div>
+      <div>{{ $auth.user.email }}</div>
     </v-sheet>
 
     <v-divider></v-divider>
@@ -24,7 +24,7 @@
           <v-list-item-title>{{ text }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item link>
+      <v-list-item @click="$auth.logout()" link>
         <v-list-item-icon>
           <v-icon>mdi-logout</v-icon>
         </v-list-item-icon>
@@ -38,42 +38,38 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  props:['active'],
+  props: ["active"],
   data() {
     return {
-        drawer: true,
+      drawer: true,
       links: [
-         [
-          "mdi-home",
-          "Inicio",
-          "/admin"
-        ],
-        [
-          "mdi-book",
-          "libros",
-          '/admin/book', 
-        ],
-        ["mdi-bookmark", "Categorias",'/admin/category'],
-        ["mdi-bookmark", "Subcategorias",'/admin/subcategory'],
-        ["mdi-account", "Autores", '/admin/author'],
-        ["mdi-bookmark", "Editoriales",'/admin/publisher'],
-        ["mdi-account", "Usuarios"],
-        ["mdi-account", "Permisos", '/admin/permission'],
-        ["mdi-cash", "Ventas"],
+        ["mdi-home", "Inicio", "/admin"],
+        ["mdi-book", "Agregar libros", "/admin/book"],
+        ["mdi-book", "Editar libros", "/admin/allBooks"],
+        ["mdi-bookmark", "Categorias", "/admin/category"],
+        ["mdi-bookmark", "Subcategorias", "/admin/subcategory"],
+        ["mdi-account", "Autores", "/admin/author"],
+        ["mdi-bookmark", "Editoriales", "/admin/publisher"],
+        ["mdi-account", "Permisos", "/admin/permission"],
       ],
     };
   },
 
-  methods:{
-    catchEventTouch( value ){      
-      this.$emit('activeDrawer', value)
+  methods: {
+    catchEventTouch(value) {
+      this.$emit("activeDrawer", value);
     },
 
-    goTo(url){
-      this.$router.push(url)
-    }
-  }
+    goTo(url) {
+      this.$router.push(url);
+    },
+  },
+  computed: {
+    ...mapGetters(["getImageProfile"]),
+  },
 };
 </script>
 

@@ -153,7 +153,7 @@
           </v-badge>
           <wishlist v-if="$auth.loggedIn" ></wishlist>        
           <v-btn
-            @click="$router.push('/perfil')"
+            @click="goToLayout($auth.user.role)"
             v-if="$auth.loggedIn"
             class="ml-0 ml-sm-2"
             text
@@ -428,6 +428,22 @@ export default {
     toTop() {
       this.$vuetify.goTo(0);
     },
+
+    goToLayout( role ){
+      let layout = '';
+      switch (role) {
+        case 'USER_ROLE':
+          layout = '/perfil';
+          break;
+        case 'ADMIN_ROLE':
+          layout = '/admin';
+          break;
+        default:
+          layout = '/admin';
+          break;
+      }
+      this.$router.push( layout )
+    }
   },
 };
 </script>

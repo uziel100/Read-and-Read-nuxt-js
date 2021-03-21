@@ -7,6 +7,7 @@
         <item-book-2
           :title="book.title"
           img="https://cdn.vuetifyjs.com/images/cards/road.jpg"
+          to="/perfil/read"
         ></item-book-2>
       </v-col>
     </v-row>
@@ -17,6 +18,7 @@
         <item-book-2
           :title="book.title"
           img="https://cdn.vuetifyjs.com/images/cards/road.jpg"
+          to="/perfil/read"
         ></item-book-2>
       </v-col>
     </v-row>

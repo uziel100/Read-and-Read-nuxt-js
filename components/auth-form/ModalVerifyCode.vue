@@ -78,7 +78,7 @@ export default {
         const list = await this.getWishList( res.data.user._id );                    
         this.setWishList( list );     
         this.$emit("update:show", false);
-        this.$router.push("/perfil");
+        this.goLayoutByRole( res.data.user.role )        
       } catch (err) {
         const msg = err.response
           ? err.response.data.message
@@ -110,6 +110,22 @@ export default {
 
     saveListPersist( data ){
       this.$auth.$storage.setLocalStorage("_list", data, true);
+    },
+
+    goLayoutByRole( role ){
+      let layout = '';
+      switch (role) {
+        case 'USER_ROLE':          
+          layout = '/perfil'
+          break;
+        case 'ADMIN_ROLE':          
+          layout = '/admin'
+          break;
+        default:
+          layout = '/perfil'
+          break;
+      }
+      this.$router.push( layout );
     }
   },
 };

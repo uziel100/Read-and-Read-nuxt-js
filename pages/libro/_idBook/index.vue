@@ -33,6 +33,7 @@
                     size="15px"
                     class="mx-1"
                     dense
+                    half-increments
                   ></v-rating>
                 </div>
                 <p class="white--text d-block mt-0">({{ evaluations  }} calificaciones)</p>
