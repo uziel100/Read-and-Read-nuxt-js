@@ -47,13 +47,14 @@ export default {
       drawer: true,
       links: [
         ["mdi-home", "Inicio", "/admin"],
-        ["mdi-book", "Agregar libros", "/admin/book"],
-        ["mdi-book", "Editar libros", "/admin/allBooks"],
+        ["mdi-notebook", "Agregar libros", "/admin/book"],
+        ["mdi-notebook-edit", "Editar libros", "/admin/allBooks"],
         ["mdi-bookmark", "Categorias", "/admin/category"],
         ["mdi-bookmark", "Subcategorias", "/admin/subcategory"],
         ["mdi-account", "Autores", "/admin/author"],
         ["mdi-bookmark", "Editoriales", "/admin/publisher"],
-        ["mdi-account", "Permisos", "/admin/permission"],
+        ["mdi-account-lock", "Permisos", "/admin/permission"],
+        ["mdi-history", "Logs", "/admin/logging"],
       ],
     };
   },
