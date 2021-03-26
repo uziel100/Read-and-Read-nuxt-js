@@ -3,22 +3,25 @@
     <v-col cols="12" md="4">
       <h1 class="mb-4">{{ title }}</h1>
       <v-sheet :elevation="2" class="pa-5 rounded-lg">
-        <v-form ref="form">
+        <v-form ref="form" v-model="form.valid">
           <v-text-field
             label="Nombre del autor *"
             placeholder="Ej. Uziel Meliton Hernández"
             outlined
             dense
             v-model="form.name"
+            :rules="[form.nameRequired, form.onlyLetters]"
           ></v-text-field>
 
           <v-textarea            
             outlined
             label="Descripción del autor *"
             v-model="form.about"
+            :rules="[form.descriptionRequired]"
           ></v-textarea>
           <v-btn
-            :loading="loading"
+            :loading="loading"            
+            :disabled="!form.valid"
             @click="update ? updateAuthor() : handleSaveAuthor()"
             color="accent"
             class="mr-4"
@@ -74,7 +77,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 
 export default {
@@ -104,6 +107,14 @@ export default {
         id: null,
         name: "",
         about: "",
+        valid: false,
+        disabled: false,
+        nameRequired: (val) => !!val || "Nombre requerido",
+        descriptionRequired: (val) => !!val || "Descripcion obligatoria",
+        onlyLetters: (val) =>
+          /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/.test(
+            val
+          ) || "Solo letras",
       },
     };
   },
@@ -116,9 +127,11 @@ export default {
       return value;
     }
   },
-
+  computed:{
+    ...mapState('admin',['collection'])
+  },
   methods: {
-    ...mapActions("admin", ["showNotification"]),
+    ...mapActions("admin", ["showNotification", "setAuthor"]),
 
     async handleSaveAuthor() {
       this.loading = true;
@@ -153,13 +166,14 @@ export default {
     async getAuthors() {
       const res = await this.$axios.$get("author");
       this.authors = res.data;
+      this.setAuthor( res.data )
     },
 
     async updateAuthor() {
       try {
         this.loading = true;
         const { name, about, id } = this.form;
-        await this.$axios.$put(`author/${id}`, { name, about });
+        await this.$axios.$put(`author/${id}`, { name, about });        
         this.handleLoading({
           time: true,
           active: true,
@@ -212,6 +226,7 @@ export default {
       this.form.id = "";
       this.form.name = "";
       this.form.about = "";
+      this.$refs.form.resetValidation();
     },
 
     setDataInForm(data) {

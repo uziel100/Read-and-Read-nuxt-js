@@ -3,16 +3,18 @@
     <v-col cols="12" md="4">
       <h1 class="mb-4">{{ title }}</h1>
       <v-sheet :elevation="2" class="pa-5 rounded-lg">
-        <v-form ref="form">
+        <v-form ref="form" v-model="form.valid">
           <v-text-field
             label="Nombre de la editorial"
             placeholder="Ej. ALFAOMEGA"
             outlined
             dense
             v-model="form.name"
+            :rules="[ form.fileRequired ]"
           ></v-text-field>          
           <v-btn
             :loading="loading"
+            :disabled="!form.valid"
             @click="update ? updatePublisher() : handleSavePublisher()"
             color="accent"
             class="mr-4"
@@ -89,17 +91,19 @@ export default {
   data() {
     return {
       loading: false,
-      title: "Autores",
+      title: "Editoriales",
       update: false,
       form: {
         id: null,
-        name: '',                       
+        name: '',   
+        fileRequired: (v) => !!v || "Campo requerido",
+        valid: false,                    
       },
     };
   },
 
   methods: {
-    ...mapActions("admin", ["showNotification"]),
+    ...mapActions("admin", ["showNotification","setPublisher"]),
 
 
     async handleSavePublisher() {
@@ -135,6 +139,7 @@ export default {
     async getPublisher() {
       const res = await this.$axios.$get("publisher");
       this.publishers = res.data;
+      this.setPublisher( res.data )
     },
 
     async updatePublisher() {
@@ -192,7 +197,8 @@ export default {
 
     clearFields() {
       this.form.id = "";
-      this.form.name = "";       
+      this.form.name = "";  
+      this.$refs.form.resetValidation();    
     },
 
     setDataInForm(data) {

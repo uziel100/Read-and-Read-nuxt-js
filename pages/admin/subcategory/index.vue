@@ -3,13 +3,14 @@
     <v-col cols="12" md="4">
       <h1 class="mb-4">{{ title }}</h1>
       <v-sheet :elevation="2" class="pa-5 rounded-lg">
-        <v-form ref="form">
+        <v-form ref="form" v-model="form.valid">
           <v-text-field
             label="Nombre"
             placeholder="Ej: Programación funcional"
             outlined
             dense
             v-model="form.name"
+            :rules="[ form.fieldRequired ]"
           ></v-text-field>
           <v-text-field
             label="Url"
@@ -17,6 +18,7 @@
             outlined
             dense
             v-model="form.niceName"
+            :rules="[ form.fieldRequired ]"
           ></v-text-field>
           <v-autocomplete
             label="Categoria"
@@ -26,8 +28,10 @@
             outlined
             dense
             v-model="form.category"
+            :rules="[ form.fieldRequired ]"
           ></v-autocomplete>
           <v-btn
+            :disabled="!form.valid"
             :loading="loading"
             @click="update ? updateCategory() : postCategory()"
             color="accent"
@@ -110,8 +114,11 @@ export default {
         id: null,
         name: "",
         niceName: "",
-        category: '',
-      },
+        category: '',        
+        fieldRequired: (val) => !!val || "Campo requerido",
+        valid: false,
+      },      
+
     };
   },
 
@@ -183,6 +190,7 @@ export default {
     clearFields() {
       this.form.name = "";
       this.form.niceName = "";
+      this.$refs.form.resetValidation();
     },
 
     setDataInForm(data) {

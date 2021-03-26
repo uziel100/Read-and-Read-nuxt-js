@@ -3,13 +3,14 @@
     <v-col cols="12" md="4">
       <h1 class="mb-4">{{ title }}</h1>
       <v-sheet :elevation="2" class="pa-5 rounded-lg">
-        <v-form ref="form">
+        <v-form ref="form" v-model="form.valid">
           <v-text-field
             label="Nombre"
             placeholder="Ej. Programación funcional"
             outlined
             dense
             v-model="form.name"
+            :rules="[form.fieldRequired, form.onlyLetters]"
           ></v-text-field>
           <v-text-field
             label="Url"
@@ -17,6 +18,7 @@
             outlined
             dense
             v-model="form.niceName"
+            :rules="[form.fieldRequired]"
           ></v-text-field>
           <p class="text-caption ma-0" v-if="update">
             Solo si deseas cambiar la imagen
@@ -24,17 +26,19 @@
           <v-file-input
             chips
             truncate-length="16"
-            accept="image/*"
+            accept="image/jpg, image/png, image/jpeg"
             outlined
             label="Imagen de portada"
             v-model="form.file"
             dense
+            :rules="!update? [form.fileValid]: []" 
           ></v-file-input>
           <p class="text-center">
-            <img width="150px" src="" id="img-demo" />
+            <img  width="150px" src="" id="img-demo" />
           </p>
           <v-btn
             :loading="loading"
+            :disabled="!form.valid"
             @click="update ? updateCategory() : handleSaveCategory()"
             color="accent"
             class="mr-4"
@@ -99,7 +103,6 @@
 <script>
 import { mapActions, mapState } from "vuex";
 
-
 export default {
   layout: "admin",
   head: {
@@ -129,7 +132,15 @@ export default {
         niceName: "",
         file: null,
         loadingImg: "",
+        fieldRequired: (val) => !!val || "Campo requerido",
+        onlyLetters: (val) =>
+          /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/.test(
+            val
+          ) || "Solo letras",
+        fileValid: v => !!v || "Solo imagenes: png, jpg, jpeg",  
+        valid: false,      
       },
+      filesValid: false,
     };
   },
 
@@ -219,6 +230,7 @@ export default {
         });
         this.getCategories();
         this.clearFields();
+        this.update = false;
       } catch (err) {
         const msg = err.response
           ? err.response.data.message
@@ -265,6 +277,7 @@ export default {
       this.form.file = null;
       const output = document.getElementById("img-demo");
       output.src = "";
+      this.$refs.form.resetValidation();
     },
 
     setDataInForm(data) {
@@ -285,6 +298,7 @@ export default {
         }, 4000);
       }
     },
+    
   },
 
   computed: {
@@ -293,16 +307,18 @@ export default {
 
   watch: {
     "form.file"(value) {
-      const output = document.getElementById("img-demo");
-      if (value) {
-        const reader = new FileReader();
-        reader.onload = function () {
-          const dataURL = reader.result;
-          output.src = dataURL;
-        };
-        reader.readAsDataURL(value);
-      } else {
-        output.src = "";
+      const typesValids = ["image/png", "image/jpg", "image/jpeg"];      
+      const output = document.getElementById("img-demo"); 
+      output.src = "";
+      if ( value ) {       
+        if ( typesValids.includes( value.type )) {
+          const reader = new FileReader();
+          reader.onload = function () {
+            const dataURL = reader.result;
+            output.src = dataURL;
+          };
+          reader.readAsDataURL(value);                   
+        }
       }
     },
   },

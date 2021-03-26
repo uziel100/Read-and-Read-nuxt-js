@@ -1,185 +1,199 @@
 <template>
-  <div>
-    <v-row class="justify-center">
-      <v-col cols="12" md="5">
-        <h1 class="mb-4">Actualiza la información</h1>
-        <v-sheet :elevation="6" class="pa-5 rounded-lg">
-          <v-form ref="form">
-            <v-text-field
-              label="ISBN"
-              placeholder="Escribe el codigo ISBN"
-              outlined
-              v-model="form.ISBN"
-              dense
-            ></v-text-field>
+  <v-row class="justify-center">
+    <v-col cols="12" md="5">
+      <h1 class="mb-4">Actualiza la información</h1>
+      <v-sheet :elevation="6" class="pa-5 rounded-lg">
+        <v-form ref="form" v-model="form.valid">
+          <v-text-field
+            label="ISBN"
+            placeholder="Escribe el codigo ISBN"
+            outlined
+            v-model="form.ISBN"
+            dense
+            :rules="[form.fileRequired]"
+          ></v-text-field>
 
-            <v-text-field
-              label="Titulo"
-              placeholder="Escribe el titulo del libro"
-              outlined
-              dense
-              v-model="form.title"
-            ></v-text-field>
+          <v-text-field
+            label="Titulo"
+            placeholder="Escribe el titulo del libro"
+            outlined
+            dense
+            v-model="form.title"
+            :rules="[form.fileRequired]"
+          ></v-text-field>
 
-            <v-textarea
-              label="Resumen"
-              placeholder="Resumén del libro"
-              outlined
-              v-model="form.summary"
-              dense
-            ></v-textarea>
+          <v-textarea
+            label="Resumen"
+            placeholder="Resumén del libro"
+            outlined
+            v-model="form.summary"
+            dense
+            :rules="[form.fileRequired]"
+          ></v-textarea>
 
-            <v-select
-              :items="languajes"
-              label="Idioma"
-              placeholder="Selecciona idioma"
-              dense
-              outlined
-              item-text="name"
-              item-value="_id"
-              v-model="form.lang"
-            ></v-select>
+          <v-select
+            :items="collection.languaje"
+            label="Idioma"
+            placeholder="Selecciona idioma"
+            dense
+            outlined
+            item-text="name"
+            item-value="_id"
+            v-model="form.lang"
+            :rules="[form.fileRequired]"
+          ></v-select>
 
-            <v-text-field
-              label="Num. Páginas"
-              placeholder="Escribe un numero"
-              outlined
-              dense
-              v-model.number="form.numPages"
-            ></v-text-field>
+          <v-text-field
+            label="Num. Páginas"
+            placeholder="Escribe un numero"
+            outlined
+            dense
+            v-model.number="form.numPages"
+            type="number"
+            :rules="[form.fileRequired]"
+          ></v-text-field>
 
-            <v-text-field
-              label="Tamaño del archivo (MB, KB)"
-              placeholder="Ejemplo: 4.5MB"
-              outlined
-              dense
-              v-model="form.sizeFile"
-            ></v-text-field>
+          <v-text-field
+            label="Tamaño del archivo (MB, KB)"
+            placeholder="Ejemplo: 4.5MB"
+            outlined
+            dense
+            v-model="form.sizeFile"
+            :rules="[form.fileRequired]"
+          ></v-text-field>
 
-            <v-text-field
-              label="Precio"
-              placeholder="Ejemplo: 199.99"
-              outlined
-              dense
-              v-model.number="form.price"
-            ></v-text-field>
+          <v-text-field
+            label="Precio"
+            placeholder="Ejemplo: 199.99"
+            outlined
+            dense
+            v-model.number="form.price"
+            :rules="[form.fileRequired]"
+            type="number"
+          ></v-text-field>
 
-            <v-autocomplete
-              label="Autor(s)"
-              placeholder="Selecciona autores"
-              :items="authors"
-              item-text="name"
-              item-value="_id"
-              outlined
-              multiple
-              small-chips
-              dense
-              v-model="form.author"
-            ></v-autocomplete>
+          <v-autocomplete
+            label="Autor(s)"
+            placeholder="Selecciona autores"
+            :items="collection.author"
+            item-text="name"
+            item-value="_id"
+            outlined
+            multiple
+            small-chips
+            dense
+            v-model="form.author"
+            :rules="[form.fileRequired]"
+          ></v-autocomplete>
 
-            <v-autocomplete
-              label="Editorial(s)"
-              class="pt-3"
-              placeholder="Selecciona editorial"
-              :items="publishers"
-              item-text="name"
-              item-value="_id"
-              outlined
-              multiple
-              dense
-              small-chips
-              v-model="form.publisher"
-            ></v-autocomplete>
+          <v-autocomplete
+            label="Editorial(s)"
+            class="pt-3"
+            placeholder="Selecciona editorial"
+            :items="collection.publisher"
+            item-text="name"
+            item-value="_id"
+            outlined
+            multiple
+            dense
+            small-chips
+            v-model="form.publisher"
+            :rules="[form.fileRequired]"
+          ></v-autocomplete>
 
-            <v-autocomplete
-              label="Categoria"
-              :items="categories"
-              item-text="data.name"
-              item-value="data._id"
-              outlined
-              dense
-              v-model="form.category"
-            ></v-autocomplete>
+          <v-autocomplete
+            label="Categoria"
+            :items="categories"
+            item-text="data.name"
+            item-value="data._id"
+            outlined
+            dense
+            v-model="form.category"
+            :rules="[form.fileRequired]"
+          ></v-autocomplete>
 
-            <v-autocomplete
-              label="Subcategoria"
-              :items="subcategories"
-              item-text="name"
-              item-value="_id"
-              outlined
-              dense
-              v-model="form.subCategory"
-            ></v-autocomplete>
-            
-                <v-file-input
-                :loading="loadingImg"
-                chips
-                truncate-length="16"
-                accept="image/*"
-                outlined
-                label="Solo si quiere cambiar la imagen"
-                v-model="file"
-                ></v-file-input>                            
+          <v-autocomplete
+            label="Subcategoria"
+            :items="subcategories"
+            item-text="name"
+            item-value="_id"
+            outlined
+            dense
+            v-model="form.subCategory"
+            :rules="[form.fileRequired]"
+          ></v-autocomplete>
+          <v-file-input
+            :loading="loadingImg"
+            chips
+            truncate-length="16"
+            accept="image/*"
+            outlined
+            label="Solo si quiere cambiar la imagen"
+            v-model="file"
+          ></v-file-input>
 
-            <v-file-input
-              chips
-              truncate-length="16"
-              outlined
-              label="Solo si quiere cambiar el archivo"
-              v-model="fileBook"
-            ></v-file-input>
+          <v-file-input
+            chips
+            truncate-length="16"
+            outlined
+            label="Solo si quiere cambiar el archivo"
+            v-model="fileBook"
+          ></v-file-input>
 
-            <v-btn @click="handleUpload" color="accent" class="mr-4"
-              >Actualizar</v-btn
-            >
-          </v-form>
-        </v-sheet>
-      </v-col>
-      <v-col>
-        <v-simple-table fixed-header width="200px" height="300px">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">ISBN</th>
-                <th class="text-left">Titulo</th>
-                <th class="text-left">Precio</th>
-                <th class="text-left">Categoria</th>
-                <th class="text-left">Autor(s)</th>
-                <th class="text-left">Opciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="book in books" :key="book._id">
-                <th>{{ book.ISBN }}</th>
-                <th>{{ book.title }}</th>
-                <th>{{ book.price }}</th>
-                <th>
-                  {{ book.category.name }}
-                  <br />
-                  - {{ book.subCategory.name }}
-                </th>
-                <th>
-                  {{ book.author.map((author) => author.name).join(", ") }}
-                </th>
-                <th>
-                  <v-btn
-                    @click="setDataInForm(book)"
-                    color="primary"
-                    class="mr-2"
-                    fab
-                    small
-                    dark
-                  >
-                    <v-icon>mdi-pencil</v-icon>
-                  </v-btn>
-                </th>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </v-col>
-    </v-row>
-  </div>
+          <v-btn
+            :disabled="!form.valid"
+            @click="handleUpload"
+            color="accent"
+            class="mr-4"
+            >Actualizar</v-btn
+          >
+        </v-form>
+      </v-sheet>
+    </v-col>
+    <v-col>
+      <v-simple-table fixed-header width="200px" height="300px">
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">ISBN</th>
+              <th class="text-left">Titulo</th>
+              <th class="text-left">Precio</th>
+              <th class="text-left">Categoria</th>
+              <th class="text-left">Autor(s)</th>
+              <th class="text-left">Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="book in books" :key="book._id">
+              <th>{{ book.ISBN }}</th>
+              <th>{{ book.title }}</th>
+              <th>{{ book.price }}</th>
+              <th>
+                {{ book.category.name }}
+                <br />
+                - {{ book.subCategory.name }}
+              </th>
+              <th>
+                {{ book.author.map((author) => author.name).join(", ") }}
+              </th>
+              <th>
+                <v-btn
+                  @click="setDataInForm(book)"
+                  color="primary"
+                  class="mr-2"
+                  fab
+                  small
+                  dark
+                >
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </th>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -193,14 +207,8 @@ export default {
   async asyncData({ error, redirect, $axios, store }) {
     try {
       const books = await $axios.$get("book");
-      const languaje = await $axios.$get("languaje");
-      const authors = await $axios.$get("author");
-      const publishers = await $axios.$get("publisher");
 
       return {
-        languajes: languaje.data,
-        authors: authors.data,
-        publishers: publishers.data,
         books: books.books,
       };
     } catch (err) {
@@ -224,7 +232,9 @@ export default {
         author: null,
         publisher: null,
         category: null,
-        subCategory: null,        
+        subCategory: null,
+        fileRequired: (v) => !!v || "Campo requerido",
+        valid: false,
       },
       chagedImg: false,
       chagedFile: false,
@@ -236,6 +246,7 @@ export default {
   },
   computed: {
     ...mapState(["categories"]),
+    ...mapState("admin", ["collection"]),
   },
   methods: {
     ...mapActions("admin", ["showNotification"]),
@@ -255,17 +266,20 @@ export default {
       this.form.subCategory = book.subCategory._id;
     },
 
-    clearFields(){
-      this.form.id = null
-      this.form.ISBN = null
-      this.form.title = null
-      this.form.summary = null
-      this.form.lang = null
-      this.form.numPages = null
-      this.form.sizeFile = null
-      this.form.price = null
-      this.form.author = null
-      this.form.publisher = null         
+    clearFields() {
+      this.form.id = null;
+      this.form.ISBN = null;
+      this.form.title = null;
+      this.form.summary = null;
+      this.form.lang = null;
+      this.form.numPages = null;
+      this.form.sizeFile = null;
+      this.form.price = null;
+      this.form.author = null;
+      this.form.publisher = null;
+      this.file = null;
+      this.fileBook = null;
+      this.$refs.form.resetValidation();
     },
 
     async handleUpload() {
@@ -279,17 +293,18 @@ export default {
         });
         const { id } = this.form;
         await this.updateBook(id, this.form);
-        let imgUrl = null, fileName = null;
-        if(this.file){
-            imgUrl = await this.uploadImgCoverBook( id );            
+        let imgUrl = null,
+          fileName = null;
+        if (this.file) {
+          imgUrl = await this.uploadImgCoverBook(id);
         }
-        if(this.fileBook){            
-           fileName = await this.uploadFileBook( id );   
+        if (this.fileBook) {
+          fileName = await this.uploadFileBook(id);
         }
-        if(this.fileName || this.file){
-            await this.updateBookFile ( id, { imgUrl, fileName });
+        if (this.fileName || this.file) {
+          await this.updateBookFile(id, { imgUrl, fileName });
         }
-    
+
         this.handleLoading({
           time: true,
           active: true,
@@ -297,13 +312,16 @@ export default {
           msg: "Libro actualizado :)",
           type: "accent",
         });
-        this.clearFields()
+        this.clearFields();
       } catch (err) {
+        const msg = err.response
+          ? err.response.data.message
+          : "Ha ocurrido un error";
         this.handleLoading({
           time: true,
           active: true,
           progressBar: false,
-          msg: "Libro no agregado :(",
+          msg,
           type: "error",
         });
       }
@@ -354,7 +372,7 @@ export default {
       return res.urlName;
     },
 
-     async updateBook(id, data) {
+    async updateBook(id, data) {
       return await this.$axios.$put(`book/${id}`, data);
     },
 
