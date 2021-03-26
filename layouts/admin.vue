@@ -10,8 +10,8 @@
     ></admin-bar-header>
     <v-main>
       <v-container class="py-6 px-6">
-        <admin-notification-bar></admin-notification-bar>
-        <nuxt></nuxt>
+        <admin-notification-bar></admin-notification-bar>      
+          <nuxt></nuxt>        
       </v-container>
     </v-main>
   </v-app>
@@ -32,14 +32,17 @@ export default {
   },
   methods: {
     ...mapActions(["getCategories", "getUserIfLogged"]),
+    ...mapActions('admin', ["initCollections"]),
+
     async init(){
+      this.$axios.setHeader("token", this.$auth.strategy.token.get());
       await Promise.all(
         [
           this.getCategories(),
-          this.getUserIfLogged()
+          this.getUserIfLogged(),
+          this.initCollections()
         ]
       );
-      this.$axios.setHeader("token", this.$auth.strategy.token.get());
     },
 
     activeMenu(value) {
