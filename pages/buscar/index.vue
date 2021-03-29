@@ -128,7 +128,7 @@ export default {
         const books = res.books;
         return {
           books,
-          authors: resAuthor.authors,
+          authors: resAuthor.data,
         };
       } catch (err) {
         error({ statusCode: err.response.status });
