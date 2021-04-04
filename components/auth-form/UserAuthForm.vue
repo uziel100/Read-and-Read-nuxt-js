@@ -41,6 +41,7 @@
                 required
                 v-model="form.email"
                 :rules="[form.emailRequired, form.emailRules]"
+                name="email"
               ></v-text-field>
 
               <v-text-field
@@ -55,6 +56,8 @@
                 :type="form.show ? 'text' : 'password'"
                 :rules="[form.passwordRules]"
                 required
+                name="password"
+                autocomplete="on"
               ></v-text-field>
               <v-text-field
                 v-if="!isLogin"
@@ -72,6 +75,8 @@
                   form.passwordPattern,
                 ]"
                 required
+                name="new-password"
+                autocomplete="on"
               ></v-text-field>
 
               <v-text-field
@@ -86,6 +91,8 @@
                 required
                 :rules="[form.passwordRules, form.passwordMatch]"
                 v-model="form.confirmPassword"
+                name="confirm-password"
+                autocomplete="on"
               ></v-text-field>
 
               <v-btn
