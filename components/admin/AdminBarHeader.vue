@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app color="primary">      
     <v-app-bar-nav-icon
-      @click="activeDrawer"
+      @click="activeDrawerBar"
       class="ma-2"
       dark
     ></v-app-bar-nav-icon>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  props: ['active'],
+  props: ['activeDrawer'],
   data() {
     return {
       drawer: true,      
@@ -18,9 +18,8 @@ export default {
     };
   },
   methods: {
-    activeDrawer(){
-      const value = !this.active;
-      this.$emit('activeDrawer', value )
+    activeDrawerBar(){      
+      this.$emit('update:activeDrawer', !this.activeDrawer )
     }
   },
 };

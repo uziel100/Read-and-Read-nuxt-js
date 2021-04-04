@@ -61,7 +61,7 @@ export default {
 
   methods: {
     catchEventTouch(value) {
-      this.$emit("activeDrawer", value);
+      this.$emit("update:active", value);
     },
 
     goTo(url) {

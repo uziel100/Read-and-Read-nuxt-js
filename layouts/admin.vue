@@ -1,12 +1,10 @@
 <template>
   <v-app id="inspire">
-    <admin-navigation-drawer
-      @activeDrawer="activeMenu"
-      :active="drawer"
+    <admin-navigation-drawer      
+      :active.sync="drawer"
     ></admin-navigation-drawer>
     <admin-bar-header
-      @activeDrawer="activeMenu"
-      :active="drawer"
+      :activeDrawer.sync="drawer"      
     ></admin-bar-header>
     <v-main>
       <v-container class="py-6 px-6">
