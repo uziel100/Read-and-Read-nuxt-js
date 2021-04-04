@@ -1,88 +1,7 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" temporary fixed>
-      <v-list color="primary">
-        <v-list-item>
-          <v-list-item-avatar>
-            <v-img
-              :src="getImageProfile"
-            ></v-img>
-          </v-list-item-avatar>
-        </v-list-item>
-        <v-list-item link dark>
-          <v-list-item-content>
-            <v-list-item-title>Bienvenido</v-list-item-title>
-            <v-list-item-subtitle>{{ this.$auth.user.email  }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <v-divider></v-divider>
-
-      <v-list dense>
-        <v-list-item @click="$router.push( item.link )" link v-for="(item, idx) in menuMovil" :key="idx">
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>{{ item.name }}</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item @click="$auth.logout()" link>
-          <v-list-item-icon>
-            <v-icon>mdi-logout</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Cerrar sesión</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar color="navbar" app flat>
-      <v-app-bar-nav-icon
-        @click.stop="drawer = !drawer"
-        class="ma-0 d-block d-sm-block d-md-none"
-      ></v-app-bar-nav-icon>
-
-      <v-spacer class="d-block d-sm-block d-md-none"></v-spacer>
-
-      <nuxt-link to="/">
-        <img
-          width="160px"
-          :src="$vuetify.theme.dark ? '/img/logo-ligth.png' : '/img/logo.svg'"
-          alt="logotipo"
-          class="d-none d-sm-none d-md-block"
-        />
-        <p class="d-block d-sm-block d-md-none text-h6 font-weight-bold mt-4">
-          Read&Read
-        </p>
-      </nuxt-link>
-
-      <v-tabs
-        class="d-none d-sm-none d-md-block ml-n9"
-        centered
-        color="primary"
-      >
-        <v-tab
-          class="text-none font-weight-bold"
-          @click="goTo(item.link)"
-          v-for="item in links"
-          :key="item.link"
-        >
-          {{ item.name }}
-        </v-tab>
-      </v-tabs>
-
-      <v-spacer class="d-block d-sm-block d-md-none"></v-spacer>
-
-      <v-badge left overlap :value="0" class="mr-0 mr-sm-2 mr-md-2">
-        <v-btn text icon>
-          <v-icon color="icons" medium>mdi-cart-outline</v-icon>
-        </v-btn>
-      </v-badge>
-
-      <v-btn class="ml-2" text icon>
-        <v-avatar size="32">
-          <img :src="getImageProfile" :alt="'Foto de perfil del usuario con el email ' + $auth.user.email" />
-        </v-avatar>
-      </v-btn>
-    </v-app-bar>
+    <user-drawer-navigation :show.sync="drawer" ></user-drawer-navigation>
+    <user-navbar :showDrawer.sync="drawer" ></user-navbar>  
 
     <v-main class="backgrounduser">
       <!-- Notificacion -->
@@ -114,7 +33,7 @@
 
 <script>
 import { mapActions, mapMutations, mapState, mapGetters } from 'vuex'
-let routeUser = "/perfil";
+
 export default {
   middleware: ['is-logged', 'is-user-role'],
   transition: "home",
@@ -122,39 +41,7 @@ export default {
   data() {
     return {
       drawer: false,
-      links: [
-        {
-          name: "Inicio",
-          link: routeUser,
-        },
-        {
-          name: "Tus libros",
-          link: routeUser + "/my-books",
-        },
-        {
-          name: "Perfil",
-          link: routeUser + "/informacion",
-        },
-      ],
-
-      menuMovil: [
-        {
-          icon: "mdi-home",
-          name: "Inicio",
-          link: routeUser,
-        },
-        {
-          icon: "mdi-star",
-          name: "Favoritos",
-          link: routeUser + "/favorite",
-        },
-        {
-          icon: "mdi-heart",
-          name: "Lista de deseos",
-          link: routeUser + "/wishlist",
-        },
-      ],
-
+     
       menuLinks: [
         {
           icon: "mdi-home",
@@ -194,7 +81,7 @@ export default {
 
   methods: {
     ...mapMutations(['setNotification']),
-    ...mapActions(['showNotification','getUserIfLogged']),
+    ...mapActions(['getUserIfLogged']),
    
     async init(){
       await this.getUserIfLogged()     
