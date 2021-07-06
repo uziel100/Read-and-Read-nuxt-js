@@ -18,7 +18,14 @@
             md="8"
           >
             <h1
-              class="text-lg-h4 text-xs-h7 font-weight-black white--text text-center text-sm-left mb-4 d-none d-md-block"
+              class="
+                text-lg-h4 text-xs-h7
+                font-weight-black
+                white--text
+                text-center text-sm-left
+                mb-4
+                d-none d-md-block
+              "
             >
               {{ book.title }}
             </h1>
@@ -36,7 +43,9 @@
                     half-increments
                   ></v-rating>
                 </div>
-                <p class="white--text d-block mt-0">({{ evaluations  }} calificaciones)</p>
+                <p class="white--text d-block mt-0">
+                  ({{ evaluations }} calificaciones)
+                </p>
               </div>
               <div class="text-center text-md-left">
                 <p class="white--text">
@@ -53,9 +62,22 @@
                 </p>
               </div>
 
-              <v-btn :loading="loading" @click="ifBookAddedToWishList? '' : handleAddtoWishList()" class="mt-10 text-none" rounded color="error" dark>
+              <v-btn
+                :loading="loading"
+                @click="hasBook ? null : ifBookAddedToWishList ? null : handleAddtoWishList()"
+                class="mt-10 text-none"
+                rounded
+                color="error"
+                dark
+              >
                 <v-icon left> mdi-heart </v-icon>
-                {{ ifBookAddedToWishList? 'En lista de deseos' : 'Añadir a la lista de deseos' }}                
+                {{
+                  hasBook
+                    ? "Ya compraste este libro"
+                    : ifBookAddedToWishList
+                      ? "En lista de deseos"
+                      : "Añadir a la lista de deseos"
+                }}
               </v-btn>
             </div>
           </v-col>
@@ -66,7 +88,14 @@
             class="text-center order-0 order-md-1"
           >
             <h1
-              class="text-h5 font-weight-black white--text text-center mb-4 d-block d-md-none"
+              class="
+                text-h5
+                font-weight-black
+                white--text
+                text-center
+                mb-4
+                d-block d-md-none
+              "
             >
               {{ book.title }}
             </h1>
@@ -85,8 +114,12 @@
                     >$ {{ book.price }} MX</v-card-title
                   >
                 </v-card-text>
-                <v-btn color="error" dark class="text-none" block
-                  >Agregar al carrito</v-btn
+                <v-btn
+                  color="error"                  
+                  class="text-none"
+                  block
+                  @click="!hasBook? handleAddProductCart(book._id) : $router.push(`/perfil/read/${ book.fileName }`) "
+                  >{{ !hasBook? 'Agregar al carrito' : 'Leer libro'  }}</v-btn
                 >
               </v-card>
             </div>
@@ -210,12 +243,16 @@
         <v-col class="pt-2 pt-md-10" cols="12" sm="12" md="8">
           <v-card class="py-6" v-if="!evaluations" color="cards" flat>
             <div class="ml-3">
-              <p class="title--text ma-0">
-                No hay ningún comentario
-              </p>
+              <p class="title--text ma-0">No hay ningún comentario</p>
             </div>
           </v-card>
-          <v-card v-else color="cards" v-for="comment in getComments" :key="comment._id" flat>
+          <v-card
+            v-else
+            color="cards"
+            v-for="comment in getComments"
+            :key="comment._id"
+            flat
+          >
             <v-card-text>
               <div class="d-flex">
                 <v-avatar>
@@ -254,7 +291,11 @@
         </v-col>
       </v-row>
     </v-container>
-    <modal-book-rating @updateComment="update" :scoreAll="book.score" :show.sync="modal.rating"></modal-book-rating>
+    <modal-book-rating
+      @updateComment="update"
+      :scoreAll="book.score"
+      :show.sync="modal.rating"
+    ></modal-book-rating>
   </div>
 </template>
 
@@ -265,29 +306,36 @@ export default {
     title: "Un libro es el mejor regalo",
   },
 
-  async asyncData({ $axios, route, error }) {
+  async asyncData({ $axios, route, error, $auth }) {
     try {
       const res = await $axios.$get(`book/${route.params.idBook}`);
-      const comments = await $axios.$get(`comment/book/${route.params.idBook}`);      
+      const comments = await $axios.$get(`comment/book/${route.params.idBook}`); 
+      let requestBook = null;
+      if($auth.loggedIn){
+        requestBook = await $axios.$get(`user/book/${route.params.idBook}`); 
+      } 
+                 
       return {
         book: res.book,
         comments: comments.data,
         evaluations: comments.data.length,
+        hasBook: requestBook?.hasBook || false
       };
-    } catch (err) {
-      error({ statusCode: err.response.status });
+    } catch (err) {      
+      const code = err.response?.status || 500
+      error({ statusCode: code });
     }
   },
 
   data() {
     return {
       breadcumbs: [],
-      show: true,      
+      show: true,
       score: [],
       loading: false,
-      modal:{
+      modal: {
         rating: false,
-      }
+      },
     };
   },
 
@@ -298,7 +346,8 @@ export default {
 
   methods: {
     ...mapActions(["showNotification"]),
-    ...mapActions('user',["setWishList"]),   
+    ...mapActions("user", ["setWishList"]),
+    ...mapActions("cart", ["addProductToCart"]),
 
     setItemsBreadcumb() {
       const links = [
@@ -324,33 +373,33 @@ export default {
       this.breadcumbs = links;
     },
 
-    async update(val){
-      if(val){        
-        this.evaluations++;        
+    async update(val) {
+      if (val) {
+        this.evaluations++;
         const newComment = {
           content: val.content,
           score: val.score,
           user: {
             email: this.$auth.user.email,
-            photo: this.$auth.user.photo
-          }
-        }        
-        this.comments.unshift( newComment )        
+            photo: this.$auth.user.photo,
+          },
+        };
+        this.comments.unshift(newComment);
         this.loadScore();
       }
     },
 
     loadScore() {
       const { score } = this.book;
-      
+
       const scoreKeys = Object.keys(score);
-      const totalScores = this.evaluations === 0? 1 : this.evaluations;
-      
+      const totalScores = this.evaluations === 0 ? 1 : this.evaluations;
+
       let counter = 1,
         scoreTotal = 0;
-      
+
       const points = scoreKeys.map((namePropertly) => {
-        let value = score[namePropertly] * 100 / totalScores;        
+        let value = (score[namePropertly] * 100) / totalScores;
         scoreTotal += counter * score[namePropertly];
         const obj = {
           value,
@@ -359,72 +408,98 @@ export default {
         return obj;
       }, []);
 
-      const average = scoreTotal / totalScores;      
+      const average = scoreTotal / totalScores;
       this.score = {
-        average: parseFloat( average.toFixed(1) ),
+        average: parseFloat(average.toFixed(1)),
         points: points.reverse(),
       };
     },
 
-    async handleAddtoWishList(  ){      
-      if ( !this.$auth.loggedIn ) {
-        this.showNotification({ active: true, msg: 'Necesitas tener una cuenta :(', type: "accent" });        
-      }else{
+    async handleAddtoWishList() {
+      if (!this.$auth.loggedIn) {
+        this.showNotification({
+          active: true,
+          msg: "Necesitas tener una cuenta :(",
+          type: "accent",
+        });
+      } else {
         try {
           this.loading = true;
-          const data = await this.addToWishList();                          
-          await this.updateWishList( data.book );
-          this.showNotification({ active: true, msg: data.message, type: "accent" });        
+          const data = await this.addToWishList();
+          await this.updateWishList(data.book);
+          this.showNotification({
+            active: true,
+            msg: data.message,
+            type: "accent",
+          });
         } catch (err) {
-          console.log(err)
-           const msg = err.response
-          ? err.response.data.message
-          : "Ha ocurrido un error";
+          console.log(err);
+          const msg = err.response
+            ? err.response.data.message
+            : "Ha ocurrido un error";
           this.showNotification({ active: true, type: "error", msg });
-        }finally{
+        } finally {
           this.loading = false;
         }
       }
     },
 
-    async addToWishList(){
+    async addToWishList() {
       const data = {
         userId: this.$auth.user._id,
-        bookId: this.$route.params.idBook
-      }
-      return await this.$axios.$post('wishlist', data);      
-      
+        bookId: this.$route.params.idBook,
+      };
+      return await this.$axios.$post("wishlist", data);
     },
 
     handleSendComment() {
       if (!this.$auth.loggedIn) {
         this.$router.push("/unirse/login");
       } else {
-        this.modal.rating = true;        
+        this.modal.rating = true;
       }
     },
 
-    setImgProfile( photo ){
-      const url = this.baseUrl.avatar;            
-        if(!photo){
-          return url + 'avatar-default.png'
-        }else if(photo.startsWith('https://') ){
-          return photo;
-        }else{                
-          return url + photo;
-        }                        
+    setImgProfile(photo) {
+      const url = this.baseUrl.avatar;
+      if (!photo) {
+        return url + "avatar-default.png";
+      } else if (photo.startsWith("https://")) {
+        return photo;
+      } else {
+        return url + photo;
+      }
     },
 
-    async updateWishList(){
-      const res = await this.$axios.$get(`wishlist/user/${ this.$auth.user._id }`)
-      this.setWishList( res.data );
-    } 
+    async updateWishList() {
+      const res = await this.$axios.$get(
+        `wishlist/user/${this.$auth.user._id}`
+      );
+      this.setWishList(res.data);
+    },
+
+    async handleAddProductCart(idBook) {
+      const isAdded = await this.addProductToCart(idBook);      
+      if (!isAdded) {
+        this.showNotification({
+          active: true,
+          msg: "Ya tienes agregado este libro",
+          type: "error",
+        });
+      } else {
+        this.showNotification({
+          active: true,
+          msg: "Producto agregado al carrito",
+          type: "success",
+        });
+      }
+    },
   },
 
   computed: {
     ...mapState(["baseUrl"]),
-    ...mapState('user',["wishlist"]),
-    ...mapGetters('user',['getWishList']),
+    ...mapState("user", ["wishlist"]),
+    ...mapGetters("user", ["getWishList"]),    
 
     stringAuthors() {
       return this.book.author.map((author) => author.name).join(", ");
@@ -432,19 +507,20 @@ export default {
     stringEditorials() {
       return this.book.publisher.map((publis) => publis.name).join(", ");
     },
-    getComments(){
-      return this.comments.map( item => {
-        item.user.photo = item.user.photo? this.setImgProfile( item.user.photo ): this.setImgProfile( false )
+    getComments() {
+      return this.comments.map((item) => {
+        item.user.photo = item.user.photo
+          ? this.setImgProfile(item.user.photo)
+          : this.setImgProfile(false);
         return item;
-      })
+      });
     },
 
-    ifBookAddedToWishList(){
+    ifBookAddedToWishList() {
       const bookId = this.$route.params.idBook;
-      return this.getWishList.includes( bookId );
-    }
+      return this.getWishList.includes(bookId);
+    },
   },
-
 };
 </script>
 

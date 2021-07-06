@@ -28,6 +28,7 @@
           <p>No tienes libros agregados :(</p>
         </div>
         <v-list-item
+          class="mb-2"
           @click="$router.push(`/libro/${book.bookId._id}`)"
           v-else
           dense
@@ -43,7 +44,7 @@
 
           <v-list-item-content class="ml-4 mt-1">
             <v-list-item-title class="text-body-1">{{
-              book.bookId.title
+              book.bookId.title | splitText
             }}</v-list-item-title>
             <v-list-item-subtitle class="text-h6 mt-2"
               >${{ book.bookId.price }}</v-list-item-subtitle
@@ -67,6 +68,16 @@ export default {
     computed:{
         ...mapState(['baseUrl']),
         ...mapState('user', ['wishlist'])
+    },
+
+    filters:{
+      splitText( val ){    
+        let endSplit = 30;            
+        if( val.length > endSplit ){
+          return val.slice(0, endSplit) + '...'
+        }
+        return val;
+      }
     }
 
 

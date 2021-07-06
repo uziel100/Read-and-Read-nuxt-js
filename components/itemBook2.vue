@@ -22,7 +22,7 @@
       ></v-img>
       <v-card-text  class="pl-2 py-3 text-left"
       >
-      {{ title }}
+      {{ title | spliceText }}
       </v-card-text>
     </v-card>
   </v-hover>
@@ -42,11 +42,25 @@ export default {
       required: true
     },
 
+    // fileName:{
+    //   type: String,
+    //   required: true
+    // },
+
     to: {
       type: String,
       required: false
     },
   },
+
+  filters: {
+    spliceText(value){
+      if(value.length > 19){
+        value = value.slice(0, 19) + "..."
+      }
+      return value;
+    }
+  }
 };
 </script>
 

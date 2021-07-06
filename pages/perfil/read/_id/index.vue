@@ -3,7 +3,7 @@
     <no-ssr>
       <pdf
         style="width: 900px"
-        src="/example-book-js.pdf"
+        :src="`https://read-and-read-bck.s3.us-west-1.amazonaws.com/fileBook/${ $route.params.id }`"
         @num-pages="pageCount = $event"
         @page-loaded="currentPage = $event"
         :page="nextPage"
@@ -32,6 +32,7 @@ export default {
   components: {
     pdf,
   },
+
   data() {
     return {
       currentPage: 0,
@@ -43,8 +44,8 @@ export default {
   },
 
   watch:{
-    nextPage( val ){
-      console.log(val)
+    nextPage( val ){  
+      this.$vuetify.goTo(0);    
       if(val === 1){
         this.disabledBtnBack = true;
         this.disabledBtnNext = false;

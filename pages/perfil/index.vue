@@ -27,16 +27,30 @@
 
 <script>
 
-export default {
-  
+export default {  
   layout: "user",
   head: {
     title: "Bienvenido",  
   },
+
+  // async asyncData({ $auth, $axios }) {
+  //   const data = await $axios.$get(`/user/${ $auth.user._id }/book`);    
+  //   return{
+  //     booksAdded: data.books.reverse()
+  //   } 
+
+  // },
+  
+
+  async mounted() {
+    const data = await this.$axios.$get(`/user/${ this.$auth.user._id }/book?limit=4`);    
+    this.booksAdded = data.books
+  },
+  
    data(){
       return{
-        booksReading: [{ title: 'Javascript' } ],
-        booksAdded: [{ title: 'Javascript' }],
+        booksReading: [{ title: 'Javascript' } ],        
+        booksAdded: [],
         section:{
           home: true,
           favorite: false,

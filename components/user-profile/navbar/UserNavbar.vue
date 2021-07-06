@@ -32,8 +32,8 @@
 
     <v-spacer class="d-block d-sm-block d-md-none"></v-spacer>
 
-    <v-badge left overlap :value="0" class="mr-0 mr-sm-2 mr-md-2">
-      <v-btn text icon>
+    <v-badge  left overlap :value="0" class="mr-0 mr-sm-2 mr-md-2">
+      <v-btn @click="$router.push('/cesta')" text icon>
         <v-icon color="icons" medium>mdi-cart-outline</v-icon>
       </v-btn>
     </v-badge>

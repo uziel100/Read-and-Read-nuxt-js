@@ -4,10 +4,10 @@
     height="auto"
     :width="width"    
     :title="title"   
-    color="cards"    
-    @click="goDetailBook"       
+    color="cards"               
   >
     <v-img
+      @click="goDetailBook"
       :src="img"
       height="240"
       style="cursor: pointer"
@@ -16,11 +16,13 @@
       <div>{{ title | spliceText }}</div>
       <v-card-title class="pa-0 text-black">$ {{ price }} MX</v-card-title>
     </v-card-text>
-    <v-btn  color="red" dark class="text-none" block>Agregar al carrito</v-btn>
+    <v-btn @click="handleAddProductCart(idBook)" color="red" dark class="text-none" block>Agregar al carrito</v-btn>
   </v-card>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   props: {
     title: {
@@ -59,9 +61,29 @@ export default {
     }
   },
   methods:{
+    ...mapActions(["showNotification"]),
+    ...mapActions("cart", ["addProductToCart"]),
+
     goDetailBook(){
       this.$router.push(`/libro/${ this.idBook }`)
-    }
+    },
+    
+    async handleAddProductCart(idBook) {
+      const isAdded = await this.addProductToCart(idBook);      
+      if (!isAdded) {
+        this.showNotification({
+          active: true,
+          msg: "Ya tienes agregado este libro",
+          type: "error",
+        });
+      } else {
+        this.showNotification({
+          active: true,
+          msg: "Producto agregado al carrito",
+          type: "accent",
+        });
+      }
+    },
   },
 
   filters: {
