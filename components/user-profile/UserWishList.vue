@@ -26,6 +26,7 @@
           :title="book.bookId.title"
           :img="`${baseUrl.images + book.bookId.imgUrl}`"
           :to="`/libro/${ book.bookId._id }`"
+          :isWishlist="true"
         ></item-book-2>
       </v-col>
     </v-row>

@@ -11,6 +11,8 @@
             :title="item.book.title"
             :img="baseUrl.images + item.book.imgUrl"
             :to="`/perfil/read/${ item.book.fileName }`"
+            :favorite="item.favorite"
+            :id="item._id"
           ></item-book-2>          
       </v-row>
     </v-card>
