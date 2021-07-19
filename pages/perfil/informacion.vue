@@ -110,6 +110,11 @@
                 v-else-if="form.comment"
                 :show.sync="form.comment"
               ></form-view-commets>
+              <FormRequestBook
+                v-else-if="form.requestBook"                
+                :show.sync="form.requestBook"
+                :loading.sync="form.loading"
+              ></FormRequestBook>
             </keep-alive>
           </v-card>
         </v-col>
@@ -160,6 +165,7 @@ export default {
         question: false,
         password: false,
         comment: false,
+        requestBook: false,
       },
       user: {
         loading: false,
@@ -180,6 +186,11 @@ export default {
         {
           title: "Comentarios",
           name: "comment",
+          disabled: false,
+        },
+        {
+          title: "Solicitar libro",
+          name: "requestBook",
           disabled: false,
         },
       ],

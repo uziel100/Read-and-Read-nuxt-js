@@ -24,9 +24,10 @@
         <item-book-2
           :title="book.book.title"
           :img="baseUrl.images + book.book.imgUrl"
-          :to="`/perfil/read/${book.book.fileName}`"
+          :to="`/perfil/read/${book._id}`"
           :favorite="book.favorite || false"
           :id="book._id"
+          :file="book.book.fileName"
         ></item-book-2>
       </v-col>
     </v-row>

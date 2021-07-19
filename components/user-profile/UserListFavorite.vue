@@ -18,8 +18,8 @@
       <v-col v-for="book in favorites" :key="book._id" cols="6" sm="4" md="3">
         <item-book-2
           :title="book.book.title"
-          :img="`${baseUrl.images + book.book.imgUrl}`"
-          :to="`/libro/${book.book._id}`"
+          :img="`${baseUrl.images + book.book.imgUrl}`"          
+          :to="`/perfil/read/${book._id}`"
           :favorite="book.favorite || false"
           :id="book._id"
         ></item-book-2>
@@ -35,7 +35,7 @@ export default {
 
   async mounted() {    
     const favorites = await this.$axios.$get(
-      `/user/${this.$auth.user._id}/book/favorite`
+      `/user-favorite/${this.$auth.user._id}`
     );    
     this.favorites = favorites.books;
   },

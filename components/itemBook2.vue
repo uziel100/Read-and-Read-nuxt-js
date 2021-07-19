@@ -9,7 +9,7 @@
       flat
     >
       <v-img
-        @click="$router.push(to)"
+        @click="goToReadBook"
         :title="title"
         :src="img"
         width="170"
@@ -18,7 +18,7 @@
         class="miBorde"
       ></v-img>
       <v-card-text class="pl-2 py-1 text-left">
-        {{ title | spliceText }}
+        {{ title | spliceText }} ----
       </v-card-text>
       <v-card-actions v-if="!isWishlist" class="pa-0 ma-0">
         <v-spacer></v-spacer>
@@ -65,6 +65,10 @@ export default {
       type: String,
       required: false,
     },
+    file:{
+      type: String,
+      required: false
+    },
     favorite: {
       type: Boolean,
       required: false,
@@ -85,6 +89,14 @@ export default {
   },
 
   methods: {
+
+    goToReadBook(){
+      // if(!isWishlist){
+        console.log(this.file) 
+        this.$router.push({ path: this.to, query: { q: this.file } });
+      // }
+    },
+
     handleFavorites(itWasFavorite) {
       this.loading = true;
 
@@ -105,7 +117,7 @@ export default {
         id,
         isFavorite: true,
       };
-      await this.$axios.$put("/user/book/favorite", data);      
+      await this.$axios.$put("/user-book/favorite", data);      
       this.isFavorite = true;
     },
 
@@ -114,7 +126,7 @@ export default {
         id,
         isFavorite: false,
       };
-      await this.$axios.$put("/user/book/favorite", data);
+      await this.$axios.$put("/user-book/favorite", data);
       this.isFavorite = false;
     },
   },

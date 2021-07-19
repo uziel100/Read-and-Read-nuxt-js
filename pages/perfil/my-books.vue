@@ -9,10 +9,11 @@
           <item-book-2
             v-for="item in books" :key="item.book._id"
             :title="item.book.title"
-            :img="baseUrl.images + item.book.imgUrl"
-            :to="`/perfil/read/${ item.book.fileName }`"
+            :img="baseUrl.images + item.book.imgUrl"            
+            :to="`/perfil/read/${item._id}`"
             :favorite="item.favorite"
             :id="item._id"
+            :file="item.book.fileName"
           ></item-book-2>          
       </v-row>
     </v-card>

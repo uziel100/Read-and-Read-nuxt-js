@@ -312,7 +312,7 @@ export default {
       const comments = await $axios.$get(`comment/book/${route.params.idBook}`); 
       let requestBook = null;
       if($auth.loggedIn){
-        requestBook = await $axios.$get(`user/book/${route.params.idBook}`); 
+        requestBook = await $axios.$get(`user/${ $auth.user._id }/book/${route.params.idBook}`); 
       } 
                  
       return {
