@@ -32,22 +32,22 @@
     <div class="snackbar-pdf-controls">
       <v-btn
         :disabled="disabledBtnBack"
-        small
-        color="white"
-        fab
+        small        
+        fab        
+        color="accent"
         @click="nextPage = nextPage - 1"
       >
-        <v-icon color="black">mdi-arrow-left-circle</v-icon>
+        <v-icon color="white">mdi-arrow-left-circle</v-icon>
       </v-btn>
       <div class="box-pages-count">{{ currentPage }} / {{ pageCount }}</div>
       <v-btn
         :disabled="disabledBtnNext"
         small
-        fab
-        color="white"
+        fab        
+        color="accent"
         @click="nextPage = nextPage + 1"
       >
-        <v-icon color="black">mdi-arrow-right-circle</v-icon>
+        <v-icon color="white" >mdi-arrow-right-circle</v-icon>
       </v-btn>
     </div>
   </div>
@@ -154,6 +154,7 @@ export default {
   font-weight: bold;
   border-radius: 4px;
   margin: 0 10px;
+  color: #000;
 }
 
 .loading {
