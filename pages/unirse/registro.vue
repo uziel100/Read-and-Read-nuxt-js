@@ -1,5 +1,5 @@
 <template>
-  <user-auth-form :isLogin="false"  :onSubmit="handleRegister" ></user-auth-form>
+  <user-auth-form :isLogin="false" :onSubmit="handleRegister"></user-auth-form>
 </template>
 
 <script>
@@ -9,36 +9,45 @@ export default {
   head: {
     title: "Comienza ahora",
   },
-    
+
   methods: {
     ...mapActions(["showNotification"]),
 
-     async handleRegister( form ) {
-      const { email, password } =  form ;
-      try {        
+    async handleRegister(form) {
+      const { email, password, username } = form;
+      try {
         this.isLoadingForm(form, true);
-        const res = await this.register({ email, password });
+        const res = await this.register({ email, password, username });
         this.isLoadingForm(form, false);
-        this.showNotification({ active: true, msg: res.message, type: "success" });
-        this.$router.push('/unirse/login')
+        this.showNotification({
+          active: true,
+          msg: res.message,
+          type: "#57aa60",
+        });
+        this.$router.push("/unirse/login");
       } catch (err) {
         this.isLoadingForm(form, false);
-        const msg = err.response ? err.response.data.message : 'Ha ocurrido un error, intentelo de nuevo';              
-        this.showNotification({ active: true, msg, type: "error" });
+        let msg = "", msg2 = "";
+        if( err?.response?.data?.message?.email || err?.response?.data?.message?.username ){
+          msg = err?.response?.data?.message?.email && "El email ya esta registrado por otro usuario "
+          msg2 = err?.response?.data?.message?.username && "El nombre de usuario ya esta ocupado por otro usuario"
+        }else{
+          msg = "Ha ocurrido un error, intentelo de nuevo";
+        }
+        
+        this.showNotification({ active: true, msg, msg2, type: "error" });
       }
     },
 
-    async register( userInf ) {
+    async register(userInf) {
       // logica de registro
-      return await this.$axios.$post("register", userInf );      
+      return await this.$axios.$post("register", userInf);
     },
 
     isLoadingForm(form, value) {
       form.loading = value;
       form.disabled = value;
-    },    
-
-   
+    },
   },
 };
 </script>

@@ -18,7 +18,7 @@
         class="miBorde"
       ></v-img>
       <v-card-text class="pl-2 py-1 text-left">
-        {{ title | spliceText }} ----
+        {{ title | spliceText }}
       </v-card-text>
       <v-card-actions v-if="!isWishlist" class="pa-0 ma-0">
         <v-spacer></v-spacer>

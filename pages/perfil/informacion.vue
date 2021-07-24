@@ -115,6 +115,11 @@
                 :show.sync="form.requestBook"
                 :loading.sync="form.loading"
               ></FormRequestBook>
+              <form-update-username
+                v-else-if="form.username"
+                :show.sync="form.username"
+                :loading.sync="form.loading"
+              ></form-update-username>
             </keep-alive>
           </v-card>
         </v-col>
@@ -159,6 +164,7 @@ export default {
   data() {
     return {
       form: {
+        username: false,
         profile: false,
         comment: false,
         loading: false,
@@ -173,6 +179,10 @@ export default {
         disabled: true,
       },
       options: [
+        {
+          title: "Cambiar username",
+          name: "username"          
+        },
         {
           title: "Cambiar contraseña",
           name: "password",

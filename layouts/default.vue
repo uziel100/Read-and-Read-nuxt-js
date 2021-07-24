@@ -16,7 +16,8 @@
           :color="notification.type"
           elevation="24"
         >
-          {{ notification.msg }}
+          <p>{{ notification.msg }}</p>
+          <p>{{ notification.msg2 }}</p>           
           <template v-slot:action="{ attrs }">
             <v-btn
               dark

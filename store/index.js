@@ -2,7 +2,7 @@
 export const state = () => ({  
   notification: { 
     active: false,   
-    type: "success",      
+    type: "#57aa60",      
     msg: "Bienvenido"
   },  
   categories: [],
@@ -46,7 +46,8 @@ export const mutations = {
   setNotification(state, payload) {       
     state.notification.active =  payload.active;
     state.notification.msg = payload.msg || '';
-    state.notification.type = payload.type || 'success';       
+    state.notification.msg2 = payload.msg2 || undefined;
+    state.notification.type = payload.type || '#57aa60';    
   },
 
   setUserRole(state, payload){

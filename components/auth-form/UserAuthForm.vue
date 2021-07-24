@@ -31,7 +31,7 @@
                     isLogin ? "Continuar con Google" : "Registrarse con Google"
                   }}
                 </g-signin-button>
-              </div>
+              </div>              
               <v-text-field
                 label="Correo electronico *"
                 outlined
@@ -43,7 +43,18 @@
                 :rules="[form.emailRequired, form.emailRules]"
                 name="email"
               ></v-text-field>
-
+              <v-text-field
+                v-if="!isLogin"
+                label="Nombre de usuario *"
+                outlined
+                dense
+                color="accent"
+                v-model="form.username"                                
+                :rules="[form.fieldRequired, form.usernameRul]"
+                required
+                name="username"
+                autocomplete="on"
+              ></v-text-field>              
               <v-text-field
                 v-if="isLogin"
                 label="Contraseña *"
@@ -163,8 +174,11 @@ export default {
         loading: false,
         disabled: false,
         email: "",
+        username: "",
         password: "",
         confirmPassword: "",
+        fieldRequired: (val) => !!val || "Campo obligatorio",
+        usernameRul: val => /^[.A-ZÀ-ÿa-z0-9]+$/.test(val) || "Letras y numeros, sin espacios" ,
         emailRequired: (val) => !!val || "Correo obligatorio",
         emailRules: (val) => /.+@.+\..+/.test(val) || "Correo debe ser valido",
         passwordRules: (val) => !!val || "Contraseña obligatoria",

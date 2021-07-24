@@ -108,10 +108,6 @@ export default {
       this.$auth.setUser(data);
     },
 
-    saveListPersist( data ){
-      this.$auth.$storage.setLocalStorage("_list", data, true);
-    },
-
     goLayoutByRole( role ){
       let layout = '';
       switch (role) {
