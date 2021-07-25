@@ -20,7 +20,7 @@
         outlined
         dense
         required
-        v-model="book.author"
+        v-model="book.authors"
         :rules="[form.required]"
       ></v-text-field>
       <v-text-field
@@ -71,7 +71,7 @@ export default {
       },
       book: {
         title: "",
-        author: "",
+        authors: "",
         publisher: "",
       },
     };
@@ -103,7 +103,7 @@ export default {
 
     clearFields() {
       this.book.title = "";
-      this.book.author = "";
+      this.book.authors = "";
       this.book.publisher = "";
     },
 

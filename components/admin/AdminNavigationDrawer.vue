@@ -53,6 +53,7 @@ export default {
         ["mdi-bookmark", "Subcategorias", "/admin/subcategory"],
         ["mdi-account", "Autores", "/admin/author"],
         ["mdi-bookmark", "Editoriales", "/admin/publisher"],
+        ["mdi-bookmark", "Libros solicitados", "/admin/request"],
         ["mdi-account-lock", "Permisos", "/admin/permission"],
         ["mdi-history", "Logs", "/admin/logging"],
       ],
