@@ -30,7 +30,12 @@
       <v-col cols="12" md="6">
         <p class="text-h5 font-weight-bold">Detalles de orden</p>
         <hr />
-        <v-list :class="libro.exist? 'opacity5' : ''" two-line v-for="(libro, idx) in books" :key="idx">
+        <v-list
+          :class="libro.exist ? 'opacity5' : ''"
+          two-line
+          v-for="(libro, idx) in books"
+          :key="idx"
+        >
           <v-card :elevation="0">
             <v-list-item class="margen">
               <v-list-item-action>
@@ -41,10 +46,12 @@
                 ></v-img>
               </v-list-item-action>
               <v-list-item-content>
-                <v-list-item-title>{{ !libro.exist? libro.title : 'Ya tienes este libro' }}</v-list-item-title>
+                <v-list-item-title>{{
+                  !libro.exist ? libro.title : "Ya tienes este libro"
+                }}</v-list-item-title>
                 <v-list-item-subtitle
                   class="font-weight-bold py-5 text-h6 title--text"
-                  :class="libro.exist? 'text-through': ''"
+                  :class="libro.exist ? 'text-through' : ''"
                   >${{ libro.price }} MX</v-list-item-subtitle
                 >
               </v-list-item-content>
@@ -56,7 +63,7 @@
       <v-col cols="12" md="6">
         <p class="text-h5 font-weight-bold">Información del pago</p>
         <hr />
-        <v-form v-model="form.valid" ref="form"  class="mt-6">
+        <v-form v-model="form.valid" ref="form" class="mt-6">
           <v-text-field
             label="Nombre de la tarjeta *"
             outlined
@@ -65,7 +72,7 @@
             dense
             required
             name="cardName"
-            v-model="data.nameCard"            
+            v-model="data.nameCard"
             :rules="[form.requiredField]"
           ></v-text-field>
           <v-row class="ma-0">
@@ -115,7 +122,7 @@
             :loading="loadingPayment"
             :disabled="!form.valid || totalPayment == 0"
             @click="submit"
-            color="error"            
+            color="error"
             block
             >Pagar ($ {{ totalPayment }})</v-btn
           >
@@ -147,7 +154,7 @@ export default {
     StripeElementCard,
   },
   async created() {
-    this.$axios.setHeader("token", this.$auth.strategy.token.get());    
+    this.$axios.setHeader("token", this.$auth.strategy.token.get());
     await this.getUserBooks();
     await this.getProductsCart();
   },
@@ -167,10 +174,10 @@ export default {
         nameCard: "",
         postalCode: "",
       },
-      form:{
+      form: {
         valid: false,
         requiredField: (val) => !!val || "Campo obligatorio",
-      }
+      },
     };
   },
   methods: {
@@ -183,16 +190,16 @@ export default {
       this.$refs.stripe.submit();
     },
     async tokenCreated(token) {
-      const products = this.books.filter(book => book.exist === false)
+      const products = this.books.filter((book) => book.exist === false);
       const data = {
         ...this.data,
         products,
         tokenStripe: token.id,
-      };      
+      };
       try {
         const request = await this.$axios.$post("payment", data);
         if (request.status) {
-          this.removeBookIfItWasInWishlist()
+          this.removeBookIfItWasInWishlist();
           await this.clearCart();
           this.$router.push("/cesta/status");
         }
@@ -211,21 +218,32 @@ export default {
       const cart = await this.getCartProuct();
       this.books = [];
       this.totalPayment = 0;
-      for (const id of cart) {
-        const bookIsBought = this.userBook.find( item => item.book._id === id);
-        const data = await this.$axios.$get(`book/${id}`);
-        if(!bookIsBought){
-          this.books.push( {...data.book, exist: false } );
-          this.totalPayment += data.book.price;
-        }else{
-          this.books.push({...data.book, exist: true});
+      try {
+        const data = await this.$axios.$post("payment/book", { books: cart });
+        for (const book of data.books) {
+          const bookIsBought = this.userBook.find(
+            (item) => item.book._id === book._id
+          );
+          if (!bookIsBought) {
+            this.books.push({ ...book, exist: false });
+            this.totalPayment += book.price;
+          } else {
+            this.books.push({ ...book, exist: true });
+          }          
         }
-      }
-      this.totalPayment = this.totalPayment.toFixed(2);
-      this.loading = false;
+        this.totalPayment = this.totalPayment.toFixed(2);        
+      } catch (error) {
+        this.showNotification({
+          active: true,
+          msg: "Ha ocurrido un error al recuperar los productos",
+          type: "error",
+        });
+      } finally {
+        this.loading = false;
+      }     
     },
 
-    async getUserBooks(){
+    async getUserBooks() {
       const data = await this.$axios.$get(`/user/${this.$auth.user._id}/book`);
       this.userBook = data.books;
     },
@@ -242,7 +260,7 @@ export default {
           );
         }
       }
-      this.setWishList(tempWihslist);      
+      this.setWishList(tempWihslist);
     },
   },
 
@@ -265,10 +283,10 @@ export default {
 .margin-vertical {
   margin: 5vh 0 20vh;
 }
-.text-through{
-  text-decoration: line-through;  
+.text-through {
+  text-decoration: line-through;
 }
-.opacity5{
+.opacity5 {
   opacity: 0.5;
 }
 </style>

@@ -3,12 +3,10 @@
     <section v-if="books.length" class="pa-0">
       <v-container>
         <v-row>
-          <v-col class="pt-2 pt-md-5" cols="12">            
+          <v-col class="pt-2 pt-md-5" cols="12">
             <v-stepper value="1">
               <v-stepper-header>
-                <v-stepper-step step="1">
-                  Detalles de la orden
-                </v-stepper-step>
+                <v-stepper-step step="1"> Detalles de la orden </v-stepper-step>
 
                 <v-divider></v-divider>
 
@@ -76,11 +74,7 @@
                 $ {{ totalṔayment }} MX
               </h4>
             </v-card-text>
-            <v-btn
-              @click="handlePaymentProccess"
-              color="error"
-              dark
-              block
+            <v-btn @click="handlePaymentProccess" color="error" dark block
               >Procesar pago</v-btn
             >
           </v-card>
@@ -137,13 +131,22 @@ export default {
       const cart = await this.getCartProuct();
       this.books = [];
       this.totalṔayment = 0;
-      for (const id of cart) {
-        const data = await this.$axios.$get(`book/${id}`);
-        this.books.push(data.book);
-        this.totalṔayment += data.book.price;
+      try {
+        const data = await this.$axios.$post("payment/book", { books: cart });
+        for (const book of data.books) {
+          this.totalṔayment += book.price;
+        }
+        this.totalṔayment = this.totalṔayment.toFixed(2);
+        this.books = data.books;
+      } catch (error) {
+        this.showNotification({
+          active: true,
+          msg: "Ha ocurrido un error al recuperar los productos",
+          type: "error",
+        });
+      } finally {
+        this.loading = false;
       }
-      this.totalṔayment = this.totalṔayment.toFixed(2);
-      this.loading = false;
     },
 
     async handleRemoveProductCart(idBook) {
@@ -153,7 +156,7 @@ export default {
       }
     },
 
-    handlePaymentProccess(){
+    handlePaymentProccess() {
       if (!this.$auth.loggedIn) {
         this.showNotification({
           active: true,
@@ -161,9 +164,9 @@ export default {
           type: "accent",
         });
       } else {
-        this.$router.push('/cesta/checkout')
+        this.$router.push("/cesta/checkout");
       }
-    }
+    },
   },
 
   computed: {
