@@ -20,6 +20,7 @@
     "vue-pdf": "^4.2.0"
   },
   "devDependencies": {
-    "@nuxtjs/vuetify": "^1.11.2"
+    "@nuxtjs/pwa": "^3.3.5",
+    "@nuxtjs/vuetify": "^1.12.1"
   }
 }

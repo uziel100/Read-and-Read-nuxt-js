@@ -49,15 +49,38 @@ export default {
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify',
+    '@nuxtjs/vuetify',    
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',    
+    '@nuxtjs/pwa',
   ],
+
+  pwa: {
+    meta:{
+      title: 'Read&Read',
+      author: 'Team Read&Read'
+    },
+    icon: {
+      fileName: 'icon.png',
+      sizes: [64, 120, 144, 152, 192, 384, 512],
+      purpose: 'any'
+    },
+    manifest: {
+      name: 'Read&Read App',
+      short_name: 'Read&Read',
+      description: 'Aplicación de venta de libros digitales, disfruta leerlo desde nuestra plataforma',
+      charset: 'utf-8',
+      lang: 'es',  
+      useWebmanifestExtension: false,
+      background_color: '#062247',
+      start_url: '/'
+    }
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
