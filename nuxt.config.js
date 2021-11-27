@@ -49,10 +49,13 @@ export default {
       {
         src: "https://www.google.com/recaptcha/api.js?render:6LdQSkkaAAAAANrCpXGxHSzUEN3khnp3A4_pqn4T",
         defer: true
-
-      }
+      },
+      {
+        src: "//web.webpushs.com/js/push/cc45b24a9e7697a797f919ae12304181_1.js",
+        async: true,
+        charset: "UTF-8"
+      }    
     ],
-
   },
   loading: {
     color: '#2F80ED',
@@ -83,6 +86,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
+    // '@nuxtjs/onesignal',
     '@nuxtjs/pwa',
   ],
 
@@ -108,6 +112,16 @@ export default {
       start_url: '/'
     }
   },
+  // oneSignal: {
+  //   init: {     
+  //     appId: "86812484-c757-4b12-8d46-35f16002fc24",
+  //     safari_web_id: "web.onesignal.auto.4cc30974-98f9-47ba-8e02-4635d2d477f2",
+  //       welcomeNotification: {
+  //         disable: true
+  //     },
+  //     allowLocalhostAsSecureOrigin: true,
+  //   }
+  // },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
